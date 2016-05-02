@@ -1,0 +1,447 @@
+------------------------------------------------------------
+               <<<<mado started uie.pm>>>>
+                    (21:10 le 2/5/2016)
+------------------------------------------------------------
+
+
+'mado' found 14 subroutines in uie.pm
+
+  1	sub argu {
+  2	sub ask8question {
+  3	sub belongs2{
+  4	sub check8ref {
+  5	sub get8answers {
+  6	sub join8hash {
+  7	sub juste {
+  8	sub justn {
+  9	sub numerical {
+ 10	sub ordre {
+ 11	sub pause{
+ 12	sub print8panneau {
+ 13	sub print8structure {
+ 14	sub read8block {
+
+
+==================================================
+  1	sub argu {
+==================================================
+    #
+    # aim : from the hash proposed by the user
+    #           and the hash defining the arguments 
+    #           necessary for the subroutine,
+    #       checks the validity of the user proposal and
+    #       returns the completed hash. The arguments
+    #       are scalars, 
+    #
+    # input : ($sub,$rhsub,@argu)
+    #         $sub is the name of the concerned subroutine
+    #         $rhsub is the hash defining the arguments
+    #         necessary to '$sub' by means of a reference
+    #         to a small array where:
+    #           [0] is the default value (undef when there is not)
+    #           [1] is the type of the argument:
+    #                undef for no check.
+    #                'u' for 'undef'
+    #                'h' for a reference to a hash
+    #                'a' for a reference to an array
+    #                's' for a reference to a scalar
+    #                'r' for a reference
+    #                'n' for a numerical value
+    #                'c' for a chain of characters
+    #                or a combination of the above
+    #                   when there is more than one 
+    #                   possibility e.g. 'sh' for a
+    #                   reference either to a scalar
+    #                   or a hash
+    #           [2..] the description of the argument
+    #                 to be use as an help; may not exist.
+    # Notice that 'undef' cannot be a default value since such
+    #        a value for [0]  means that the argument must 
+    #        be provided by the call.
+    #        Nevertheless, it is an acceptable value when [1] 
+    #        comprises 'u'.
+    #
+    # Be aware that quite not understable messages can be the 
+    # consequence that a hash or an array be proposed instead of a
+    # reference... since values are interpreted as a hash when the
+    # total number is even.
+    #
+    #         @arg is the array proposed by the user to be decoded
+    #              or when it comprises only one pertinent element
+    #                 some help is provided about the arguments
+    #                 of the subroutine. More precisely when 'HELP' the
+    #                 description of all arguments is displayed,
+    #                 when 'help' the list of arguments is displayed,
+    #                 when an argument name, the description of it.
+    #
+    # output: reference to the completed hash
+    #         or 1 when help is asked for.
+    #
+
+==================================================
+  2	sub ask8question {
+==================================================
+    #
+    # aim: ask a question to the screen and get the answer
+    #      given by means of the keyboard.
+    #
+    # output: the proposed answer by the user
+    #             without any checking
+    #
+    # 
+    # arguments
+    my $hrsub = {ques  =>[undef,"c","The question to be rised"],
+                 type  =>[    0,"n","Must the input numerically transformed?"],
+                 form  =>[{avant=>"=> ",apres=>" : ",long=>60,just=>"r"},"h",
+                          "The way the question be justified\n  ('{}' for no justification)"]
+                };
+
+==================================================
+  3	sub belongs2{
+==================================================
+    #
+    # aim : test if a scalar belongs to a given array
+    #
+    # output: an array of the element numbers of occurrence.
+    #         so () means not found
+    #            (0,7) found in the first and eigth element
+    #
+    # arguments
+    my $hrsub = {sca =>[undef,"s","The element to be checked."],
+                 arr =>[undef,"a","The array where are stored the possible elements."],
+                 low =>[0,    "n","Must the comparison be made after lower casing?"],
+                 com =>[["=~ /^","\$/"],"a","A reference to an array of two elements",
+                                           "to be used for the comparison with the",
+                                           "included operator. Default is the matching",
+                                           "operator and the strict equality pattern;",
+                                           "it is equivalent to ['eq ','']"]
+                };
+
+==================================================
+  4	sub check8ref {
+==================================================
+    #
+    # aim : check a reference and a little more
+    #
+    # output: 1 when the check is positive, 0 if not.
+    #           When 'O' some warning indications are printed.
+    #
+    # For the moment, only scalar, array and hash are checked. 
+    #     Giving 'check8ref' a reference of another type will
+    #     be considered faultly.
+    #
+    # arguments
+    my $hrsub = {ref =>[undef,"r","The reference to be checked"],
+                 typ =>[ "sah","c","Type of the reference 'h','a','s' or a combination of them"],
+                 rlo =>[ [0,0],"a","minimum and maximum lengths when reference to array or to hash",
+                                   " ('[0,0]' means no check)"],
+                 key =>[ [],"a","Possible key values in the referred array when reference to a hash",
+                                " ('[]' means no check)"]
+                };
+
+==================================================
+  5	sub get8answers {
+==================================================
+    #
+    # aim: get some answers from a series of questions
+    #
+    # output: reference to the hash of accepted answers. 
+    #
+    # Notice that questions are asked again when not correctly answered.
+    #
+    # constants
+    my $skip = "ssss"; 
+    my $quit = "SSSS"; 
+    my $stop = "ZZZZ"; 
+    my $halting = "Type '$skip/$quit/$stop' as first four characters to quit the question/call/program";
+    # arguments
+    my $hrsub = {rplaca=> [undef,"a","reference to an array.\n".
+                                     "   to be printed with '&print8panneau'"],
+                 rquest=> [undef,"h","reference to the hash of questions to ask.\n".
+                                     "keys identifies the questions and values are\n".
+                                     "references to hashes of the different components\n".
+                                     "of the questions, each with the following keys:\n".
+                                     "  - 'ques' giving the question formula.\n".
+                                     "  - 'help' giving some hints about the formula to answer\n".
+                                     "           with the help of an array.\n".
+                                     "  - 'chec' a reference to an array specifying the possible answers.\n".
+                                     "      [0] is either 'n' for numeric, 'a' for alphabetical,\n".
+                                     "                 or 'p' for perl matching and anything else for no check.\n".
+                                     "              . when numeric [1..3] give respectively the \n".
+                                     "                      minimum [1], maximum [2] of accepted values\n".
+                                     "                      and the number of decimals of truncation [3].\n".
+                                     "              . when alphabetic the list of accepted values follow.\n".
+                                     "              . when perl matching [1] is any expression to be enclosed\n".
+                                     "                     into slashes; for instance ^[a-z][a-z]\$ to impose\n".
+                                     "                     just two lower case letters.\n".
+                                     "       Be aware that when [0] is 'n', the &numerical subroutine\n".
+                                     "                                          is applied to the answer.",
+                                     "  - 'defa' the default valeu proposed if a simple 'Enter' key is hit"],
+                 rordre=> [undef,"a","reference to an array of 'keys %\$rquest' in the desired asking order."],
+                 rforma=> [{}   ,"h","reference to a hash of references to arrays giving for each\n",
+                                      "question, the way to display them on the screen just above\n",
+                                      "the questionning line. Individual arrays gives the necessary\n",
+                                      "argument for a call to '&juste': \$avant,\$apres,\$long,\$just",
+                                      "or '[]' when no formatting is desired for this question.\n",
+                                      "Also when the hash is empty no formatting is done for any question."],
+                 largeur=>[100,"n","width of the help pannel before the question"],
+                 longhelp=>[17,"n","number of lines for the help pannel, just before questions"],
+                 construc=>["s","hc","Value for argument 'form' of '&join8hash' used when constructing",
+                                     "the progressive set of answers"]
+                };
+
+==================================================
+  6	sub join8hash {
+==================================================
+    #
+    # aim: prepares an array of strings displaying in
+    #      a convenient way the contents of a hash
+    #
+    # output: the reference ot the prepared array
+    #
+    # arguments
+    my $hrsub = {hash =>[undef,"h","The reference to the hash to be prepared"],
+                 orde =>[    "k","ac","defined the order to be used.",
+                                      " -'k' increasing alphabetical order of the keys",
+                                      " -'K' decreasing alphabetical order of the keys",
+                                      " -'v' increasing alphabetical order of the values",
+                                      " -'V' decreasing alphabetical order of the values",
+                                      " -'n' increasing numerical order of the values",
+                                      " -'N' decreasing numerical order of the values",
+                                      " - or the reference to an array of the keys",
+                                      "      in the desired order"],
+                 form =>[    "s","hc","Format to use for the presentation",
+                                      " -'s' standard way, that is each key between",
+                                      "      parentheses before it values",
+                                      " -'k' only the keys surrounded with parentheses",
+                                      "           and separated with a blank",
+                                      " -'v' only the values separated a blank",
+                                      " - or the reference to an hash with two keys",
+                                      "      ('k' and 'v') indicating respectively",
+                                      "      the way to prepare keys ans values:",
+                                      "      'undef' means that must not be included",
+                                      "      a reference to an array of four components",
+                                      "      giving (i) the length of the string to indicate",
+                                      "                 to &juste,",
+                                      "             (ii) the type of justification to indicate",
+                                      "                 to &juste,",
+                                      "             (iii) the string to introduce before and",
+                                      "             (iv) the string to put after.",
+                                      "      (here the same format is applied to every",
+                                      "       couple key/value in the next possibility",
+                                      "       they can be different)",
+                                      " - or the reference to an hash having keys belonging",
+                                      "      to those of '\%\$hash', when a key is not present",
+                                      "      the corresponding couple is not represented.",
+                                      "      The values of this hash are reference with the",
+                                      "      same pattern as in the previous possibility."],                     
+                 sepa =>[    1, "n","How to present the couples of key/value.",
+                                      " - 1 in different components of an array",
+                                      " - 0 in a single string"]
+                };
+
+==================================================
+  7	sub juste {
+==================================================
+    #
+    # aim: justify a string
+    #
+    # output: the fitted string
+    #
+    # remark: in case of truncation, a '+' is inserted in the
+    #         border leading to the loss of an additional 
+    #         character.
+    #
+    # arguments
+    my $hrsub = {chain=>[undef,"c","The chain to be justified"],
+                 trim =>[    1,"n","Must ending spaces be removed?"],
+                 avant=>[   "","c","Chain to introduce before"],
+                 apres=>[   "","c","Chain to introduce after"],
+                 long =>[   64,"n","Length of the justified chain",
+                                   " (when <= 0 no justification"],
+                 just =>[  "l","c","Type of justification can be:",
+                                   "   'l' for to the left without truncation",
+                                   "   'L' for to the left with    truncation",
+                                   "   'c' for centering without truncation",
+                                   "   'C' for centering with    truncation",
+                                   "   'r' for to the right without truncation",
+                                   "   'R' for to the right with    truncation",
+                                   "   'n' for no justification then",
+                                   "       long is not considered."],
+                 ulca =>[  "n","c","Type of capitalization can be:",
+                                   "   'n' nothing",
+                                   "   'U' every word uppercased",
+                                   "   'L' every word lowercased",
+                                   "   'c' first letter of each word uppercased",
+                                   "   'C' first letter of each word uppercased",
+                                   "       and remaining letters lowercased"]
+                };
+
+==================================================
+  8	sub justn {
+==================================================
+    #
+    # aim: justify a number, that transforming it as a string
+    #      with a precised number of decimals, a fixed number
+    #      of digits. For instance 12 is turned into "0012.00"
+    #      for two decimals and four digits.
+    #
+    # output: the fitted string
+    #
+    # remark: no truncation for digits, 1000000 with four digits will
+    #         remain "1000000" but truncation for decimals 0.1001 with
+    #         two decimals will become "0.10".
+    #
+    # arguments
+    my $hrsub = {numb =>[undef,"n","The number to be justified"],
+                 deci =>[    0,"n","Desired number of decimals.",
+                                   "Negative value means no modification."],
+                 digi =>[    3,"n","Desired number of digits",
+                                   "Negative value means no modification."]
+                };
+
+==================================================
+  9	sub numerical {
+==================================================
+    # aim: translate a string according to the numerical
+    #      keys of a French keyboard.
+    #
+    # input : see the included help hash
+    #          
+    # output: the character string translated
+    #
+    #
+    # arguments
+    my $hrsub = {cha  =>[undef,"c","The character string to transform"],
+                 tra  =>[    1,"c","Must the transformation be performed?"]
+                };
+
+==================================================
+ 10	sub ordre {
+==================================================
+    # aim : find a permutation reordering the element of an array
+    # 
+    # output: a reference to an array of same length
+    #         containing a permutation (starting at 0)
+    #         ordering @$rar.
+    #
+    # arguments
+    my $hrsub = {rar  =>[undef,"a","Reference to the array to virtually sort"],
+                 inc  =>[    1,"n","Must the sorting be increasing?"],
+                 num  =>[    0,"n","Must the comparison be numerical?"]
+                };
+
+==================================================
+ 11	sub pause{
+==================================================
+    #
+    # aim : generates a pause within a program run
+    #           to see some results giving the possibility
+    #           either to continue or to stop the program.
+    #         Another use is to get a string answer.
+    #
+    # output: the resulting answer
+    #
+    # arguments
+    my $hrsub = {stst =>["q","c","Answer to exit the program. The chain is lowercased for the test."],
+                 mess =>["","c","When not the empty string, a message to add."]
+                };
+
+==================================================
+ 12	sub print8panneau {
+==================================================
+    #
+    # aim: display a pannel on the terminal
+    #
+    # remark: The length of '$tfra' indicates the total width of
+    #         the pannel, too long line will be shortened. It must
+    #         be equal to the length of '$bfra'.
+    #         If '$tfra' is not defined '$bfra' is used instead,
+    #         if the latter is not defined, 'uie::width' is used.
+    #
+    # output: 1
+    #
+    # arguments
+    my $hrsub = {rpan =>[undef,  "a","Reference to an array of references to strings",
+                                     "  (each associated to a line of the pannel)",
+                                     "  (of course can be '[]' for an empty pannel"],
+                 tfra =>["*"x80, "cu"," line to be added before the pannel",
+                                     "    when 'undef' no line is added.",
+                                     "    and the constant 'uie::width' is used",
+                                     "    to define the width of the pannel."],
+                 tvoi =>[1,      "n"," number of empty lines after the added line"],
+                 lfra =>["* ",   "c"," string to be added before each line"],
+                 rfra =>[" *",   "c"," string to be included to finish each line"],
+                 bvoi =>[1,      "n"," number of empty lines before the last line"],
+                 bfra =>["*"x80, "cu"," line to be added at the end of the pannel",
+                                     "    when 'undef' no line is added."],
+                 just =>[  "l","c"," type of justification for each line ('l', 'c' or 'r')",
+                                     "  either a scalar then the same justification",
+                                     "  is applied to all the lines, or a reference",
+                                     '  to an array having the same length than "@$rpan"',
+                                     "  specifying the justification for each line."],
+                 tcol =>["green","cua"," text coloration: either 'undef' for no coloration",
+                                     "   or a scalar containing the color to apply to every line",
+                                     "   or a reference to an array containing the color".
+                                     "   for each line."],
+                 fcol =>["white","cu"," frame coloration: either 'undef' for no coloration",
+                                     "   or a scalar containing the color to apply to the",
+                                     "   vertical and horizontal parts of the frame.",
+                                     "   Notice that you can also defined the foreground",
+                                     "   color and painting this way the frame for instance",
+                                     "   with 'on_blue blue'"]
+    };
+
+==================================================
+ 13	sub print8structure {
+==================================================
+    #
+    # aim : print a structure recursively when referred hashes
+    #        and array contains references. Admitted values
+    #        are scalars and references to scalars, arrays and
+    #        hashes.
+    #
+    # output: 1
+    #
+    # arguments
+    my $hrsub = {stru =>[undef,"csahu","The structure to be displayed"],
+                 inde =>[{h=>"xx",a=>"++","s"=>'..',p=>"  "},"h",
+                         "The way to make indentation:",
+                         " h for hash reference, a for array reference",
+                         " s for scalar reference and p for printing."],
+                 prof =>[0,"n","The depth of the display",
+                               "  (used for indentation and recursivity)."],
+                 prin =>[0,"n","Must types of reference be added?",
+                               "0 for no, 1 for starting and 2 for also ending."],
+                 addi =>[0,"n","Must a new line added after a reference?"],
+                 prmx =>[5,"n","The maximum depth admitted for recursivity"],
+                 prpr =>[0,"n","Must the depth degree be printed before each line?"],
+                 clef =>["","c","For the hash keys (internal use)"]
+                };
+
+==================================================
+ 14	sub read8block {
+==================================================
+    #
+    # aim: read a block of lines between two tags.
+    #               '<$blo>' at the beginning of the tag to open the block
+    #                   (the end of this line is not considered)
+    #               '</$blo>' at the beginning of the tag to close the block
+    #
+    # output: a reference to an array of references associated
+    #         to each line of the block, these references point
+    #         towards arrays of the different components of each
+    #         lines.
+    #
+    # arguments
+    my $hrsub = {com  =>[  "#","uc","Lines beginning with it are neglected.",
+                                   "When 'undef' every line is considered."],
+                 sep  =>[ "::","cu","Separator between fields within each line.",
+                                   "When 'undef' no separation is performed."],
+                 fil  =>[undef,"c","Name of the file to be read."],
+                 bbl  =>["##<<","c","Tag to begin a block"],
+                 ebl  =>["##>>","c","Tag to   end a block"],
+                 uni  =>[    0,"n","Must the reading be restricted to the first block?"]
+                };
+
+<<<<mado finished uie.pm>>>>

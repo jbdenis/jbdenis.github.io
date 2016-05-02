@@ -1,145 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
-  <meta http-equiv="content-type" content="text/html; charset=windows-1252">
-  <title>jbd tools</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf8">
+  <title>jbd pages</title>
 </head>
 
 <body>
-<h1>Outils Préférés</h1>
+<h2>About me</h2>
+
+<h2>Usual softwares</h2>
+
+<h2>R programming</h2>
+
+<h2>Perl programming</h2>
+
+<h2>Scientific papers</h2>
+
+<h2>Miscellaneous</h2>
+
 <hr>
-
-<h2>calcul scientifique</h2>
-<ul>
-  <li><strong><a href="http://www.r-project.org/">R</a></strong> :
-    l'incontournable compagnon du statisticien</li>
-  <li><a href="http://www.openbugs.info/">winBugs</a> : un pionnier
-    des approches bayésiennes</li>
-  <li><a href="http://www-fis.iarc.fr/%7Emartyn/software/jags/">Jags</a> :
-    WinBugs libre et sans MSWindows</li>
-</ul>
-
-<h2>éditeurs</h2>
-<ul>
-  <li><a href="http://www.gnu.org/software/emacs/emacs.html">emacs</a> :
-    l'universel</li>
-  <li><a href="http://www.vim.org/">vi</a> : l'ancêtre</li>
-  <li><a href="http://www.lyx.org/">lyx</a> : pour oublier la syntaxe et se
-    concentrer sur ses formules</li>
-  <li><a href="http://www.w3.org/Amaya/">amaya</a> : le bien commode</li>
-</ul>
-
-<h2>programmation</h2>
-<ul>
-  <li><a href="http://www.perl.org/">Perl</a> : le prodigieux</li>
-</ul>
-
-<h2>images</h2>
-<ul>
-  <li><a href="http://www.gimp.org/">gimp</a> : le puissant</li>
-  <li><a href="http://www.imagemagick.org/">ImageMagick</a> : l'incontournable</li>
-</ul>
-
-<h2>système d'exploitation</h2>
-<ul>
-  <li><a href="http://www.ubuntu-fr.org/">Ubuntu</a> : le facile</li>
-</ul>
-<hr>
-
-<h1>Projects</h1>
-<hr>
-
-<p>If you use some of the facilities provided here, please cite Inra, my
-institute, this is important to give us support to continue our work. You can
-also send me some feedback. </p>
-<hr>
-
-<h2>handling files</h2>
-<p>
-For many years I used some small Perl scripts to tidy my files up. I
-finally gathered all these functionalities within a unique general
-script named <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/gefi">gefi</a> which can be called through more targetted scripts, namely:
-</p><ul>
-<li><a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/jeter">jeter</a> to throw in the thrash a set of files.</li>
-<li><a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/sauver">sauver</a> to make precautionary savings of files.</li>
-<li><a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/padb">padb</a> to replace spaces :+( in files names.</li>
-<li><a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/nettoyer">nettoyer</a> to remove useless files.</li>
-<li><a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/norfo">norfo</a> to normalize the names of my picture files.</li>
-</ul>
-<p></p>
-<p>
-Inline help of all these scripts is obtained calling them without arguments.
-</p>
-
-<h2>fitdistrplus and mc2d</h2>
-
-<p>Distributions, Tools for Data Fitting to Univariate Distributions and Tools
-for 1D and 2D Monte-Carlo Simulations.</p>
-
-<p>An <strong>R</strong> package project for fitting distributions, assessing
-variability and uncertainty in the context of food safety modelling. The
-downloads are available at <a href="http://r-forge.r-project.org/projects/riskassessment/">R-Forge</a>. These
-tools were imagined and written by Régis Pouillot and Marie-Laure
-Delignette.</p>
-<a name="rebastaba"></a> 
-
-<h2>comment and paquet</h2>
-
-<p>Standardizing general comments in R functions and extracting them to produce
-manual files : description of the <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/comment.r">format</a>, Perl <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/comment.pl">script</a>. The improvements of this last version are due to
-Régis Pouillot.</p>
-
-<p>This script is used in another script to automatically produce R packages.
-The name is <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/paquet.pl">paquet.pl</a>, some details are given in its
-comments. It was built for the generation of RebaStaBa.</p>
-
-<p>If you want to try it with a complete example, just save and expand <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/pr.zip">pr.zip</a>. A named <strong>paquet</strong> directory will be
-created including <em>comment.pl</em> and <em>paquet.pl</em> and the necessary
-files into a <em>perso</em> directory for the package <strong>rs00</strong> of
-the miscellaneous utility functions of rebastaba (you can find some of them of
-use too). To check the package and build its documentation pdf file, just type
-from the <em>paquet</em> directory <code>paquet.pl rs00 cd</code>. </p>
-
-
-<h2>Bayesian networks</h2>
-
-<p><big>rebastaba</big> for the manipulation of Bayesian networks
-within R is now an abandoned project. Its inheritance is a set of
-basic functions gathered in another R package
-named <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/rbsb_0.3-6.tar.gz">rbsb</a>.
-</p>
-<p>
-A further issue is a dedicated set of functions to handle Gaussian
-bayesian networks under the name of <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/rbmn_0.4-6.tar.gz">rbmn</a>.
-</p>
-
-<h2>extracting from MCMC computations</h2>
-
-<p>When using <a href="http://www-fis.iarc.fr/%7Emartyn/software/jags/">Jags</a>
-you can produce outputs too large for reading them in R. As it is not that
-simple to know in advance which size to give to the burnin phase and which
-thinning frequency to use in advance, one can be obliged to run several times
-the same MCMC. Using <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/jaxtrai.pl">jaxtrai.pl</a> allows you to handle
-much larger outputs. </p>
-
-<h2>intera and biareg</h2>
-
-<p>Modelling interaction between two factors was a main focus of my research
-activities many years ago when I was collaborating with plant geneticists
-interpreting genotype by environment interactions. INTERA, written with the
-late Guy Decoux, is a set of Pascal programs running on DOS. To use them you
-need to know how to edit a text file (kind of script files) and how to launch
-from a terminal this kind of programs. You can get the <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/interaD12.zip">binaries</a> of the programs or the <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/interaD12345.zip">binaries and soures and documentations</a> in zipped
-files. Unfortunately, except an extended summary, the main part of the <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/decoux.1991.intera.notice.zip">manual</a> is written in French.</p>
-
-<p>More recent development was undertaken in SPlus with the BiaReg project. <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/biareg.zip">Source files</a> are available, also is a companion <a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/outils/denis.1998.biadditive_regression.two_way_interaction.pdf">manual</a>. The
-flaw is that BiaReg does not deal with missing values. It is not so much work
-to encapsulate BiaReg with an EM or ALS algorithm, Vincent Foucteau did it
-during his PhD but this was never published.</p>
-
-<p>I cannot give any help about the use of intera or biareg.</p>
-<hr>
-
-<p><a href="http://www3.jouy.inra.fr/miaj/public/matrisq/jbdenis/welcome.html">&lt;&lt;&lt;ACCUEIL&gt;&gt;&gt;</a></p>
-
-
-</body></html>
+<p><small>
+This page would not exist without the help of <a>Ki&ecirc;n Ki&ecirc;u</a>, many thanks to him.
+</small></p>
+</hr>
+</body>
+</html>

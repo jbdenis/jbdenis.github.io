@@ -1,0 +1,64 @@
+#
+# definition des comptes
+#
+<Comptes>
+1::CHEQ:: compte courant a la Societe Generale
+2::PELO:: plan epargne logement de J au Credit Agricole
+3::COMU:: epargne Nouveau Cap de J et JB
+4::LDDU:: 2 plans d'epargne LDD de J et JB
+5::CRAG:: compte courant au Credit Agricole
+6::LIQU:: valeurs liquides = porte-monnaie
+7::EXTE:: tout compte exterieur a la famille
+8::JEPA:: Epargne de la poste de Jeanie
+# des commentaires peuvent etre introduits dans les blocs
+</Comptes>
+#
+# definition des groupes de comptes
+#
+<GComptes>
+1::Courant:: Ce qui sert a vivre au quotidien :: 1 5 6
+2::Epargne:: Epargne disponible :: 4 8
+3::Utilisable:: Disponibilites :: 1 4 5 6 8
+4::Prevision:: Placements  :: 2 3
+5::TOUT::Le total complet :: 1 2 3 4 5 6 8
+</GComptes>
+#
+<Comptes>
+A::CHEQ:: compte courant a la Societe Generale
+B::PELO:: plan epargne logement de J au Credit Agricole
+C::COMU:: epargne Nouveau Cap de J et JB
+D::LDDU:: 2 plans d'epargne LDD de J et JB
+# des commentaires peuvent etre introduits dans les blocs
+E::CRAG:: compte courant au Credit Agricole
+F::LIQU:: valeurs liquides = porte-monnaie
+G::EXTE:: tout compte exterieur a la famille
+H::JEPA:: Epargne de la poste de Jeanie
+# des commentaires peuvent etre introduits dans les blocs
+</Comptes>
+#
+<Postes>
+1::Rentrees   :: en tant que revenu pas les remboursements
+2::Rbst Maison:: uniquement l'achat de Guyancourt
+3::Impots     :: sur le revenu
+4::Chrge Guy. :: y compris les impots afferents
+5::Chrge For. :: idem Guyancourt
+6::Assurance  :: y compris retraites, mutuelles supplementaires
+7::Voitures   :: essence, entretien, achat
+8::Etudes     :: au sens large (y compris la cantine)
+9::Soins      :: comprendra aussi les remboursements
+10::Invest.Guy.:: tout ce qui dure, n'est pas consomme (bricolage, travaux,...)
+11::Invest.For.:: idem Guyancourt
+12::Equipement :: mobilier, menager, radiateurs,...
+13::Vetements  :: et chaussures
+14::Courant    :: principalement la nourriture, tout le liquide...
+15::Enfants    :: sauf etudes et abonnements, surtout vacances,...
+16::Lois.Maison:: Photo, Informatique, Livres, Decoration,...
+17::Abonnements:: y compris ceux des enfants
+18::Sorties    :: de la famille s'entend
+19::Vacances   :: pour du tres specifique
+20::Cadeaux    :: de la famille comme pour les exterieurs
+21::Dons       :: a but caritatif pour l'exterieur
+22::Divers     :: le fourre-tout
+23::Avance_a   :: frais et remboursements
+24::Transferts :: ne devrait pas concerner l'exterieur
+</Postes>
