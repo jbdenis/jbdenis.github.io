@@ -1,12 +1,15 @@
-            ----------
-            uie.pm
-            ----------
- 
- 
-            ..........
-            General Presentation of uie.pm
-            ..........
- 
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf8">
+  <meta name="creation" content=" 2016_06_02@18:22 ">
+  <meta http-equiv="charset" content="utf8">
+  <title>uie.pm</title>
+</head>
+<body>
+<h2>
+General Presentation of uie.pm
+</h2>
+<p><pre>
 #
 # 'uie' are the three vocals of the French word 'UtIlEs',
 #       to remind the basic aim of the proposed subroutines.
@@ -16,31 +19,95 @@
 # somewhere else in a more efficient code... but it was a 
 # good exercise for me.
 #
+</pre></p>
+<p>
 &nbsp;
 &nbsp;
 A total of 15 subroutines was detected:
 &nbsp;
-     1  sub argu {                    (decoding and checking arguments given through hashes)
-     2  sub ask8question {            (asking one question on the screen without check)
-     3  sub belongs2{                 (scalar belongs to array)
-     4  sub check8ref {               (checking references)
-     5  sub get8answers {             (asking a series of questions from the terminal)
-     6  sub join8hash {               (concatening a hash)
-     7  sub juste {                   (justifying a string)
-     8  sub justn {                   (justifying a number)
-     9  sub now{                      (present moment)
-     10  sub numerical {               (keyboard interpretation of numerical values)
-     11  sub ordre {                   (find a permutation reordering the element of an array)
-     12  sub pause{                    (pausing to see and get answer)
-     13  sub print8panneau {           (printing a pannel)
-     14  sub print8structure {         (printing a hierarquical structure of references)
-     15  sub read8block {              (reading a block from a text file)
- 
- 
-            ..........
-            1 sub argu {
-            ..........
- 
+</p>
+<ol>
+<li>
+<a href="#sub argu {">
+sub argu {                    (decoding and checking arguments given through hashes)
+</a>
+</li>
+<li>
+<a href="#sub ask8question {">
+sub ask8question {            (asking one question on the screen without check)
+</a>
+</li>
+<li>
+<a href="#sub belongs2{">
+sub belongs2{                 (scalar belongs to array)
+</a>
+</li>
+<li>
+<a href="#sub check8ref {">
+sub check8ref {               (checking references)
+</a>
+</li>
+<li>
+<a href="#sub get8answers {">
+sub get8answers {             (asking a series of questions from the terminal)
+</a>
+</li>
+<li>
+<a href="#sub join8hash {">
+sub join8hash {               (concatening a hash)
+</a>
+</li>
+<li>
+<a href="#sub juste {">
+sub juste {                   (justifying a string)
+</a>
+</li>
+<li>
+<a href="#sub justn {">
+sub justn {                   (justifying a number)
+</a>
+</li>
+<li>
+<a href="#sub now{">
+sub now{                      (present moment)
+</a>
+</li>
+<li>
+<a href="#sub numerical {">
+sub numerical {               (keyboard interpretation of numerical values)
+</a>
+</li>
+<li>
+<a href="#sub ordre {">
+sub ordre {                   (find a permutation reordering the element of an array)
+</a>
+</li>
+<li>
+<a href="#sub pause{">
+sub pause{                    (pausing to see and get answer)
+</a>
+</li>
+<li>
+<a href="#sub print8panneau {">
+sub print8panneau {           (printing a pannel)
+</a>
+</li>
+<li>
+<a href="#sub print8structure {">
+sub print8structure {         (printing a hierarquical structure of references)
+</a>
+</li>
+<li>
+<a href="#sub read8block {">
+sub read8block {              (reading a block from a text file)
+</a>
+</li>
+</ol>
+<h2>
+<a name="sub argu {"></a>
+1 sub argu {
+</h2>
+<p><pre>
     #
     # title : decoding and checking arguments given through hashes
     #
@@ -95,12 +162,12 @@ A total of 15 subroutines was detected:
     # output: reference to the completed hash
     #         or 1 when help is asked for.
     #
- 
- 
-            ..........
-            2 sub ask8question {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub ask8question {"></a>
+2 sub ask8question {
+</h2>
+<p><pre>
     #
     # title : asking one question on the screen without check
     #
@@ -117,12 +184,12 @@ A total of 15 subroutines was detected:
                  form  =>[{avant=>"=> ",apres=>" : ",long=>60,just=>"r"},"h",
                           "The way the question be justified\n  ('{}' for no justification)"]
                 };
- 
- 
-            ..........
-            3 sub belongs2{
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub belongs2{"></a>
+3 sub belongs2{
+</h2>
+<p><pre>
     #
     # title : scalar belongs to array
     #
@@ -142,12 +209,12 @@ A total of 15 subroutines was detected:
                                            "operator and the strict equality pattern;",
                                            "it is equivalent to ['eq ','']"]
                 };
- 
- 
-            ..........
-            4 sub check8ref {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub check8ref {"></a>
+4 sub check8ref {
+</h2>
+<p><pre>
     #
     # title : checking references
     #
@@ -168,12 +235,12 @@ A total of 15 subroutines was detected:
                  key =>[ [],"a","Possible key values in the referred array when reference to a hash",
                                 " ('[]' means no check)"]
                 };
- 
- 
-            ..........
-            5 sub get8answers {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub get8answers {"></a>
+5 sub get8answers {
+</h2>
+<p><pre>
     #
     # title : asking a series of questions from the terminal
     #
@@ -223,12 +290,12 @@ A total of 15 subroutines was detected:
                  construc=>["s","hc","Value for argument 'form' of '&join8hash' used when constructing",
                                      "the progressive set of answers"]
                 };
- 
- 
-            ..........
-            6 sub join8hash {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub join8hash {"></a>
+6 sub join8hash {
+</h2>
+<p><pre>
     #
     # title : concatening a hash
     #
@@ -278,12 +345,12 @@ A total of 15 subroutines was detected:
                                       " - 1 in an array of two components, for keys and for values",
                                       " - 2 in different components of an array for each couple"]
                 };
- 
- 
-            ..........
-            7 sub juste {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub juste {"></a>
+7 sub juste {
+</h2>
+<p><pre>
     #
     # title : justifying a string
     #
@@ -319,12 +386,12 @@ A total of 15 subroutines was detected:
                                    "   'C' first letter of each word uppercased",
                                    "       and remaining letters lowercased"]
                 };
- 
- 
-            ..........
-            8 sub justn {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub justn {"></a>
+8 sub justn {
+</h2>
+<p><pre>
     #
     # title : justifying a number
     #
@@ -348,12 +415,12 @@ A total of 15 subroutines was detected:
                  roun =>[    0,"n","Must a true rounding be done when the number",
                                    "of decimals is precised?"]
                 };
- 
- 
-            ..........
-            9 sub now{
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub now{"></a>
+9 sub now{
+</h2>
+<p><pre>
     #
     # title : present moment
     #
@@ -367,12 +434,12 @@ A total of 15 subroutines was detected:
                  fmt =>["red","c","'red' to get a reduced way if not a verbose one"],
                  sep =>[["_","@",":"],"a","The three separators to use in case of a reduced format"]
                 };
- 
- 
-            ..........
-            10 sub numerical {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub numerical {"></a>
+10 sub numerical {
+</h2>
+<p><pre>
     #
     # title : keyboard interpretation of numerical values
     #
@@ -388,12 +455,12 @@ A total of 15 subroutines was detected:
     my $hrsub = {cha  =>[undef,"c","The character string to transform"],
                  tra  =>[    1,"c","Must the transformation be performed?"]
                 };
- 
- 
-            ..........
-            11 sub ordre {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub ordre {"></a>
+11 sub ordre {
+</h2>
+<p><pre>
     #
     # title : find a permutation reordering the element of an array
     # 
@@ -406,12 +473,12 @@ A total of 15 subroutines was detected:
                  inc  =>[    1,"n","Must the sorting be increasing?"],
                  num  =>[    0,"n","Must the comparison be numerical?"]
                 };
- 
- 
-            ..........
-            12 sub pause{
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub pause{"></a>
+12 sub pause{
+</h2>
+<p><pre>
     #
     # title : pausing to see and get answer
     #
@@ -426,12 +493,12 @@ A total of 15 subroutines was detected:
     my $hrsub = {stst =>["q","c","Answer to exit the program. The chain is lowercased for the test."],
                  mess =>["","c","When not the empty string, a message to add."]
                 };
- 
- 
-            ..........
-            13 sub print8panneau {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub print8panneau {"></a>
+13 sub print8panneau {
+</h2>
+<p><pre>
     #
     # title : printing a pannel
     #
@@ -475,12 +542,12 @@ A total of 15 subroutines was detected:
                                      "   color and painting this way the frame for instance",
                                      "   with 'on_blue blue'"]
     };
- 
- 
-            ..........
-            14 sub print8structure {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub print8structure {"></a>
+14 sub print8structure {
+</h2>
+<p><pre>
     #
     # title : printing a hierarquical structure of references
     #
@@ -506,12 +573,12 @@ A total of 15 subroutines was detected:
                  prpr =>[0,"n","Must the depth degree be printed before each line?"],
                  clef =>["","c","For the hash keys (internal use)"]
                 };
- 
- 
-            ..........
-            15 sub read8block {
-            ..........
- 
+</pre></p>
+<h2>
+<a name="sub read8block {"></a>
+15 sub read8block {
+</h2>
+<p><pre>
     #
     # title : reading a block from a text file
     #
@@ -535,27 +602,88 @@ A total of 15 subroutines was detected:
                  ebl  =>["##>>","c","Tag to   end a block"],
                  uni  =>[    0,"n","Must the reading be restricted to the first block?"]
                 };
- 
- 
-            ..........
-            A total of 15 test scripts was detected:
-            ..........
- 
-     1  uie_argu.pl
-     2  uie_ask8question.pl
-     3  uie_belongs2.pl
-     4  uie_check8ref.pl
-     5  uie_get8answers.pl
-     6  uie_join8hash.pl
-     7  uie_juste.pl
-     8  uie_justn.pl
-     9  uie_now.pl
-     10  uie_numerical.pl
-     11  uie_ordre.pl
-     12  uie_pause.pl
-     13  uie_print8panneau.pl
-     14  uie_print8structure.pl
-     15  uie_read8block.pl
-            ----------
-            The End
-            ----------
+</pre></p>
+<h2>
+A total of 15 test scripts was detected:
+</h2>
+<p><pre>
+</pre></p>
+<ol>
+<li>
+<a href="uie_argu.pl">
+uie_argu.pl
+</a>
+</li>
+<li>
+<a href="uie_ask8question.pl">
+uie_ask8question.pl
+</a>
+</li>
+<li>
+<a href="uie_belongs2.pl">
+uie_belongs2.pl
+</a>
+</li>
+<li>
+<a href="uie_check8ref.pl">
+uie_check8ref.pl
+</a>
+</li>
+<li>
+<a href="uie_get8answers.pl">
+uie_get8answers.pl
+</a>
+</li>
+<li>
+<a href="uie_join8hash.pl">
+uie_join8hash.pl
+</a>
+</li>
+<li>
+<a href="uie_juste.pl">
+uie_juste.pl
+</a>
+</li>
+<li>
+<a href="uie_justn.pl">
+uie_justn.pl
+</a>
+</li>
+<li>
+<a href="uie_now.pl">
+uie_now.pl
+</a>
+</li>
+<li>
+<a href="uie_numerical.pl">
+uie_numerical.pl
+</a>
+</li>
+<li>
+<a href="uie_ordre.pl">
+uie_ordre.pl
+</a>
+</li>
+<li>
+<a href="uie_pause.pl">
+uie_pause.pl
+</a>
+</li>
+<li>
+<a href="uie_print8panneau.pl">
+uie_print8panneau.pl
+</a>
+</li>
+<li>
+<a href="uie_print8structure.pl">
+uie_print8structure.pl
+</a>
+</li>
+<li>
+<a href="uie_read8block.pl">
+uie_read8block.pl
+</a>
+</li>
+</ol>
+</body>
+</html>

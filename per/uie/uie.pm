@@ -4,7 +4,8 @@
 # 16_03_18 16_03_19 16_03_20 16_03_21 16_03_23
 # 16_03_28 16_03_31 16_04_01 16_04_07 16_04_10
 # 16_04_11 16_04_13 16_04_15 16_04_16 16_04_24
-# 16_04_25 16_04_27 16_04_28 16_04_29
+# 16_04_25 16_04_27 16_04_28 16_04_29 16_05_03
+# 16_05_08 16_05_22 16_05_23 16_05_31 16_06_02
 #
 package uie;
 use strict;
@@ -13,25 +14,30 @@ use Term::ReadKey;
 use Term::ANSIColor;
 use Devel::StackTrace;
 use Scalar::Util qw(looks_like_number);
+use Date::Calc qw(:all);
+ 
+###<<<
 #
 # 'uie' are the three vocals of the French word 'UtIlEs',
-#       to remind the aim of the proposed subroutines.
+#       to remind the basic aim of the proposed subroutines.
 #
-# By means of '&argu', the arguments must be given as
-# hashes where the keys corresponds to the name of the
-# différent arguments.
+# The module comprises a series of subroutines that I found of
+# use to have at hand. Probably, most of them already exist
+# somewhere else in a more efficient code... but it was a 
+# good exercise for me.
+#
+###>>>
 #
 #############################################
-# some constants
+# some general constants
 #############################################
 my $width = 80;
 #
-#############################################
-# decoding and checking arguments given through hashes
-#############################################
 #
 ##<<
 sub argu {
+    #
+    # title : decoding and checking arguments given through hashes
     #
     # aim : from the hash proposed by the user
     #           and the hash defining the arguments 
@@ -283,12 +289,87 @@ sub argu {
     $res;
 }
 #############################################
-#############################################
-# pausing to see and get answer
+#
+##<<
+sub now{
+    #
+    # title : present moment
+    #
+    # aim : generates a string giving time and/or date
+    #       according to different ways.
+    #
+    # output: the string
+    #
+    # arguments
+    my $hrsub = {wha =>["dm","c","comprises 'd' for day; 'h' for hour; 'm' for minute; 's' for second."],
+                 fmt =>["red","c","'red' to get a reduced way if not a verbose one"],
+                 sep =>[["_","@",":"],"a","The three separators to use in case of a reduced format"]
+                };
+##>>
+    my $argu   = &argu("now",$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $wha = $argu->{wha}; 
+    if ($wha=~"s") { $wha = $wha."hm";}
+    if ($wha=~"m") { $wha = $wha."h";}
+    my $fmt = $argu->{fmt};
+    my $sep = $argu->{sep};
+    # getting the time
+    my($seco,$minu, $heure, $jour, $mois, $an)=(localtime)[0,1,2,3,4,5];
+    $mois = $mois+1; $an = $an+1900;
+    my $res = "";
+    if ($fmt eq "red") {
+        if ($wha=~"d") {
+            $mois = &justn(numb=>$mois,digi=>2);
+            $jour = &justn(numb=>$jour,digi=>2);
+            $res = join($sep->[0],($an,$mois,$jour));
+            if ($wha=~"h") { $res = $res.$sep->[1];}
+        }
+        if ($wha=~"h") {
+            $res = $res.&justn(numb=>$heure,digi=>2);
+            if ($wha=~"m") { $res = $res.$sep->[2];}
+        }
+        if ($wha=~"m") {
+            $res = $res.&justn(numb=>$minu,digi=>2);
+            if ($wha=~"s") { $res = $res.$sep->[2];}
+        }
+        if ($wha=~"s") {
+            $res = $res.&justn(numb=>$seco,digi=>2);
+        }
+    } else {
+        my @njou = ("","lundi","mardi","mercredi",
+                    "jeudi","vendredi","samedi","dimanche");
+        my @nmoi = ("","janvier","février","mars","avril",
+                    "mai","juin","juillet","août",
+		    "septembre","octobre","novembre","décembre");
+        if ($wha=~"d") {
+            my $wday = Day_of_Week($an,$mois,$jour);
+            if ($jour eq "1") { $jour = "1er";}
+            $res = join(" ",("Le",$njou[$wday],$jour,$nmoi[$mois],$an));
+            if ($wha=~"h") { $res = $res." à ";}
+        } else {
+            if ($wha=~"h") { $res = $res."À ";}
+	}
+        if ($wha=~"h") {
+            $res = $res.$heure." heures";
+            if ($wha=~"m") { $res = $res." et ";}
+        }
+        if ($wha=~"m") {
+            $res = $res.$minu." minutes";
+            if ($wha=~"s") { $res = $res." ";}
+        }
+        if ($wha=~"s") {
+            $res = $res.$seco." secondes";
+        }
+    }
+    # returning
+    $res;
+}
 #############################################
 #
 ##<<
 sub pause{
+    #
+    # title : pausing to see and get answer
     #
     # aim : generates a pause within a program run
     #           to see some results giving the possibility
@@ -319,12 +400,11 @@ sub pause{
     $res;
 }
 #############################################
-#############################################
-# belongs to
-#############################################
 #
 ##<<
 sub belongs2{
+    #
+    # title : scalar belongs to array
     #
     # aim : test if a scalar belongs to a given array
     #
@@ -370,12 +450,11 @@ sub belongs2{
     @res;
 }
 #############################################
-#############################################
-# Checking references
-#############################################
 #
 ##<<
 sub check8ref {
+    #
+    # title : checking references
     #
     # aim : check a reference and a little more
     #
@@ -456,12 +535,11 @@ sub check8ref {
     1;
 }
 #############################################
-#############################################
-# justifying a string
-#############################################
 #
 ##<<
 sub juste {
+    #
+    # title : justifying a string
     #
     # aim: justify a string
     #
@@ -565,13 +643,11 @@ sub juste {
     $chaine;
 }
 #############################################
-#############################################
-# Ordering Permutation
-#############################################
 #
 ##<<
 sub ordre {
-    # aim : find a permutation reordering the element of an array
+    #
+    # title : find a permutation reordering the element of an array
     # 
     # output: a reference to an array of same length
     #         containing a permutation (starting at 0)
@@ -619,12 +695,12 @@ sub ordre {
     \@permu;
 }
 #############################################
-#############################################
-# keyboard interpretation
-#############################################
 #
 ##<<
 sub numerical {
+    #
+    # title : keyboard interpretation of numerical values
+    #
     # aim: translate a string according to the numerical
     #      keys of a French keyboard.
     #
@@ -679,12 +755,11 @@ sub numerical {
     $res;
 }
 #############################################
-#############################################
-# reading a block into a text file
-#############################################
 #
 ##<<
 sub read8block {
+    #
+    # title : reading a block from a text file
     #
     # aim: read a block of lines between two tags.
     #               '<$blo>' at the beginning of the tag to open the block
@@ -717,7 +792,8 @@ sub read8block {
     my $uni = $argu->{uni};
     #
     # reading the file eliminating the comment lines
-    open(my $fic,'<:encoding(UTF-8)',$fil) or die "cannot open > $fil: $!\n ";
+#    open(my $fic,'<:encoding(UTF-8)',$fil) or die "cannot open > $fil: $!\n ";
+    open(my $fic,'<',$fil) or die "cannot open > $fil: $!\n ";
     my $rres = [];
     my $oui = 0; my $nublo = 0;
     while (<$fic>) {
@@ -745,12 +821,11 @@ sub read8block {
     $rres;
 }
 #############################################
-#############################################
-# printing a pannel
-#############################################
 #
 ##<<
 sub print8panneau {
+    #
+    # title : printing a pannel
     #
     # aim: display a pannel on the terminal
     #
@@ -891,12 +966,11 @@ sub print8panneau {
     1;
 }
 #############################################
-#############################################
-# asking one question on the screen without check
-#############################################
 #
 ##<<
 sub ask8question {
+    #
+    # title : asking one question on the screen without check
     #
     # aim: ask a question to the screen and get the answer
     #      given by means of the keyboard.
@@ -906,7 +980,7 @@ sub ask8question {
     #
     # 
     # arguments
-    my $hrsub = {ques  =>[undef,"c","The question to be rised"],
+    my $hrsub = {ques  =>[undef,"c","The question to be raised"],
                  type  =>[    0,"n","Must the input numerically transformed?"],
                  form  =>[{avant=>"=> ",apres=>" : ",long=>60,just=>"r"},"h",
                           "The way the question be justified\n  ('{}' for no justification)"]
@@ -930,7 +1004,7 @@ sub ask8question {
         $form->{just} = "r";
     }
     #
-    my $repon;
+    my $repon = "";
     # asking
     if (ref($form) eq "HASH") {
         print &juste(chain=>$ques,avant=>$form->{avant},
@@ -941,24 +1015,27 @@ sub ask8question {
         print $ques," : ";
     }
     # reading and reprinting the answer
-    ReadMode 4; # Turn off controls keys
-    my $touche=".";
-    while ($touche ne "\n") {
-        while (not defined ($touche = ReadKey(-2))) {
-        # No key yet
-	}
-	if ($type) {
+    if ($type) {
+        ReadMode 4; # Turn off controls keys
+        my $touche=".";
+        while ($touche ne "\n") {
+            while (not defined ($touche = ReadKey(-2))) {
+            # No key yet
+            }
 	    $touche = &numerical(cha=>$touche,num=>1);
+            if ($touche ne "\n") {
+                $repon = $repon.$touche;
+	        print $touche;
+            }
 	}
-        if ($touche ne "\n") {
-            $repon = $repon.$touche;
-	    print $touche;
-	}
+        ReadMode 0; # Reset tty mode before exiting
+                    # for some doubled characters
+    } else {
+        $repon = <STDIN>;
     }
+    #
     if (!defined($repon)) { $repon = "";}
     chomp($repon);
-    ReadMode 0; # Reset tty mode before exiting
-                # for some doubled characters
     if (($type) and (length($repon) > 0)) {
         $repon = &numerical(cha=>$repon,num=>1);
     }
@@ -967,12 +1044,11 @@ sub ask8question {
     $repon;
 }
 #############################################
-#############################################
-# asking a series of questions from the terminal
-#############################################
 #
 ##<<
 sub get8answers {
+    #
+    # title : asking a series of questions from the terminal
     #
     # aim: get some answers from a series of questions
     #
@@ -1075,18 +1151,9 @@ sub get8answers {
 		$$placard[$i] = \$rien;
 	    }
             my $nbpla = 0;
-            # progressive answer
-            my $prog = join8hash(hash=>\%const,sepa=>0,orde=>$rordre,form=>$construc);
-            $placard->[$nbpla++] = \$prog;
-            $$placard[$nbpla++] = \$rien;
             #
 	    $placard->[$nbpla++] = \$halting;
-	    $nbpla++;
-	    if (defined $rquest->{$_}->{defa}) {
-		my $defaut = "Default value:  <".$rquest->{$_}->{defa}.">";
-		$placard->[$nbpla++] = \$defaut;
-	    }
-	    $nbpla++;
+	    #$nbpla++;
 	    if (${$$rquest{$_}}{chec}[0] eq 'n') {
                 my $limites = "MINImum value = ".${$$rquest{$_}}{chec}[1].
                               " and MAXImum value = ".${$$rquest{$_}}{chec}[2];
@@ -1104,9 +1171,9 @@ sub get8answers {
                 my @choix = @{${$$rquest{$_}}{chec}};
 		splice @choix,0,1;
 		my $choix = "Possible Values: ".join(" | ",@choix);
-		$nbpla++;
+		#$nbpla++;
 		$placard->[$nbpla++] = \$choix;
-		$nbpla++;
+		#$nbpla++;
                 for (my $i = 0; $i+$nbpla < $longhelp; $i++) {
                     if ($i < scalar @aide) {
 			$$placard[$i+$nbpla] =  \$aide[$i];
@@ -1128,6 +1195,16 @@ sub get8answers {
 		    }
 		}
 	    }
+            # default value
+	    #$nbpla++;
+	    if (defined $rquest->{$_}->{defa}) {
+		my $defaut = "Default value:  <".$rquest->{$_}->{defa}.">";
+		$placard->[$longhelp-3] = \$defaut;
+	    }
+            # progressive answer
+            my $prog = &join8hash(hash=>\%const,orde=>$rordre,form=>$construc);
+            $placard->[$longhelp-2] = \$$prog[0];
+            $placard->[$longhelp-1] = \$$prog[1];
             &print8panneau(rpan=>$placard,tfra=>"*"x$largeur,tvoi=>1,
                            lfra=>"* ",rfra=>" *",bvoi=>1,bfra=>"*"x$largeur,
                            just=>"l",colo=>"bright_red");
@@ -1206,12 +1283,11 @@ sub get8answers {
     \%res;
 }
 #############################################
-#############################################
-# printing a structure of references
-#############################################
 #
 ##<<
 sub print8structure {
+    #
+    # title : printing a hierarquical structure of references
     #
     # aim : print a structure recursively when referred hashes
     #        and array contains references. Admitted values
@@ -1304,12 +1380,11 @@ sub print8structure {
     return 1;
 }
 #############################################
-#############################################
-# justifying a number
-#############################################
 #
 ##<<
 sub justn {
+    #
+    # title : justifying a number
     #
     # aim: justify a number, that transforming it as a string
     #      with a precised number of decimals, a fixed number
@@ -1327,7 +1402,9 @@ sub justn {
                  deci =>[    0,"n","Desired number of decimals.",
                                    "Negative value means no modification."],
                  digi =>[    3,"n","Desired number of digits",
-                                   "Negative value means no modification."]
+                                   "Negative value means no modification."],
+                 roun =>[    0,"n","Must a true rounding be done when the number",
+                                   "of decimals is precised?"]
                 };
 ##>>
     my $argu   = &argu("justn",$hrsub,@_);
@@ -1336,6 +1413,8 @@ sub justn {
     my $numb = $argu{numb};
     my $deci = $argu{deci};
     my $digi = $argu{digi};
+    my $roun = $argu{roun};
+    if ($roun != 0) { $roun=1;}
     # negative value
     my $neg = 0;
     if ($numb < 0) { 
@@ -1344,7 +1423,9 @@ sub justn {
     }
     # truncating the decimal number
     if ($deci >= 0) {
-        $numb = int($numb * (10**$deci)) / (10**$deci);
+        $roun =  $roun * 0.5 / (10**$deci);
+        if ($numb < 0) { $roun = -$roun;}
+        $numb = int(($numb * (10**$deci)) / (10**$deci) + $roun);
     }
     # turning into a string and adding necessary decimals
     my $res;
@@ -1378,12 +1459,11 @@ sub justn {
     $res;
 }
 #############################################
-#############################################
-# concatening a hash
-#############################################
 #
 ##<<
 sub join8hash {
+    #
+    # title : concatening a hash
     #
     # aim: prepares an array of strings displaying in
     #      a convenient way the contents of a hash
@@ -1427,8 +1507,9 @@ sub join8hash {
                                       "      The values of this hash are reference with the",
                                       "      same pattern as in the previous possibility."],                     
                  sepa =>[    1, "n","How to present the couples of key/value.",
-                                      " - 1 in different components of an array",
-                                      " - 0 in a single string"]
+                                      " - 0 in a single string",
+                                      " - 1 in an array of two components, for keys and for values",
+                                      " - 2 in different components of an array for each couple"]
                 };
 ##>>
     my $argu   = &argu("join8hash",$hrsub,@_);
@@ -1471,7 +1552,7 @@ sub join8hash {
         } elsif ($form eq "v") {
             $form = {k=>undef,v=>[0,"n"," "," "]};
         } else {
-            $form = {k=>[0,"n","{","}= "],v=>[0,"n"," ","; "]};
+            $form = {k=>[0,"n","{","} "],v=>[0,"n"," "," "]};
         }
     }
     my @clefs = keys %$form;
@@ -1489,7 +1570,7 @@ sub join8hash {
         die("Sorry : internal error !!!");
     }
     # preparing
-    my @compo; my $ii = -1;
+    my @compok; my @compov; my $ii = -1;
     @clefs = keys %$form;
     for (my $i=0; $i < scalar @ele; $i++) {
         my $clef = $ele[$i];
@@ -1519,20 +1600,33 @@ sub join8hash {
                                  just=>$form->{$clef}->{v}->[1],trim=>0);
 		}
             }
-            $compo[$ii] = $fk.$fv;
+            $compok[$ii] = $fk;
+            $compov[$ii] = $fv;
         }
     }
     # returning 
     my $res;
-    if ($sepa) {
-        $res = \@compo;
+    if ($sepa==0) {
+        $res = "";
+        for (my $i=0; $i < scalar @compok; $i++) {
+            $res = $res.$compok[$i].$compov[$i];
+        }
+    } elsif ($sepa==1) {
+        $res = ["",""];
+        for (my $i=0; $i < scalar @compok; $i++) {
+            my $lk = length($compok[$i]);
+            my $lv = length($compov[$i]);
+            if ($lk < $lv) { $lk = $lv;}
+            $$res[0] = $$res[0].&juste(chain=>$compok[$i],trim=>0,long=>$lk);
+            $$res[1] = $$res[1].&juste(chain=>$compov[$i],trim=>0,long=>$lk);
+        }
     } else {
-    $res = "";        
-        foreach (@compo) {
-            $res = $res.$_;
+        $res = [];
+        for (my $i=0; $i < scalar @compok; $i++) {
+            $$res[$i] = $compok[$i].$compov[$i];
         }
     }
     $res;
 }
-#############################################
+###>>>
 1;
