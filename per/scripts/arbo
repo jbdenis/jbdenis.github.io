@@ -1,0 +1,238 @@
+#!/usr/bin/perl -w
+#use strict;
+#
+# 15_04_23 15_04_24
+#
+# See the inline description below
+#
+use File::Copy;
+use Getopt::Std;
+use File::Basename;
+
+# a subroutine extracted from 'gefi'
+# and improved with a limitation on the level
+#
+my $testretrouve = 0;
+#
+sub retrouve {
+  # gets either all directories or all files from one
+  # starting directory.
+  # (1) The first argument indicates that
+  # files (==0) or directories (!=0) must be returned.
+  # (2) The second is the starting directory to explore.
+  # (3) The third gives the present level of the search
+  # (4) the fourth gives the maximum level to be searched
+  #
+  # getting the arguments
+  my $type  = shift @_;
+  my $dir   = shift @_;
+  my $prele = shift @_;
+  my $maxle = shift @_;
+  if (!(defined $dir  )) { die("The directory must be given");}
+  if (!(defined $prele)) { die("The present level must be given");}
+  if (!(defined $maxle)) { die("The maximum level must be given");}
+  if ($prele>$maxle) { return;}
+  # removing the possible trailing /
+  if ($dir =~ /\/$/) { $dir = substr($dir,0,-1);}
+  # globbing if necessary
+  if (!(-d $dir)) {
+    my @didir = glob($dir);
+    $dir = $didir[0];
+  }
+  # in case a directory was not indicated
+  return "<<<<$dir>>>> is not a directory!\n" unless -d $dir;
+
+  my @fichiers; my @repertoires;
+  if (opendir my $dh, $dir)
+  {
+    # Capture entries first, so we don't descend with an
+    # open dir handle.
+    my @list;
+    my $file;
+    push @repertoires, $dir;
+    while ($file = readdir $dh)
+    {
+      push @list, $file;
+    }
+    closedir $dh;
+
+    for $file (@list)
+    {
+      # Unix file system considerations.
+      next if $file eq '.' || $file eq '..';
+
+      # Swap these two lines to follow symbolic links into
+      # directories.  Handles circular links by entering an
+      # infinite loop.
+      push @fichiers, "$dir/$file"        if -f "$dir/$file";
+      if ($type==0) {
+        push @fichiers, &retrouve (0,"$dir/$file",$prele+1,$maxle) if -d "$dir/$file";
+      } else {
+        push @repertoires, &retrouve (1,"$dir/$file",$prele+1,$maxle) if -d "$dir/$file";
+      }
+    }
+  }
+  # returning
+  if ($type==0) { return @fichiers;}
+  else {
+    # adding the trailing /
+      foreach my $mrp (@repertoires) {
+        if (!($mrp =~ /\/$/)) { $mrp = $mrp."/";}
+      }
+    return @repertoires;
+  }
+}
+#
+if ($testretrouve) {
+  my $didi = "..";
+  print "1:      files=", $_, "\n" for &retrouve ((0,$didi,0,0));
+  print "2:directories=", $_, "\n" for &retrouve ((1,$didi,0,2));
+  print "3:directories=", $_, "\n" for &retrouve ((1,"~/a",0,1));
+  print "4:directories=", $_, "\n" for &retrouve ((1,"~/a/",0,1));
+  print "5:      files=", $_, "\n" for &retrouve ((0,"~/a/",0,1));
+  print "6:      files=", $_, "\n" for &retrouve ((0,$didi,0,1));
+  print "7:      files=", $_, "\n" for &retrouve ((0,$didi,0,0));
+  print "8:      files=", $_, "\n" for &retrouve ((0,$didi,0,1));
+  print "9:      files=", $_, "\n" for &retrouve ((0,"~",0,0));
+  print "a:      files=", $_, "\n" for &retrouve ((0,"~",0,1));
+  die("is retrouve right?");
+}
+
+#
+sub imprime {
+  # prints a series of files or directory after removing
+  # the starting directory.
+  # (1) The first argument is the starting directory
+  # (2) The second is the array of files or directories
+  #
+  # getting the arguments
+  my $repe  = shift @_;
+  my @coll  = @_;
+  # adding the trailing / when not present
+  if (not($repe =~ /\/$/)) { $repe = $repe."/";}
+  my $ndir = length($repe);
+  # in case the collection is not empty
+  if ($#coll >= 0) {
+    # removing it from the collection
+    foreach my $i (0..$#coll) {
+      $coll[$i] = substr($coll[$i],$ndir);
+      if (length($coll[$i])>0) {
+	print $coll[$i],"\n";
+      } else {
+	print "./\n";
+      }
+    }
+  }
+}
+#
+
+#
+sub permettre {
+  # changes the permission to a series of files or directory.
+  # (1) The first argument is the general permission to apply
+  # (2) The second is the array of files or directories
+  #
+  # getting the arguments
+  my $perm  = shift @_;
+  my @coll  = @_;
+  # changing the permissions
+  foreach (@coll) {
+    my $change = join(" ",("chmod",$perm,$_));
+    system($change)==0 or die("'$change' failed"); 
+  }
+}
+#
+
+########################################
+# signature
+my $pro = "arbo";
+# path separator
+my $d_sep = "/";
+# default values of the options
+my $print = "d";
+my $dperm = "500";
+my $fperm = "400";
+my $level = "999";
+
+# inline help if no arguments
+if ((scalar @ARGV) == 0) { 
+  print "<<< $pro >>>
+ 
+     Recursivley displays [and modifies] the permissions 
+     assigned to files and directories. It is supposed that
+     present permissions are sufficient to scan the 
+     necessary directories.
+
+     When there is no argument, the inline documentation
+     is displayed.
+
+     The only compulsory arguments are a series of
+     directories from wich to apply the defined permissions.
+
+     Default options can be modified with '-' arguments.
+  
+     '-p' default = '$print' what to do 
+          if includes 'd' directories will be displayed
+                      'D' directory permissions will be modified
+                      'f' files will be displayed
+                      'F' file permissions will be modified
+     '-l' default = '$level' number giving the depth of the 
+          recursivity. '0' means only the starting directory.
+     '-d' default = '$dperm' the permission to give to directories.
+     '-f' default = '$fperm' the permission to give to files.
+
+     Exemples:
+          $pro -l 1 -p d ~
+          $pro -p DF ~/a ~/b
+          $pro -p dfDF ~/a
+          $pro | less
+\n\n";
+} else {
+  # getting the options
+  getopt('pldf'); 
+  # defining what to do
+  if (defined our $opt_p) {
+    $print = "$opt_p";
+  }
+  # defining the depth level
+  if (defined our $opt_l) {
+    $level = "$opt_l";
+  }
+  # defining the directory permissions
+  if (defined our $opt_d) {
+    $dperm = "$opt_d";
+  }
+  # defining the file permissions
+  if (defined our $opt_f) {
+    $fperm = "$opt_f";
+  }
+  # looping onto the starting directories
+  foreach $di (@ARGV) {
+    if (!(-d $di)) {
+      die("'$di' does not seem a valid directory!");
+    }
+    # getting all files
+    my @fichiers = &retrouve(0,$di,0,$level);
+    # getting all directories
+    my @repertoires = &retrouve(1,$di,0,$level);
+    # print all files
+    if ($print =~ /f/) {
+      print "# file list of '",$di,"'\n";
+      &imprime($di,@fichiers);
+    }
+    # print all directories
+    if ($print =~ /d/) {
+      print "# directory list of '",$di,"'\n";
+      &imprime($di,@repertoires);
+    }
+    # modifying the file permissions
+    if ($print =~ /F/) {
+      &permettre($fperm,@fichiers);
+    }
+    # modifying the file permissions
+    if ($print =~ /F/) {
+      &permettre($dperm,@repertoires);
+    }
+  }
+}
+# the end

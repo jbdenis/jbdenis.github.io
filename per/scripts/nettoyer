@@ -1,0 +1,181 @@
+#!/usr/bin/perl -w
+#
+# 13_03_12 13_03_13 13_03_27 13_04_09 14_01_02
+# 14_01_04 14_01_05 14_01_20 15_09_10
+#
+use Getopt::Std;
+use File::Basename;
+use File::Copy;
+#use strict;
+#
+# "nettoyer" removes some standard back files
+#
+my $gefi = "gefi";
+my $nom = "nettoyer";
+my $it = "(*)"; # first bullet for help
+my @motifs = ("~\$","\\\.bak\$","\\\.aux\$");
+my $basket = "~/corbeille/";
+my $sauver = "";
+#
+if (not(exists($ARGV[0]))) { print "about $nom
+
+PRINCIPLES
+
+$it to move some precautionary saved files into the trash
+$it standard cleaned files are:
+    ".join(' | ',@motifs)."
+    but a different pattern can be imposed instead of
+$it recursion is possible 
+$it globbing allowed but quoting is compulsory when recursion
+
+
+OPTIONS (to be included within '-o')
+ p   : copied files are protected files with the 400 file
+       mode bits (default identical to the original
+       file).
+ s   : operates silenciously: no indication
+       given on the screen (default on the
+       contrary).
+ j   : just to see which modifications will be
+       done, that is a dry run (default: actions
+       are performed). It implies a non silencious
+       run.
+ l   : no action is taken, no information output
+       is issued, no check is performed but a list
+       of concerned files is outputted which can
+       be captured in a text file for future use.
+ r   : recursion from the starting directory (default: no)
+
+PATTERN
+ -p pattern (and only one) to replace the standard ones.
+            The pattern will be applied at the complete
+            name level; for selection on components, use
+            *gefi* directly; nevertheless there are some 
+            prepared selection to remove saved files created
+            with *sauver*, they are detailed below.
+
+ For saved files with *sauver*, an argument '-s *' with 3 
+     characters must be given leading to 3x3x2 = 18 combinations.
+  - 1rst character: {f} for fixed stamp provided by pattern
+                    {m} for moment: yyyy_mm_dd-hh_mm_ss
+                    {d} for day: yyyy_mm_dd
+  - 2d character: {b} for before the name
+                  {i} for before the last component
+                  {a} for after the name
+  - 3rd character {u} directly attached
+                  {d} attached with a dot
+
+  But there are some shortcuts: 
+     {-} for {mbd} the default action of *sauver*
+     {+} for {did} my standard precautionary saving
+     more could be easily added
+
+  <<<TO BE CORRECTED>>>
+     !!!using {+-} or {-+} throws every proposed file!!!
+  <<<BE VERY CAUTIOUS>>>
+
+DIRECTORIES
+ -f fdir  : starting directory (default: working directory)
+ -t tdir  : destination directory (default: $basket);
+
+USE
+
+$nom [-o flags] [-p pattern] [-s options] [-f fdir] [-t tdir] files
+
+NOTICE
+
+A standard mistake is to forget the compulsory 'files' argument(s)!
+
+EXAMPLES
+
+$nom *
+  ( move all standard patterns into the standard trash directory )
+
+$nom -o r -f tra -p .old\$ \\\"*\\\"
+  ( moves all files ending with '.old' into $basket, recursively
+    from 'tra'. NOTICE (i) that escaping the quotation marks is
+    required; (ii) that the wild card '*old' is not valid since
+    regular expressions must be Perl style. )
+
+$nom -s + *
+  ( move all files of the working directory having the pattern associated
+    to the action of *sauver* with option \"-o di\". For example the file 
+    'tutu.2014_01_05.toto'. ) <<<SEE THE WARNING ABOVE>>>
+
+$nom -o j -p to -s fau *
+  ( simulates the cleaning of all files from the working directory ending
+    with 'to'. )
+
+$nom -o j -p to -s fau
+  ( identical to the previous but the globbing is made by Perl not
+    by the shell. )
+
+$nom | less    
+  ( inline help )
+";} else {
+  # getting the options
+  getopt('otfps'); 
+  # dealing the flag options
+  my $options = "sm";
+  my $modif1 = "n"; my $modif2 = "ss";
+  my $voir = 1; my $fait = 1;
+  if (defined our $opt_o) {
+    if ($opt_o =~ /p/) { $options = "p$options";}
+    if ($opt_o =~ /s/) { $options =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /j/) { $options = "j$options"; $fait = 0;}
+    if ($opt_o =~ /l/) { $options = "l$options"; $fait = 0;}
+    if ($opt_o =~ /r/) { $options = "r$options";}
+  }
+  $options = "-o $options";
+  # building the modifications
+  my $modif = "-m B[".$modif1.",".$modif2."]";
+  # dealing with the starting directory
+  my $fdir = '';
+  if (defined our $opt_f) {
+    $fdir = "-f $opt_f";
+  }
+  # dealing with the ending directory
+  $tdir = "-t $basket";
+  if (defined our $opt_t) {
+    $tdir = "-t $opt_t";
+  }
+  # building the selections
+  my $selec = join("\\\|",@motifs);
+  if (defined our $opt_p) {
+    $selec = $opt_p;
+  }
+  # dealing with the *sauver* directory
+  $sauo = "$sauver";
+  if (defined our $opt_s) {
+    $sauo = "$opt_s";
+    if ($sauo =~ /^\-$/) { $sauo = "mbd";}
+    if ($sauo =~ /^\+$/) { $sauo = "did";}
+    # decoding the three characters
+    $s1 = substr($sauo,0,1);
+    $s2 = substr($sauo,1,1);
+    $s3 = substr($sauo,2,1);
+    # using them to modify the argument for *gefi*
+    if ($s1 eq "f") { $selec = $selec;}
+    if ($s1 eq "m") { $selec = "\\\\d{4}_\\\\d{2}_\\\\d{2}-\\\\d{2}_\\\\d{2}_\\\\d{2}";}
+    if ($s1 eq "d") { $selec = "\\\\d{4}_\\\\d{2}_\\\\d{2}";}
+    if ($s3 eq "d") { $joint = ".";} else { $joint = "";}
+    if ($s2 eq "b") { $selec = "-s i[n,^".$selec."]";}
+    if ($s2 eq "i") { $selec = "-s i[c-2,^".$selec."\$]";}
+    if ($s2 eq "a") { $selec = "-s i[n,".$selec."\$]";}
+  } else {
+    $selec = "-s i[n,".$selec."]";
+  }
+  # dealing with the designated files
+  my $fifi = join(' ',@ARGV);
+  if ($fifi eq "") { $fifi = "*";}
+  # building the call to gefi
+  my $callgefi = "$gefi $options $fdir $tdir $modif $selec $fifi";
+  # 
+  # running gefi
+  if ($voir) { print "<<$callgefi>>\n";}
+  my @resu = `$callgefi`;
+  print @resu;
+} # else of there are arguments
+#
+exit 1;
+

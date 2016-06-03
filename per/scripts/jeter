@@ -1,0 +1,129 @@
+#!/usr/bin/perl -w
+#
+# 13_03_04 13_03_05 13_03_12 13_04_09 14_01_20
+#
+use Getopt::Std;
+use File::Basename;
+use File::Copy;
+#use strict;
+#
+# "jeter" to throw files into the basket trash
+#          making use of the general 'gefi' script
+#
+my $gefi = "gefi";
+my $nom = "jeter";
+my $it = "(*)"; # first bullet for help
+my $basket = "~/corbeille/";
+#
+if (not(exists($ARGV[0]))) { print "about $nom
+
+PRINCIPLES
+
+$it to move a series of files into the trash directory
+    ($basket) or any precised directory.
+$it before to be moved the files are prefixed with the 
+    present time
+$it recursion is possible (but not the default)
+$it globbing allowed but quoting is necessary for recursion
+
+
+OPTIONS (to be included within '-o')
+ p   : written protected files with 400 file mode
+       bits (default identical to the original
+       file).
+ s   : operates silenciously: no indication
+       given on the screen (default on the
+       contrary).
+ j   : just to see which modifications will be
+       done, that is a dry run (default: actions
+       are performed). It implies a non silencious
+       run.
+ l   : no action is taken, no information output
+       is issued, no check is performed but a list
+       of concerned files is outputted which can
+       be captured in a text file for future use.
+ r   : all the branches from the starting directory
+       are scanned (default no recursivity).
+       ((Be aware that for recursion the globbing
+       have to be made by Perl not by the shell
+       so you must quote your expression to 
+       prevent the shell globbing before passing
+       the arguments to Perl. See examples below.))
+
+DIRECTORIES
+ -f fdir  : starting directory (default: working directory)
+ -t tdir  : destination directory (default '$basket')
+
+TO DO
+
+USE
+
+$nom [-o flags] [-f fdir] [-t tdir] files
+
+EXAMPLES
+
+$nom  *~
+  ( move all files from the working directory with names terminated with \"~\"
+    into the directory \"$basket\" after adding them as first component
+    the moment.)
+
+$nom -o rp -f .. \\\"*.JPG\\\" 
+  ( move all files ending with \".JPG\" stored in all directories from \"..\"
+    into the basket directory after prefixing them with the moment.
+    Protected quoting marks are necessary because there is recursion.)
+
+$nom -o l  *.txt 
+  ( list all txt file of the working directory.)
+
+$nom \"\\\"*\\ *\\\"\"
+  ( throw in the standard basket directory every files having a space
+    in their name. BE AWARE THAT THIS IS VERY TRICKY AND YOU EASILY
+    CAN THROW ALL YOUR FILES WITH SUCH A TEMPTATIVE!!! Much safer
+    to use an indirect way (for instance with the suffix); or
+    check before with the j/l options. See also 'padb' script.)
+
+$nom | less
+   ( inline help.)
+
+";} else {
+  # getting the options
+  getopt('oft'); 
+  # dealing the flag options
+  my $options = "ms"; my $voir = 1; my $fait = 1;
+  if (defined our $opt_o) {
+    if ($opt_o =~ /p/) { $options = "p$options";}
+    if ($opt_o =~ /s/) { $options =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /j/) { $options = "j$options"; $fait = 0;}
+    if ($opt_o =~ /l/) { $options = "l$options"; $fait = 0;}
+    if ($opt_o =~ /r/) { $options = "r$options";}
+  }
+  $options = "-o $options";
+  # dealing with the starting directory
+  my $fdir = '';
+  if (defined our $opt_f) {
+    $fdir = "-f $opt_f";
+  }
+  # dealing with the ending directory
+  my $tdir = $basket;
+  if (defined our $opt_t) {
+    $tdir = $opt_t;
+  }
+  $tdir = "-t $tdir";
+  # dealing with modification directory
+  my $modif = "-m B[n,ss]";
+  # dealing with the designated files
+  my $fifi = join(' ',@ARGV);
+  # building the call to gefi
+  my $callgefi = "$gefi $options $fdir $tdir $modif $fifi";
+  # 
+  # running gefi
+  if ($voir) { print "<<$callgefi>>\n";}
+  my @resu = `$callgefi`;
+  print @resu;
+  if ($voir) {
+    print $nom," finished\n";
+  }
+} # else of there are arguments
+#
+exit 1;
+

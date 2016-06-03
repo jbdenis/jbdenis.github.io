@@ -1,0 +1,126 @@
+#!/usr/bin/perl -w
+#
+# 13_03_05 13_03_12 13_03_27 13_04_09 13_04_14
+# 14_01_20
+#
+use Getopt::Std;
+use File::Basename;
+use File::Copy;
+#use strict;
+#
+# "padb" (PAs De Blancs) to replace space in name
+#        files with something
+#
+my $gefi = "gefi";
+my $nom = "padb";
+my $it = "(*)"; # first bullet for help
+my $blanc = "_";
+#
+if (not(exists($ARGV[0]))) { print "about $nom
+
+PRINCIPLES
+
+$it to rename a series of files by replacing the
+    spaces with any character string.
+$it recursion is possible (but not the default)
+$it globbing allowed but quoting is necessary for recursion
+
+
+OPTIONS (to be included within '-o')
+ s   : operates silenciously: no indication
+       given on the screen (default on the
+       contrary).
+ j   : just to see which modifications will be
+       done, that is a dry run (default: actions
+       are performed). It implies a non silencious
+       run.
+ l   : no action is taken, no information output
+       is issued, no check is performed but a list
+       of concerned files is outputted which can
+       be captured in a text file for future use.
+ r   : all the trees from the starting directory
+       are scanned (default no recursivity).
+       ((Be aware that for recursion the globbing
+       have to be made by Perl not by the shell
+       so you must quote your expression to 
+       prevent the shell globbing before passing
+       the arguments to Perl. See examples below.))
+
+REPLACEMENT STRING
+
+ -s string : instead of '$blanc', 'string' will be
+       used to replace the unconvenient spaces
+
+DIRECTORY
+ -f sdir  : starting directory (default: working directory)
+
+TO DO
+ Generalize to replace other non welcome characters like \"(\"...
+
+USE
+
+$nom [-o flags] [-s string] [-f fdir]
+
+EXAMPLES
+
+$nom  f
+  ( deals with all files within the working directory.
+    'f' is just a false argument to avoid that $nom
+    displays the help.)
+
+$nom -o r 
+  ( the same but also for all subdirectories of the working directory.)
+
+$nom -s \"*\" 
+  ( spaces are replaced with an asterisk [without quoting marks, shell globbing
+    would be performed and the first file name used as a replacing string!] )
+
+$nom -s \"\" 
+  ( spaces are suppressed )
+
+$nom -o l  
+  ( list all concerned file of the working directory.)
+
+$nom -s \"OUI\\ NON\"
+  ( reintroducing another space :+( )
+
+$nom | less
+  ( inline help )
+";}
+else {
+  # getting the options
+  getopt('ofs'); 
+  # dealing the flag options
+  my $options = "msc"; my $voir = 1; my $fait = 1;
+  if (defined our $opt_o) {
+    if ($opt_o =~ /s/) { $options =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /j/) { $options = "j$options"; $fait = 0;}
+    if ($opt_o =~ /l/) { $options = "l$options"; $fait = 0;}
+    if ($opt_o =~ /r/) { $options = "r$options";}
+  }
+  $options = "-o $options";
+  # dealing with the replacement string
+  if (defined our $opt_s) {
+    $blanc = $opt_s;
+  }
+  # dealing with the starting directory
+  my $fdir = '';
+  if (defined our $opt_f) {
+    $fdir = "-f $opt_f";
+  }
+  $tdir = "";
+  # dealing with modification directory
+  my $modif = "-m W[n,\\\"$blanc\\\"]";
+  # dealing with the designated files
+  my $fifi = '"\"*\ *\""';
+  # building the call to gefi
+  my $callgefi = "$gefi $options $fdir $tdir $modif $fifi";
+  # 
+  # running gefi
+  if ($voir) { print "<<$callgefi>>\n";}
+  my @resu = `$callgefi`;
+  print @resu;
+} # else of there are arguments
+#
+exit 1;
+

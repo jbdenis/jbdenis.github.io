@@ -1,0 +1,237 @@
+#!/usr/bin/perl -w
+#use strict;
+#
+# 15_04_21 15_04_22
+#
+# See the inline description below
+#
+use File::Copy;
+use Getopt::Std;
+use File::Basename;
+
+# signature
+my $pro = "photos.copie";
+# path separator
+my $d_sep = "/";
+# default values of the options
+my $trep = "./";
+my $frep = "./";
+my $suf = "b";
+my $beh = "a";
+# file directory
+my $file = undef;
+# number of files to copy
+my $nbi = 0;
+# number of already existing files
+my $nbd = 0;
+# number of already existing images
+my $nbe = 0;
+# to store the existing files which were overwritten
+my @efi = ();
+
+# inline help if no arguments
+if ((scalar @ARGV) == 0) { 
+  print "<<< $pro >>>
+ 
+     Copies a series of files 
+     adding some suffix to the last component before
+     the extension of the name file [default = '$suf'].
+     For instance the copy of 'my-file.jpg' 
+     would be copied and named 'my-file$suf.jpg' when
+     the produced script is executed.
+
+     Already existing files are detected
+     preserved or overwritten, either automatically
+     or according to individual answers.
+
+     When there is no argument, the inline documentation
+     is displayed.
+
+     The only compulsory arguments are either a series of files
+     (possibly including a path) designing the files
+     to copy; or the argument '-F' to indicate a file
+     where the files to copy (without path) are stored.
+
+     But default options can be modified with '-' arguments.
+  
+     '-t' destination directory;          default = '$trep'
+     '-f' the initial directory;          default = '$frep'
+          Only taken into account when
+          '-F' is used.
+     '-s' suffix to add to file names;    default = '$suf'
+     '-b' behaviour about existing files; default = '$beh'
+              'p' to Preserve them
+              'o' to Override them
+              'a' to Ask what to do in case of
+     '-F' file of the files to copy;      default = none
+          + When not existing the file names must be given
+          as last arguments (of course shell globbing
+          can be used).
+          + When existing the file must contain only file names
+          one  or several each line separated with spaces.
+          '#' in the first position of the line is understood
+          as a line to neglect (comment line).
+
+     Exemples:
+          $pro ~/a/*.jpg
+          $pro -F my_selection.txt
+          $pro -F my_selection.txt > my_script.txt
+          $pro | less
+\n\n";
+} else {
+  # getting the options
+  getopt('ftsbF'); 
+  # defining the initial directory
+  if (defined our $opt_f) {
+    $frep = "$opt_f";
+  }
+  # defining the destination directory
+  if (defined our $opt_t) {
+    $trep = "$opt_t";
+  }
+  # defining the suffix for the transformed images
+  if (defined our $opt_s) {
+    $suf = "$opt_s";
+  }
+  # defining the behavior about already existing files
+  if (defined our $opt_b) {
+    $beh = "$opt_b";
+  }
+  # possibly getting the selection file 
+  if (defined our $opt_F) {
+    $file = "$opt_F";
+  }
+  # getting what to do with preexisting files
+  my $dup = "A";
+  if ($beh =~ /a/) {
+      $dup = "A";
+  } else {
+      if ($beh =~ /p/) {
+	  $dup = "P";
+      } else {
+	  if ($beh =~ /o/) {
+	      $dup = "O";
+	  }
+      }
+  }
+  # checking the validity of the directories
+  if (!(-d $frep)) {
+      die("'$frep' does not seem a valid directory!");
+  }
+  if (!(-d $trep)) {
+      die("'$trep' does not seem a valid directory!");
+  }
+  # looking for the list of files to copy
+  my @files;
+  if ( defined $file ) {
+    # checking the validity of the directory file
+    if (!(-e $file)) {
+        die("'$file' does not seem a valid file for the file names!");
+    }
+    # getting the file names
+    open(my $fh,'<',$file) or die "Could not open file '$file' $!";
+    while (my $row = <$fh>) {
+      chomp $row;
+      if (!($row=~/^#/)) {
+        @files = (@files,split(" ",$row));
+      }
+    }
+    # adding the destination directory
+    for my $i (0 .. $#files) {
+	$files[$i] = $frep.$d_sep.$files[$i];
+    }
+  } else {
+    # getting the name files from the remaining arguments
+    # since argument '-F' was not present
+    @files = @ARGV;
+  }
+  # checking first the existence of every file to copy
+  foreach (@files) {
+      if (!(-e $_)) {
+          die("'$_' does not seem an existing file");
+      }
+      $nbi++;
+      # getting the name of the file
+      my $file = basename($_);
+      # deducing the name of the resulting file
+      my @cfile = split /\./,$file;
+      if ($#cfile < 1) {
+	  die("'$_' has got no extension!");
+      }
+      $cfile[$#cfile-1] = $cfile[$#cfile-1].$suf;
+      $file = join(".",@cfile);
+      my $nfile = $trep.$d_sep.$file;
+      my $nbfil = basename($nfile);
+      # testing if the new file already exists
+      if (-e $nfile) {
+	  $nbd++;
+	  push @efi,$file;
+      }
+  }
+  # making the required copies
+  my $num = 0; $nbi = 0;
+  foreach (@files) {
+      $nbi++;
+      # getting the name of the file
+      my $file = basename($_);
+      if ($exe) {
+          print "[$nbi] Copying $file...";
+      }
+      # deducing the name of the resulting file
+      my @cfile = split /\./,$file;
+      if ($#cfile < 1) {
+	  die("'$_' has got no extension!");
+      }
+      $cfile[$#cfile-1] = $cfile[$#cfile-1].$suf;
+      $file = join(".",@cfile);
+      my $nfile = $trep.$d_sep.$file;
+      my $nbfil = basename($nfile);
+      # testing if the new file already exists
+      if ((-e $nfile) and not($dup =~ /O/)) {
+	  $nbe++;
+	  if ($exe) {
+	      print "*"x20," BUT <<<$nbfil>>> already exists <$nbe>\n";
+	  }
+          if ($dup =~ /A/) {
+              print " MUST EXISTING $nbfil BE OVERRIDDEN? y/n/Y/N? [default='n']\n",
+                    "   (Y/N means for this ones and the other ones):";
+              my $answ = <STDIN>;
+              if ($answ =~ /N/) {
+                  $dup = "P"; print("<P$dup>\n");
+	      } else {
+		  if ($answ =~ /Y/) { $dup = "O";}
+                  if (lc($answ) =~ /y/) {
+		      $num++;
+		      # calling ImageMagick
+		      my $commande = "cp $_ $nfile";
+		      my $resu = system $commande;
+		      if ($resu < 0) {
+			  print "The execution of $commande failed and $pro stopped!\n";
+		      }
+		      if ($exe) {
+			  print "into $nbfil [$num]\n";
+		      }
+		      if ($com) { 
+			  print "<",$commande,">\n";
+		      }
+		  }
+	      }
+	  }
+      } else {
+	  $num++;
+          # copying
+	  my $commande = "cp $_ $nfile";
+          my $resu = system $commande;
+          if ($resu < 0) {
+	      print "The execution of $commande failed and $pro stopped!\n";
+	  }
+	  if ($exe) {
+	      print "into $nbfil [$num]\n";
+	  }
+	  if ($com) { 
+	      print "<",$commande,">\n";
+	  }
+      }
+  }
+}
+# the end

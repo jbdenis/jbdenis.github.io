@@ -1,0 +1,171 @@
+#!/usr/bin/perl -w
+#
+# 13_03_05 13_03_12 13_03_13 13_03_21 13_03_25
+# 13_03_27 13_04_09 14_01_02 14_01_20
+#
+use Getopt::Std;
+use File::Basename;
+use File::Copy;
+#use strict;
+#
+# "sauver" duplicate some files with a stamp, for
+#          instance before making hazardous changes.
+#
+my $gefi = "gefi";
+my $nom = "sauver";
+my $it = "(*)"; # first bullet for help
+my $dot = "."; # component separator
+#
+if (not(exists($ARGV[0]))) { print "about $nom
+
+PRINCIPLES
+
+$it to copy a series of files with a stamp in the copied
+    version.
+$it the stamp can be either the moment, the day or any
+    string.
+$it the stamp can be placed before the name, before the
+    suffix or after the name with (or without) a
+     separating '$dot'.
+$it no recursion is possible but a path can be introduced
+    either as argument or paths with the file names
+$it globbing allowed but quotation needed with a starting
+    directory given by argument '-f'
+$it resulting files of previous savings are replaced but 
+    not saved.
+
+
+OPTIONS (to be included within '-o')
+ p   : copied files are protected files with the 400 file
+       mode bits (default identical to the original
+       file).
+ s   : operates silenciously: no indication
+       given on the screen (default on the
+       contrary).
+ j   : just to see which modifications will be
+       done, that is a dry run (default: actions
+       are performed). It implies a non silencious
+       run.
+ l   : no action is taken, no information output
+       is issued, no check is performed but a list
+       of concerned files is outputted (which can
+       be captured in a text file for future use).
+ d   : a 'day' stamp (default 'moment' stamp)
+ i   : the stamp must be placed just before the 
+       last component of the file (default before
+       the first component)
+ a   : the stamp must be placed at the end of the name
+       (default, before the first or last component)
+ u   : the stamp must not be tied with a '$dot'.
+
+STAMP
+ -s stamp : any stamp instead of common day or moment.
+
+DIRECTORIES
+ -f fdir  : starting directory (default: working directory)
+ -t tdir  : destination directory (default: starting directory)
+
+TO RECAPITULATE the saved format
+
+ the stamp is fixed by the user (-s) or is the moment (default) 
+           or is the day (-o d)
+
+ The position of the stamp is before (default) or after (-o a) 
+           the name, or just before the last component (-o i).
+
+TO DO
+
+USE
+
+$nom [-o flags] [-s stamp] [-f fdir] [-t tdir] files
+
+EXAMPLES
+
+$nom  *.lyx
+  ( save all files from the working directory with names terminated 
+    with \".lyx\" after adding them as first component the moment.)
+
+$nom -o pid tra/*.JPG 
+  ( save all files of subdirectory 'tra' and ending with '.JPG' 
+    in the same directory ending them with '.yyyy_mm_dd.JPG' where
+    'yyyy', 'mm' and 'dd' give the present day and protect them.
+
+$nom -o au -s old -f ~/a \"*.pl\"   
+  ( save the files ending with '.pl' of the '~/a' directory adding
+    them 'old' at the end. )
+
+$nom | less
+  ( inline help )
+";} else {
+  # getting the options
+  getopt('ofst'); 
+  # dealing the flag options
+  my $options = "s";
+  my $modif0 = "B"; my $modif1 = "n"; my $modif2 = "ss";
+  my $voir = 1; my $fait = 1; 
+  my $antip = "c1"; my $antim = "\\\\d{4}_\\\\d{2}_\\\\d{2}_\\\\d{2}_\\\\d{2}_\\\\d{2}";
+  my $antimb = "^"; my $antima = "\$";
+  if (defined our $opt_o) {
+    if ($opt_o =~ /p/) { $options = "p$options";}
+    if ($opt_o =~ /s/) { $options =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /j/) { $options = "j$options"; $fait = 0;}
+    if ($opt_o =~ /l/) { $options = "l$options"; $fait = 0;}
+    if ($opt_o =~ /i/) {
+      $modif1 = "c-1";
+      $antip = "c-2"; 
+      if ($opt_o =~ /u/) { $antip = "c-1";}
+    }
+    if ($opt_o =~ /a/) {
+      $modif1 = "c-1"; $antip = "c-1";
+      $modif0 = "A";
+    }
+    if ($opt_o =~ /u/) {
+      $modif0 = lc($modif0);
+      $antima = "";
+      if ($opt_o =~ /a/) {
+        $antimb = "";
+        $antima = "\$";
+      }
+    }
+    if ($opt_o =~ /d/) {
+      $modif2 = "dd";
+      $antim = "\\\\d{4}_\\\\d{2}_\\\\d{2}";
+    }
+  }
+  $options = "-o $options";
+  # dealing with the stamp
+  if (defined our $opt_s) {
+    $modif2 = "\\\"$opt_s\\\"";
+    $antim = $opt_s;
+  }
+  # building the modification
+  my $modif = "-m ".$modif0."[".$modif1.",".$modif2."]";
+  # building the selection
+  my $selec = "-s x[".$antip.",".$antimb.$antim.$antima."]";
+  # dealing with the starting directory
+  my $fdir = '';
+  if (defined our $opt_f) {
+    $fdir = "-f $opt_f";
+  }
+  # dealing with the ending directory
+  $tdir = "";
+  if (defined our $opt_t) {
+    $tdir = "-t $opt_t";
+  }
+  # dealing with the designated files
+  my $fifi = join(' ',@ARGV);
+  if ($fifi eq "") { $fifi = "*";}
+  # building the call to gefi
+  my $callgefi = "$gefi $options $fdir $tdir $modif $selec $fifi";
+  # 
+  # running gefi
+  if ($voir) { print "<<$callgefi>>\n";}
+  my @resu = `$callgefi`;
+  print @resu;
+  if ($voir) {
+    print $nom," finished\n";
+  }
+} # else of there are arguments
+#
+exit 1;
+
