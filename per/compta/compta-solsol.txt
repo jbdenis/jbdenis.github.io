@@ -1,0 +1,17 @@
+# 
+# Voici les soldes initiaux à prendre en considération
+#
+#    CHEQ  :: PELO ::  COMU ::  LDDU ::  CRAG  :: LIQU  :: EXTE :: JEPA
+#    14215 :: 1752 :: 17756 :: 12359 ::  2971  ::  395  :: 0 ::   9197
+#
+# récrit à la nouvelle manière
+#
+   CHEQ =>  14215 
+   PELO =>   1752 
+   COMU =>  17756
+   LDDU =>  12359 
+   CRAG =>   2971 
+   LIQU =>    395 
+   EXTE =>      0 
+   JEPA =>   9197
+# fin du fichier

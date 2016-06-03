@@ -1,0 +1,527 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf8">
+  <meta name="creation" content=" 2016_06_03@17:13 ">
+  <meta http-equiv="charset" content="utf8">
+  <title>compta.pm</title>
+</head>
+<body>
+<h2>
+General Presentation of compta.pm
+</h2>
+<p><pre>
+# This module was written to get rid of using
+# two delphi programs I wrote in 1988 running
+# under MSWindow.
+#
+# Not sure its subroutines can be of use for somebody else.
+# Its writting was the occasion to start the 
+# module /uie/.
+# 
+# There are three main file types used for
+# the compta system.
+#  [ i ] The 'definition' files where are
+#        defined the different 'comptes',
+#        'groupements de comptes', 'postes',
+#        'groupements de postes', 'types de transaction',
+#        'transactions mensuelles automatiques'.
+#  [ ii] The 'montant' files where can be precised
+#        initial amounts of different 'comptes'.
+#  [iii] The 'transaction' files, or 'journal' files
+#        where are enumerated a number of
+#        elementary operations.
+#  The three of them are text files and must 
+#  follow some specific format which are described
+#  in the "read8*" respective subroutines.
+#  Also comment lines (startint with '#') are accepted
+#  everywhere in these files.
+#
+</pre></p>
+<p>
+&nbsp;
+&nbsp;
+A total of 16 subroutines was detected:
+&nbsp;
+</p>
+<ol>
+<li>
+<a href="#sub check8journal {">
+sub check8journal {           
+</a>
+</li>
+<li>
+<a href="#sub get8transa4journal {">
+sub get8transa4journal {      
+</a>
+</li>
+<li>
+<a href="#sub join8transaction {">
+sub join8transaction {        
+</a>
+</li>
+<li>
+<a href="#sub make8autra {">
+sub make8autra {              
+</a>
+</li>
+<li>
+<a href="#sub make8balance {">
+sub make8balance {            
+</a>
+</li>
+<li>
+<a href="#sub print8balance {">
+sub print8balance {           
+</a>
+</li>
+<li>
+<a href="#sub print8transaction {">
+sub print8transaction {       
+</a>
+</li>
+<li>
+<a href="#sub questions4transactions {">
+sub questions4transactions {  
+</a>
+</li>
+<li>
+<a href="#sub read8definition {">
+sub read8definition {         
+</a>
+</li>
+<li>
+<a href="#sub read8journal {">
+sub read8journal {            
+</a>
+</li>
+<li>
+<a href="#sub read8montant {">
+sub read8montant {            
+</a>
+</li>
+<li>
+<a href="#sub select8journal {">
+sub select8journal {          
+</a>
+</li>
+<li>
+<a href="#sub sort8journal {">
+sub sort8journal {            
+</a>
+</li>
+<li>
+<a href="#sub split8transaction {">
+sub split8transaction {       
+</a>
+</li>
+<li>
+<a href="#sub transa4journal {">
+sub transa4journal {          
+</a>
+</li>
+<li>
+<a href="#sub write8journal {">
+sub write8journal {           
+</a>
+</li>
+</ol>
+<h2>
+<a name="sub check8journal {"></a>
+1 sub check8journal {
+</h2>
+<p><pre>
+    #
+    # aim: check the consistency of a journal structure
+    #
+    # output: 1 when the check is positive, 0 if not.
+    #           When 'O' some warning indications are printed.
+    # arguments
+    my $hrsub = {rjou  =>[undef,"h","A reference such it is returned by '&read8journal'"]
+                };
+</pre></p>
+<h2>
+<a name="sub get8transa4journal {"></a>
+2 sub get8transa4journal {
+</h2>
+<p><pre>
+    #
+    # aim: get a series of transaction and constitute a journal from them
+    #
+    # output: reference to the hash of accepted answers. 
+    #
+    # constants
+    my @trana = ("A","B","C","D","E");
+    # arguments
+    my $hrsub = {rquest  =>[undef,"h","reference to the hash of questions to ask.",
+                                      " (to be given to 'get8answers' see its comments",
+                                      "  for details)"],
+                 rordre  =>[undef,"a","reference to an array of 'keys %\$rquest'", 
+                                      "in the desired asking order to be given",
+                                      "to '&uie::get8answers'"],
+                 journal =>[undef,"c","File name where to write as a journal the received transactions",
+                                      " (written in append mode)"] ,
+                 largeur=>[100,"n","width of the two pannels"],
+                 longhelp=>[17,"n","number of lines for the help pannel, just before questions"]
+                };
+</pre></p>
+<h2>
+<a name="sub join8transaction {"></a>
+3 sub join8transaction {
+</h2>
+<p><pre>
+    #
+    # aim: reconstitute a transaction from the individual components
+    #
+    # output: the transaction such it is in a journal line
+    #
+    #
+    # arguments
+    my $hrsub = {rtransa  =>[undef,"h","Reference to the hash giving the decomposed transaction by '&split8transaction'"]
+                };
+</pre></p>
+<h2>
+<a name="sub make8autra {"></a>
+4 sub make8autra {
+</h2>
+<p><pre>
+    #
+    # aim: from a definition, produce a journal file of
+    #      automatic transaction for a precised month.
+    #
+    # output: 1 if everything was fine, if not a fatal error is issued.
+    #
+    # arguments
+    my $hrsub = {ropau    =>[undef,"a","reference to the array of automatic transaction",
+                                       "such as produced by 'read8definition' subroutine",
+                                       "in its resulting referred hash."],
+                 month    =>[undef,"c","month to consider for automatic transactions"],
+                 year     =>[undef,"c","year to consider for automatic transactions"],
+                 journal  =>[undef,"c","Text file to be written/appended as a journal file"]
+                };
+</pre></p>
+<h2>
+<a name="sub make8balance {"></a>
+5 sub make8balance {
+</h2>
+<p><pre>
+    #
+    # aim: make the balance of a journal (and initial amounts)
+    #                       based on a definition set.
+    #
+    # output: reference to the hash of the balance
+    #                       (see &print8balance for details). 
+    #
+    # arguments
+    my $hrsub = {rdef =>[undef,"h","reference to the hash of a definition set."],
+                 rmon =>[undef,"h","reference to the hash of montant values."], 
+                 rjou =>[undef,"h","reference to the hash of the journal to scrutinize."],
+                 peri =>[["1900/01/01","3000/12/31"],"a",
+                                   "Two dates (included) defining the period to consider."],
+                 rele =>[["zz"],"c","Last mark of releve to use for the accounts."]
+                };
+</pre></p>
+<h2>
+<a name="sub print8balance {"></a>
+6 sub print8balance {
+</h2>
+<p><pre>
+    #
+    # aim: print a balance made by &make8balance
+    #                       
+    #
+    # output: 1 but a file has been created
+    #
+    # arguments
+    my $hrsub = {rbal =>[undef,"a","reference to the array containing the balance."],
+                 file =>[undef,"c","the file where to write it in appending mode."],
+                 rdef =>[undef,"h","reference to the hash of a definition set (for the synthesis)."],
+                 form =>[[12,8],"a","widths for the title and the amounts"]
+                };
+</pre></p>
+<h2>
+<a name="sub print8transaction {"></a>
+7 sub print8transaction {
+</h2>
+<p><pre>
+    #
+    # aim: print a transaction
+    #
+    # output: nothing but a display is produced on the screen.
+    #
+    #
+    # arguments
+    my $hrsub = {rtransa  =>[undef,"h","Reference to the hash giving the decomposed transaction by '&split8transaction'"],
+                 details  =>[0,"n","Must all details be displayed?"]
+                };
+</pre></p>
+<h2>
+<a name="sub questions4transactions {"></a>
+8 sub questions4transactions {
+</h2>
+<p><pre>
+    #
+    # aim  : provides questions for each component of a transaction
+    #
+    # output: a reference to a series of questions such as used
+    #                 by '&uie::get8answers'
+    #
+    # arguments
+    my $hrsub = {rdefi  =>[undef,"h","A reference to a structure as produced by '&read8definition'"],
+                 askfo  =>[    0,"n","Must some default value be asked interactively to the user?"]
+                };
+</pre></p>
+<h2>
+<a name="sub read8definition {"></a>
+9 sub read8definition {
+</h2>
+<p><pre>
+    #
+    # aim : read a definition file to get all accounts, systematic 
+    #       transactions... proposed as standard blocks as defined
+    #       in '&uie::read8block' subroutine.
+    #
+    # Every line of the file starting with expression such as '<titi>'
+    #       is supposed to indicate the existence of a block named 'titi'.
+    #       As a consequence a further line starting with '</titi>' is
+    #       expected. Be aware that no space is allowed so '<ti ti>'
+    #       will not be considered as a begining of a block. Every
+    #       character after '>' is ignored.
+    # Any block name is accepted.
+    #
+    # Comment lines (starting with '#') are neglected
+    #
+    # The used separator is encoded with the scalar variable '$sep'.
+    #
+    #
+    # output: a reference to a hash having as keys the different block names
+    #         and values reference ot blocks as produced by '&uie::read8block'.
+    #
+    # constants
+    my $sep = '::'; my $com = '#';
+    # arguments
+    my $hrsub = {fdef  =>[undef,"c","Text file to be read as a definition file"]
+                };
+</pre></p>
+<h2>
+<a name="sub read8journal {"></a>
+10 sub read8journal {
+</h2>
+<p><pre>
+    #
+    # aim: read a journal file
+    #
+    # output: a reference to a hash of references, each associated
+    #         to one array providing one column of the journal
+    #         The keys of %trint (global variable) are used for the keys
+    #         of the hash of references.
+    #
+    # Comment lines (starting with '#') are neglected
+    #
+    #
+    # arguments
+    my $hrsub = {fic  =>[undef,"c","File name of the journal to read"]
+                };
+</pre></p>
+<h2>
+<a name="sub read8montant {"></a>
+11 sub read8montant {
+</h2>
+<p><pre>
+    #
+    # aim: read the file giving the initial amount of each account
+    #      from a text file where comment lines (starting with '#') 
+    #      are neglected.
+    #
+    #      Each non comment line is associated to an account, 
+    #      it must have two fields separated with '=>':
+    #        the name of the account and the amount of its.
+    #
+    # output: a reference to a hash of the initial amount of each account.
+    #         (keys are account names)
+    #
+    # arguments
+    my $hrsub = {mon  =>[undef,"c","Text file to be read"]
+                };
+</pre></p>
+<h2>
+<a name="sub select8journal {"></a>
+12 sub select8journal {
+</h2>
+<p><pre>
+    #
+    # aim: select some transaction from a journal structure and create
+    #      a new one from them
+    #
+    # output: $res: the reference to the journal after selection
+    #
+    # Remark: to select over an interval, 'select8journal' must be applied twice.
+    #
+    # arguments
+    my $hrsub = {rjou  =>[undef,"c","Text file to be read"],
+                 sele  =>["date","ca","The field on which to make the selection.",
+                                    " Possibilities are:",
+                                   "'date' for the day",
+                                   "'from' for the issuer",
+                                   "'to' for the receiver",
+                                   "'FROM' for the issuer and its annotation",
+                                   "'TO' for the receiver and its annotation",
+                                   "'poste' for the poste",
+                                   "'type' for the type",
+                                   "'val' for the amount of the transactions",
+                                   "'\$ref' a reference to an array of two components giving",
+                                   "     the first and last columns of the set of columns",
+                                   "     to be used for an alphabetical sorting. So '[1,10]'",
+                                   "     must equivalent to 'date'."],
+                 oper  =>["gt '2015/12/31'","c","Operand used to make the selection.",
+                                   "'gt '2001/12/31'' applied to date will select all transaction",
+                                   "            from years equal to 2002, 2003,...",
+                                   "'>= '100.00'' applied to val will select all transactions",
+                                   "            with an amount greater than 99.99.",
+                                   "'eq '2000'' applied to [1,4] will select all transactions",
+                                   "            of the year 2000.",
+                                   " //DON'T FORGET the quotation marks!//"]
+                };
+</pre></p>
+<h2>
+<a name="sub sort8journal {"></a>
+13 sub sort8journal {
+</h2>
+<p><pre>
+    #
+    # aim: sort a journal structure
+    #
+    # output: $res: the reference to the sorted journal
+    #
+    # arguments
+    my $hrsub = {rjou  =>[undef,"h","Reference such as returned by '&read8journal'"],
+                 sort  =>["date","ca","Defines the type of sorting. Can be:",
+                                   "'date' for the day",
+                                   "'from' for the issuer",
+                                   "'to' for the receiver",
+                                   "'FROM' for the issuer and its annotation",
+                                   "'TO' for the receiver and its annotation",
+                                   "'poste' for the poste",
+                                   "'type' for the type",
+                                   "'val' for the amount of the transactions",
+                                   "'\$ref' a reference to an array of two components giving",
+                                   "   the first and last columns of the set of columns",
+                                   "   to be used for an alphabetical sorting."] 
+               };
+</pre></p>
+<h2>
+<a name="sub split8transaction {"></a>
+14 sub split8transaction {
+</h2>
+<p><pre>
+    #
+    # aim: split a transaction into its components
+    # 
+    # output: a reference to a hash of references in the following order:
+    #          the year (integer),
+    #          the month (integer),
+    #          the day within the month (integer),
+    #          an index insuring the order of the dates
+    #                   (year-1900)*380 + month*31 + day
+    #          the issuing account (one character),
+    #          its associated statement (two characters),
+    #          the receiving account (one character),
+    #          its associated statement (two characters),
+    #          aim of the transaction (two characters),
+    #          type of the transaction (four characters),
+    #          value of the transaction (numerical value),
+    #          description of the transaction (string of characters).
+    # The consistency of the transaction is checked for the separators only
+    #
+    # arguments
+    my $hrsub = {transa  =>[undef,"c","The string describing the transaction"]
+                };
+</pre></p>
+<h2>
+<a name="sub transa4journal {"></a>
+15 sub transa4journal {
+</h2>
+<p><pre>
+    #
+    # aim: extracts transactions from a journal
+    #                       
+    #
+    # output: a reference to an array of the transactions (a reference to a hash each)
+    #
+    # arguments
+    my $hrsub = {rjou =>[undef,"h","reference to a journal such those produced by &read8journal."],
+                 tran =>[[0,0],"a","definition of the transactions to be returned.",
+                               "[0,0] means all of them,",
+                               "[10,12] means the tenth, eleventh and twelfth",
+                               "[1,1] means the first not the second!"]
+                };
+</pre></p>
+<h2>
+<a name="sub write8journal {"></a>
+16 sub write8journal {
+</h2>
+<p><pre>
+    #
+    # aim: write a journal file
+    #
+    # output: 1 (in fact nothing is to be returned)
+    #
+    # From the reference to a text journal is constituted and 
+    #          stored into text file.
+    #       No comment lines are introduced.
+    #
+    # See &read8journal for the description of the referred variables
+    #
+    # arguments
+    my $hrsub = {rjou =>[undef,"h","A reference such it is returned by '&read8journal'"],
+                 jour =>[undef,"c","File name of the journal to write"]
+                };
+</pre></p>
+<h2>
+A total of 8 test scripts was detected:
+</h2>
+<p><pre>
+</pre></p>
+<ol>
+<li>
+<a href="compta_8balance.pl">
+compta_8balance.pl
+</a>
+</li>
+<li>
+<a href="compta_8journal.pl">
+compta_8journal.pl
+</a>
+</li>
+<li>
+<a href="compta_8transaction.pl">
+compta_8transaction.pl
+</a>
+</li>
+<li>
+<a href="compta_get8transa4journal.pl">
+compta_get8transa4journal.pl
+</a>
+</li>
+<li>
+<a href="compta_make8autra.pl">
+compta_make8autra.pl
+</a>
+</li>
+<li>
+<a href="compta_read8definition.pl">
+compta_read8definition.pl
+</a>
+</li>
+<li>
+<a href="compta_read8montant.pl">
+compta_read8montant.pl
+</a>
+</li>
+<li>
+<a href="compta_transa4journal.pl">
+compta_transa4journal.pl
+</a>
+</li>
+</ol>
+</body>
+</html>

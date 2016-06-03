@@ -1,0 +1,101 @@
+#
+# definition des comptes
+#
+<Comptes>
+1::CHEQ:: compte courant a la Societe Generale
+2::PELO:: plan epargne logement de J au Credit Agricole
+3::COMU:: epargne Nouveau Cap de J et JB
+4::LDDU:: 2 plans d'epargne LDD de J et JB
+5::CRAG:: compte courant au Credit Agricole
+6::LIQU:: valeurs liquides = porte-monnaie
+7::EXTE:: tout compte exterieur a la famille
+8::JEPA:: Epargne de la poste de Jeanie
+# des commentaires peuvent etre introduits dans les blocs
+</Comptes>
+#
+# definition des groupes de comptes
+#
+<G-Comptes>
+1::Courant:: Ce qui sert a vivre au quotidien :: 1 5 6
+2::Epargne:: Epargne disponible :: 4 8
+3::Utilisable:: Disponibilites :: 1 4 5 6 8
+4::Prevision:: Placements  :: 2 3
+5::T-O-U-T::Le total complet :: 1 2 3 4 5 6 8
+</G-Comptes>
+#
+<Postes>
+01::Rentrees   :: en tant que revenu pas les remboursements
+02::Rbst Maison:: uniquement l'achat de Guyancourt
+03::Impôts     :: sur le revenu
+04::Chrge Guy. :: y compris les impôts afferents
+05::Chrge For. :: idem Guyancourt
+06::Assurance  :: y compris retraites, mutuelles supplementaires
+07::Voitures   :: essence, entretien, achat
+08::Etudes     :: au sens large (y compris la cantine)
+09::Soins      :: comprendra aussi les remboursements
+10::Invest.Guy.:: tout ce qui dure, n'est pas consomme (bricolage, travaux,...)
+11::Invest.For.:: idem Guyancourt
+12::Equipement :: mobilier, menager, radiateurs,...
+13::Vetements  :: et chaussures
+14::Courant    :: principalement la nourriture, tout le liquide...
+15::Enfants    :: sauf etudes et abonnements, surtout vacances,...
+16::Lois.Maison:: Photo, Informatique, Livres, Decoration,...
+17::Abonnements:: y compris ceux des enfants
+18::Sorties    :: de la famille s'entend
+19::Vacances   :: pour du tres specifique
+20::Cadeaux    :: de la famille comme pour les exterieurs
+21::Dons       :: a but caritatif pour l'exterieur
+22::Divers     :: le fourre-tout
+23::Avance_a   :: frais et remboursements
+24::Transferts :: ne devrait pas concerner l'exterieur
+</Postes>
+#
+<GPostes>
+1::Obligations :: ce sur quoi on ne peut reduire       :: 2 3 4 5 6 8 9
+2::Quotidien   :: les depenses ordinaires              :: 7 13 14
+3::Invest.     :: ce qui correspond a du long terme    :: 10 11 12
+4::Le_Plus     :: ce qui semble superflu               :: 15 16 17 18 19 20 21
+5::Ama_de_casa :: ce qui correspond a la vie de maison :: 13 14
+</GPostes>
+#
+# Definition des operations systematiques
+#
+<Op-Auto>
+# numero :: jour :: emetteur :: recepteur :: libelle :: montant :: mois
+41::  2 ::  6 :: 1 ::  7 ::  AUXIA::J:: assurance deces ::      8.25::  1 2 3 4 5 6 7 8 9 10 11 12
+03::  3 ::  4 :: 1 ::  7 ::  EDF::mais.::Guyancourt(1)  ::      0.00::  12
+15::  3 ::  4 :: 1 ::  7 ::  EDF::mais.::Guyancourt(2)  ::    158.36::  1 2 3 4 5 6 7 8 9 10
+53::  3 ::  4 :: 5 ::  7 ::  CRAG::mais:: cotis C A..   ::      5.22::  1 2 3 4 5 6 7 8 9 10 11 12
+32::  5 ::  6 :: 1 ::  7 ::  I-Mut.:: J ::cot.mensuelle ::     54.73::  1 2 3 4 5 6 7 8 9 10 11 
+33::  5 ::  6 :: 1 ::  7 ::  I-Mut.:: J ::cot.mensuelle ::     54.73::  12
+08::  5 ::  6 :: 1 ::  7 ::  MAIF::fam.:: assurance (1) ::    192.18::  1 2 3 
+13::  5 ::  6 :: 1 ::  7 ::  MAIF::fam.:: assurance (2) ::    192.21::  4
+44::  7 ::  2 :: 1 ::  7 ::  SG1::maison::Guyancourt(7) ::    731.36::  1
+45::  7 ::  2 :: 1 ::  7 ::  SG2::maison::Guyancourt(7) ::    146.62::  1 2 3 4 5 6 7 8 9 10 11 12
+47::  7 ::  2 :: 1 ::  7 ::  BFM::assurance prets::     ::      3.67::  1 2 3 4 5 6 7 8 9 10 11 12
+01::  9 ::  3 :: 1 ::  7 ::  Etat::fam.:: Impôts(1rev)  ::    990.00::  1 2 3 4 5 6 7 8 9 10 
+02::  9 ::  3 :: 1 ::  7 ::  Etat::fam.:: Impôts(2rev)  ::      0.00::  11
+03::  9 ::  4 :: 1 ::  7 ::  Etat::fam.:: Impôts(1Hab G)::    139.00::  1 2 3 4 5 6 7 8 9 10
+04::  9 ::  4 :: 1 ::  7 ::  Etat::fam.:: Impôts(2Hab G)::      0.00::  11
+05::  9 ::  4 :: 1 ::  7 ::  Etat::fam.:: Impôts(1fon G)::    127.00::  1 2 3 4 5 6 7 8 9 10
+06::  9 ::  4 :: 1 ::  7 ::  Etat::fam.:: Impôts(2fon G)::     34.00::  11
+07::  9 ::  4 :: 1 ::  7 ::  Etat::fam.:: Impôts(3fon G)::      0.00::  12
+08::  9 ::  5 :: 1 ::  7 ::  Etat::fam.:: Impôts(1Hab F)::     32.00::  1 2 3 4 5 6 7 8 9 10
+09::  9 ::  5 :: 1 ::  7 ::  Etat::fam.:: Impôts(2Hab F)::      0.00::  12
+10::  9 ::  5 :: 1 ::  7 ::  Etat::fam.:: Impôts(1fon F)::     38.00::  1 2 3 4 5 6 7 8 9 10
+11::  9 ::  5 :: 1 ::  7 ::  Etat::fam.:: Impôts(2fon F)::      0.00::  11
+30:: 10 ::  4 :: 1 ::  7 ::  Orange  :::: ADSL internet ::     52.90::  1 2 3 4 5 6 7 8 9 10 11 12
+22:: 13 :: 24 :: 1 ::  5 ::  ::::CHEQ -> CRAG           ::   1000.00::  1 2 3 4 5 6 7 8 9 10 11 12
+28:: 15 :: 21 :: 6 ::  7 ::  Egl.::fam.::Quetes dom.    ::     40.00::  1 2 3 4 5 6 7 8 9 10 11 12
+16:: 17 ::  5 :: 1 ::  7 ::  EDF::mais.::Les Forges (1) ::     45.92::  4 5 6 7 8 9 10 11 12
+17:: 17 ::  5 :: 1 ::  7 ::  EDF::mais.::Les Forges (2) ::     45.92::  1 2
+24:: 20 :: 24 :: 1 ::  3 ::  Parnasse JB::fam.::epargne ::    292.50::  1 2 3 4 5 6 7 8 9 10 11 
+25:: 20 :: 24 :: 1 ::  7 ::  Parnasse JB::fam.::frais   ::      7.50::  1 2 3 4 5 6 7 8 9 10 11 
+24:: 20 :: 24 :: 1 ::  3 ::  Parnasse J ::fam.::epargne ::    292.50::  1 2 3 4 5 6 7 8 9 10 11 
+25:: 20 :: 24 :: 1 ::  7 ::  Parnasse J ::fam.::frais   ::      7.50::  1 2 3 4 5 6 7 8 9 10 11 
+20:: 21 :: 24 :: 1 ::  8 ::  ::::CHEQ -> JEPA           ::    400.00::  1 2 3 4 5 6 7 8 9 10 11 
+26:: 26 ::  1 :: 7 ::  1 ::  Ed.Nat.::J::pension        ::   2008.61::  1 2 3 4 5 6 7 8 9 10 11 
+27:: 26 ::  1 :: 7 ::  1 ::  DR FIP::JB::pension        ::   4884.21::  1 2 3 4 5 6 7 8 9 10 11 
+79::  6 ::  5 :: 1 ::  7 ::  Free :: F:: acces internet ::     35.98::  1 2 3 4 5 6 7 8 9 10 11 
+81:: 10 :: 24 :: 5 ::  2 ::  PELO :::: versement mensuel::     45.00::  1 2 3 4 5 6 7 8 9 10 11 
+</Op-Auto>

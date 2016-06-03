@@ -6,6 +6,7 @@
 # 16_04_11 16_04_13 16_04_15 16_04_16 16_04_24
 # 16_04_25 16_04_27 16_04_28 16_04_29 16_05_03
 # 16_05_08 16_05_22 16_05_23 16_05_31 16_06_02
+# 16_06_03
 #
 package uie;
 use strict;
@@ -1218,6 +1219,9 @@ sub get8answers {
             my $qqq = ${$$rquest{$_}}{ques};
             if ($valid == 0) {
 		$qqq = "¡¡¡<$repon> is not accepted!!! -> ".$qqq;
+	    }
+	    if (defined $rquest->{$_}->{defa}) {
+		$qqq = $qqq." <".$rquest->{$_}->{defa}.">";
 	    }
             if (ref($rforma) eq "HASH") {
                 $repon = &ask8question(ques=>$qqq,

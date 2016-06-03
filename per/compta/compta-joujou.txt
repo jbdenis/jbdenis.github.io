@@ -1,0 +1,55 @@
+# 
+# D'abord les soldes initiaux (en fait, ancienne version)
+#
+#    CHEQ  :: PELO ::  COMU ::  LDDU ::  CRAG  :: LIQU  :: EXTE :: JEPA
+#    14215 :: 1752 :: 17756 :: 12359 ::  2971  ::  395  :: 0 ::   9197
+#
+# La liste des operations
+#
+2011/01/02 eb1->7  - 6-OA41=      8.25|  AUXIA:J: assurance deces |
+2011/01/02 ec1->7  -14-CBJB=     74.23|Intermarche : : repas anni d'H|
+2011/01/03 ea5->7  -22-prlt=      6.20|CRAG : : CS Optimum +|
+2011/01/03 eb1->7  - 9-1119=     69.89|Dr. Trigalo : JB : |
+2011/01/03 ec5->7  -14-4569=      6.75|Super U : : |
+2011/01/03 ec5->7  - 9-4570=     16.00|Sophie : : pommage reparatrice de la peau|
+2011/01/04 eb1->7  - 9-OA50=    136.06|  SMAR:JB:mutuelle sante   |
+2011/01/04 eb1->7eg-24-OA31=     50.00|  SG:J:prelevement PEA     |
+2011/01/05   7->2eb- 1-Virt=     10.40|  Soc.Gen.::interet 2010   |
+2011/01/05 eb1->7  - 6-OA32=     39.95|  MNIL : J : cot.mensuelle |
+2011/01/06   7->1eb- 9-virt=     65.89|MFP : :|
+2011/01/06 eb1->7  - 4-OA18=     15.00|  Orange  :J:tel. portable |
+#2011/01/07 eb1->7  - 2-OA44=    731.36|  SG1:maison:Guyancourt(7) |
+2011/01/07   1->7  - 2-OA45=    146.32|  SG2:maison:Guyancourt(7) |
+#2011/01/07 eb1->7  - 2-OA47=     17.47|  BFM:assurance prets:     |
+2011/01/07 eb1->7  - 6-OA13=    176.88|  MAIF:fam.: assurance (2) |
+2011/01/08 ec1->7  -21-1121=     20.00|AVB : JB : |
+2011/01/08 ec1->7  -21-1123=     17.16| : JB : vin Inra |
+2011/01/08 ec1->7  -21-1124=      8.00|Adas : JB : cotisation annuelle |
+2011/01/08 ec1->7  -22-1120=     37.00|Buc : J : montre a la cordonnerie|
+2011/01/08 ec5->7  -14- CBJ=     41.96|Super U : : |
+2011/01/09 eb1->7  - 3-OA01=   1191.00|  Etat:fam.: Impots(1rev)  |
+2011/01/09 eb1->7  - 3-OA03=    124.00|  Etat:fam.: Impots(1Hab G)|
+2011/01/09 eb1->7  - 3-OA05=    113.00|  Etat:fam.: Impots(1fon G)|
+2011/01/09 eb1->7  - 3-OA08=     33.00|  Etat:fam.: Impots(1Hab F)|
+2011/01/09 eb1->7  - 3-OA10=     44.00|  Etat:fam.: Impots(1fon F)|
+2011/01/10 eb1->7  -16-OA30=     37.90|  Orange  :: ADSL internet |
+2011/01/10 eb1->7  -20-virt=    500.00|Juju : : la poussette combinee|
+2011/01/10 ec5->7  -14- CBJ=     26.35|Carrefour : : |
+2011/01/10 ec5->7  -14- CBJ=     58.13|Carrefour : : |
+2011/01/10 ec5->7  -14- CBJ=     68.12|Carrefour : : |
+2011/01/10 ec5->7  -21-4571=     50.00|ASEM : : inscription des affilies pour l'annee 2011|
+2011/01/11   7->1eb-22-virt=    199.20| : : trois cheques|
+2011/01/11 eb1->2eb-24-OA19=   1200.00|  ::CHEQ -> CELO           |
+2011/01/13 ec1->7  - 7-CBJB=     37.69|Intermarche : saxo : carburant|
+2011/01/13 ec5->7  -13- CBJ=     14.95|Riu : : |
+2011/01/13 ec5->7  -13- CBJ=     32.19|Halle aux chaussures : : |
+2011/01/13 ec5->7  -13- CBJ=     58.74|Armand Thierry : : |
+2011/01/14 ec1->7  - 7-CBJB=     64.39|Intermarche : C5 : carburant |
+2011/01/14 ec1->7  - 7-CBJB=    727.32|Merrien : C5 : refection des freins avant|
+2011/01/14 ec5->7  -14- CBJ=     24.20|Picard : : |
+2011/01/14 ec5->7  -16-4572=     33.98|Tupperware : : livres de cuisine|
+2011/01/15   6->7  -14-    =    500.00|  : : depenses liquides... |
+2011/01/15   6->7  -21-OA28=     40.00|  Egl.:fam.:Quetes dom.    |
+2011/01/15 eb1->6  -24-CBJB=    300.00|SG : : retrait de liquide|
+2011/01/15 ec1->7  -10-CBJB=     59.84|Leroy Merlin : :|
+2011/01/15 ec5->7  -14- CBJ=     60.24|Super U : : |
