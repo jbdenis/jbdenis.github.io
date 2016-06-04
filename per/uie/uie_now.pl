@@ -6,7 +6,8 @@ use strict;
 use warnings;
 use uie; 
 #
-my ($quoi,$format,$separateur);
+print &uie::now(wha=>"ds",fmt=>"long",whe=>[0,16,7,16,10,49]),"\n";;
+&uie::pause;
 #
 for my $wh ("s","d","hms","dhm","ms","ds") {
     print "*"x12," $wh\n";

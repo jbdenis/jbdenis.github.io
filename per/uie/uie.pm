@@ -6,7 +6,7 @@
 # 16_04_11 16_04_13 16_04_15 16_04_16 16_04_24
 # 16_04_25 16_04_27 16_04_28 16_04_29 16_05_03
 # 16_05_08 16_05_22 16_05_23 16_05_31 16_06_02
-# 16_06_03
+# 16_06_03 16_06_04
 #
 package uie;
 use strict;
@@ -292,9 +292,9 @@ sub argu {
 #############################################
 #
 ##<<
-sub now{
+sub now {
     #
-    # title : present moment
+    # title : present moment (or any)
     #
     # aim : generates a string giving time and/or date
     #       according to different ways.
@@ -304,7 +304,8 @@ sub now{
     # arguments
     my $hrsub = {wha =>["dm","c","comprises 'd' for day; 'h' for hour; 'm' for minute; 's' for second."],
                  fmt =>["red","c","'red' to get a reduced way if not a verbose one"],
-                 sep =>[["_","@",":"],"a","The three separators to use in case of a reduced format"]
+                 sep =>[["_","@",":"],"a","The three separators to use in case of a reduced format"],
+                 whe =>["now","ca","either 'now' or a reference to the equivalent of 'localtime[0,1,2,3,4,5]'"]
                 };
 ##>>
     my $argu   = &argu("now",$hrsub,@_);
@@ -314,8 +315,13 @@ sub now{
     if ($wha=~"m") { $wha = $wha."h";}
     my $fmt = $argu->{fmt};
     my $sep = $argu->{sep};
+    my $whe = $argu->{whe};
     # getting the time
-    my($seco,$minu, $heure, $jour, $mois, $an)=(localtime)[0,1,2,3,4,5];
+    my @when = (localtime)[0,1,2,3,4,5];
+    if (ref($whe) eq "ARRAY") {
+        @when = @$whe;
+    }
+    my($seco,$minu, $heure, $jour, $mois, $an)=@when;
     $mois = $mois+1; $an = $an+1900;
     my $res = "";
     if ($fmt eq "red") {
