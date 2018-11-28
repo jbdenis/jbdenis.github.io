@@ -1,0 +1,38 @@
+# a tiny annotation file
+dir /home/jbdenis/a
+#
+<(1)> Preparation
+(( Les bagages doivent être préparés ))
+P01.jpg vc fl [[ma préférée]] [[ville sous la mer]] {{encore deux [[1 2]]}} ((no comment!))
+<(1)> Voyage en Espagne
+((Nous voilà partis))
+<(2)> Cordoue
+{{vin eau essence}}
+P02.jpg vvn vn vvx -a
+((un commentaire intermédiaire))
+P03.JPG nn -k
+((on change le commentaire))
+P03b.jpg -k
+P03c.jpg -k
+(())
+P03d.jpg
+# dur à cuire
+<[2007]>
+<(2)> Bordeaux
+<(3)> Le port
+((un autre commentaire intermédiaire (SECOND)))
+P04.png (( vue imprenable )) -c
+P05.jpg <[2000_12]> {{[[très personnelle]]}} zoo ((image unique))
+<(3)> La gare
+P06.png pv v nn xc -c
+#<()> plus de circonstances
+P07.jpg vx pvv vvx vvc
+2012_04_04.P08.jPG 
+<(1)> Retour en France
+<(2)> Visite chez les filles
+P07bb.jpg vx pvv vvx vvc
+toto.png
+<(2)> Passage des garçons
+pc12ttt.png
+p430uuu.png pvv
+# coucou, c'est fini

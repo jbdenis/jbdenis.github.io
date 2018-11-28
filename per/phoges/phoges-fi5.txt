@@ -1,0 +1,54 @@
+# 
+# file created/completed with 'phoges' on Le dimanche 15 octobre 2017 à 9 heures et 4 minutes
+# 
+<<<IMA>>>
+# starting the image block
+sdir /home/jbdenis/a
+<(1)> Preparation
+P01.jpg <[0000]> {{xc [[1 2]] [[ma préférée]] [[ville sous la mer]] deux encore fl vc}} ((<(1)>Les bagages doivent être préparés//<(0)>no comment!))
+<(1)> Voyage en Espagne
+<(2)> Cordoue
+P02.jpg <[0000]> {{vn vvn vvx}}
+P03.JPG <[0000]> {{nn}} ((<(1)>Nous voilà partis//<(2)>un commentaire intermédiaire))
+P03b.jpg <[0000]> ((<(1)>Nous voilà partis//<(2)>on change le commentaire))
+P03c.jpg <[0000]> ((<(1)>Nous voilà partis//<(2)>on change le commentaire))
+P03d.jpg <[0000]> {{eau essence vin}} ((<(1)>Nous voilà partis))
+<(2)> Bordeaux
+<(3)> Le port
+P04.png <[2007]> ((<(0)>vue imprenable))
+P05.jpg <[2000_12]> {{[[très personnelle]] zoo deux}} ((<(1)>Nous voilà partis//<(3)>un autre commentaire intermédiaire (SECOND)))
+<(3)> La gare
+P06.png <[2007]> {{nn pvv}} ((<(1)><(1)>Nous voilà partis))
+<(4)> plus de circonstances
+P07.jpg <[2007]> {{pvv vvx vx}} ((<(1)>Nous voilà partis))
+2012_04_04.P08.jPG <[2012_04_04]> ((<(1)>Nous voilà partis//<(0)> Pourrait devenir un totem))
+<(1)> Retour en France
+<(2)> Visite chez les filles
+P07bb.jpg <[2007]> {{pvv vvc vvx vx}}
+toto.png <[2007]>
+<(2)> Passage des garçons
+pc12ttt.png <[2007_12_12]>
+p430uuu.png <[2007_04_30]> {{xc pvv}} ((<(2)>Voici les dernières images donc la plus belles))
+# Et c est fini pour les images
+<<</IMA>>>
+<<<CIR>>>
+<(1)> Preparation
+Les bagages doivent être préparés
+((no comment!))
+<(1)> Voyage en Espagne
+Nous voilà partis
+<(2)> Cordoue
+un commentaire intermédiaire
+on change le commentaire
+<(2)> Bordeaux
+<(3)> Le port
+un autre commentaire intermédiaire (SECOND)
+((vue imprenable))
+((image unique))
+<(3)> La gare
+<()> plus de circonstances
+((Pourrait devenir un totem))
+<(1)> Retour en France
+<(2)> Visite chez les filles
+<(2)> Passage des garçons
+<<</CIR>>>

@@ -1,0 +1,30 @@
+# 
+# an extended EIF example for a complete test of pg.cata.pl
+# 
+# 
+<(0)>  Exemple  d'eif pour les tests de pg.cata
+((en haut !))
+#<[ wid = 5cm, hei = 5 cm]>
+#
+<(1)> Tout au Début
+phoges-pic01.jpg  (| petite place seule |)
+(( Il était parti, seul avec son cheval sans provision. // Personne, même pas lui n'aurais pu dire où le conduirait sa quête. // Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce ! ))
+phoges-pic02.jpg  (| place 2//place 3 |)  {{ boum ,place 1, tic-tac }} << a b c >>
+<[ wid=6cm , nbi = 2 , gnl=2 , gnc = 1 ]>
+phoges-pic03.jpg  (| images nettes//place cinq//place 2//place 3 |)  {{ place 1 }} <[ rot = -90 , hei = 5cm]> [[Jeanie]]
+#
+<(2)> Mais c'était loin d'être fini
+[[ Papou ]]
+(( Toujours personne en vue, et le soleil qui commençait à décliner. ))
+phoges-pic04.jpg  [[ Personne ]] <| 2018 |> (| place cinq |)  {{ palabra clave premera,palabra clave, keyword }}  (( 5ème en place )) 
+#
+<(1)> Il fallait aller encore plus loin
+phoges-pic05.jpg  (| place cinq |)  (( aussi la 5ème par individuel )) 
+<(1)> Jamais on n'en voyait la fin
+((Marcher, toujours marcher sans s'arrêter. Mais un matin, il put distinguer de la poussière ; accélérant sa marche, il se rapprocha d'un groupe d'étranges personnages.))
+<(2)> Encore un mirage
+phoges-pic06.jpg  (| place 3 |)  {{ palabra clave cuarta }}  (( 5 et 3 )) << b c >>
+#
+<(1)> C'est la fin des haricots
+phoges-pic07.jpg  (| de plus//place 3//place 2 |)  {{ palabra clave segunda, palabra clave premera }} 
+(( alors ? ))

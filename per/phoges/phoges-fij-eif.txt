@@ -1,0 +1,45 @@
+#
+# simply to study the indication of places and people
+#
+qui pe luc jean jacques
+pla k1 place 1
+pla k2 place 2
+pla k3 place 3
+pla k4 place 4
+pla k5 place cinq
+<LATEX> Even inside the definition of shortcuts!!!
+kwd h1 palabra primera
+kwd h2 palabra segunda
+kwd h3 palabra tercera
+kwd h4 palabra cuarta
+kwd h5 palabra quinta
+cat toto juste pour en avoir une !
+<LATEX> 1
+<(0)> Un Essai bien simple
+<LATEX> Ici, je pourrais mettre du code latex...
+<(1)> PREMIER
+<LATEX> Mais aussi après la première section
+{{h1,h5}}
+pkk.jpg ((petite place seule)) {{pe,toto}} [[ Marie-Thérèse ]]
+<< k1, k2, k3, h2 >>
+(( le second mot clef doit être la place ))
+Pk1.jpg 
+Ph1.jpg ((images_nettes)) <<k5>>
+{{}}
+<HTML> Et là j'introduirais du code html !
+<(2)> Découpage
+(( toujours pas ))
+{{ k5, h1, h2, h3}}
+[[ Bernard ]]
+Pk1.1.jpg (( 5ème en place )) [[ Pierre ]]
+<(1)> SECOND
+Pk3.jpg <<k5>> ((et aussi la 5ème par individuel))
+<(2)> En Vérité
+{{k3, h4}}
+Pk3.1.jpg (( 5 et 3 ))
+<(1)> TROISIÈME
+{{k2, h2, h1}}
+[[ ]]
+Pk4.jpg {{k3}} ((de plus))
+<HTML> Enfin quelque chose en fin de texte
+## coucou, c'est fini

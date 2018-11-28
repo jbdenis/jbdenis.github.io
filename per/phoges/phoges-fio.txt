@@ -1,0 +1,12 @@
+# a simple shortcut file to test 'update8st7pi
+kwd y1 Une fleur dans un vase
+kwd y2 SOIF
+pla p1 Paris la nuit je vois la Seine
+pla p2 château
+pla p3 Jully-les-Forges
+pla p4 Tanlay
+cat PAY de beaux paysages
+cat PTR portrait
+qui x1 Claire
+qui x2 Jean-Pierre
+qui x3 Bernard

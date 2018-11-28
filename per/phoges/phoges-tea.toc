@@ -1,0 +1,7 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}Tout au D\IeC {\'e}but}{1}
+\contentsline {subsection}{\numberline {1.1}Mais c'\IeC {\'e}tait loin d'\IeC {\^e}tre fini}{2}
+\contentsline {section}{\numberline {2}Il fallait aller encore plus loin}{2}
+\contentsline {section}{\numberline {3}Jamais on n'en voyait la fin}{2}
+\contentsline {subsection}{\numberline {3.1}Encore un mirage}{2}
+\contentsline {section}{\numberline {4}C'est la fin des haricots}{2}

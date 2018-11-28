@@ -1,0 +1,74 @@
+# 
+# file created/completed by '&phoges::ei7f2di7f1ic7f' on Le mercredi 4 avril 2018 à 17 heures et 58 minutes
+# the input eif file was phoges-fil-eif.txt 
+# no slf file was used 
+# a dif (decoded index file) was asked for 
+# 
+# 
+<(0)> Exemple d'eif pour les tests de pg.cata
+<(1)> Pour commencer des tests sur la dimension des images par les paramètres techniques
+<(2)> En mêlant les deux
+<[nbi=2,gnc=2,cap=Deux images en grilles : UNE FOIS,wid=4cm,hei=2cm]>
+phoges-pic05.jpg   ((première))
+phoges-pic05.jpg   ((seconce))
+<[nbi=2,gnc=2,wid=4cm,hei=2cm]>
+phoges-pic05.jpg   ((idem))
+phoges-pic05.jpg   ((mais sans légende collective))
+<[nbi=2,gnc=2,cap=Deux images en grilles : UNE FOIS,WID=5cm,HEI=1cm]>
+phoges-pic05.jpg   ((première))
+phoges-pic05.jpg   ((seconce))
+<[nbi=2,gnc=2,WID=5cm,HEI=1cm]>
+phoges-pic05.jpg   ((idem))
+phoges-pic05.jpg   ((mais sans légende collective))
+<[hei=2cm,wid=1cm]>
+phoges-pic05.jpg   ((Rectangle de 1 par 2 cm  par collectifs hei/wei))
+<[cap=Pour oublier les minuscules]>
+phoges-pic05.jpg   ((Reprise de HEI=1cm et WID=5cm ?))
+<[]>
+phoges-pic05.jpg   ((Reprise bien oubliée ?))
+phoges-pic05.jpg  <[hei=2cm,wid=1cm]> ((Rectangle de 1 par 2 cm  par individuels hei/wei))
+phoges-pic05.jpg <[wid=3cm]>
+<[hei=3cm,cap=Cette image doit être identique à la précédente]>
+phoges-pic05.jpg <[wid=3cm]>
+<[hei=3cm,WID=3cm,rot=45]>
+phoges-pic05.jpg <[hei=3cm]>  ((Largeur imposée à 3cm par WID))
+<(2)> Uniquement en individuel
+phoges-pic05.jpg  <[hei=3cm,wid=3cm]> ((Carré de 3 cm de côté))
+phoges-pic05.jpg  <[hei=3cm,wid=3cm,rot=45]> ((Carré de 3 cm de côté sur la pointe))
+phoges-pic05.jpg  <[hei=3cm,wid=6cm]> ((Rectangle de 6 par 3 cm ))
+<(2)> Uniquement en collectif
+<[hei=3cm,wid=3cm]>
+phoges-pic05.jpg   ((Carré de 3 cm de côté))
+<[hei=3cm,wid=3cm,rot=45]>
+phoges-pic05.jpg <[rot=45]>  ((Carré de 3 cm de côté sur la pointe))
+<[hei=3cm,wid=6cm]>
+phoges-pic05.jpg   ((Rectangle de 6 par 3 cm ))
+<(1)> Tout au Début
+<[wid=6cm ,nbi=2 ,gnl=2 ,gnc=1,cap=Une Légende pour l'ensemble ]> ((Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !))
+phoges-pic03.jpg <[rot=-90 ,hei=5cm]> (|images nettes//place cinq//place 2//place 3|) [[Jeanie]] {{place 1}}
+phoges-pic03.jpg <[wid=2cm ,hei=2cm]> ((Pour faire la deuxième de la grille))
+<[wid=5cm,hei=5 cm]> (|Dans la grande ville du roi tout seul|)
+phoges-pic03.jpg 
+phoges-pic01.jpg  (|petite place seule|) [[balo, bali]]  [|mai 2005|] <[wid = 3 cm]> {{roue}} <<categ>> ((on y met tous les types d'annotation))
+[|2018_04_06|] ((Pour sûr, c'est une histoire à dormir debout !)) (|Tout débuta sur la place du marché.|)
+<LATEX> \section*{je rajouter une section non numérotée}
+<[wid=5cm,hei=5 cm]> ((Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurait pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !)) (|Cour de la mairie|)
+phoges-pic02.jpg  (|place 2//place 3|) <<a b c>> {{boum,place 1,tic-tac}}
+<(2)> Mais c'était loin d'être fini
+<[wid=6cm ,nbi=1 ,gnl=1 ,gnc=1 ]> [[Papou]] ((Toujours personne en vue, et le soleil qui commençait à décliner.))
+phoges-pic04.jpg  (|place cinq|) [[Personne]] {{palabra clave premera,palabra clave,keyword}} ((5ème en place)) <|2018|>
+<LATEX> \onecolumn
+<(1)> Il fallait aller encore plus loin
+<[wid=6cm ,nbi=2 ,gnl=2 ,gnc=1 ]>
+phoges-pic05.jpg  (|place cinq|) ((aussi la 5ème par individuel))
+<LATEX> \section*{Et une seconde au milieu}
+phoges-pic05.jpg ((bissée))
+#<LATEX> \clearpage
+<LATEX> \twocolumn
+<(1)> Jamais on n'en voyait la fin
+<(2)> Encore un mirage
+phoges-pic06.jpg  (|place 3|) <<b c>> {{palabra clave cuarta}} ((5 et 3))
+<(1)> C'est la fin des haricots
+<[wid=6cm ,nbi=1 ,gnl=1 ,gnc=1 ]>
+phoges-pic07.jpg <[rot=0,wid=8cm]> (|de plus//place 3//place 2|) {{palabra clave segunda,palabra clave premera}}
+

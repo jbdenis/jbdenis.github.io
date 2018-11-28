@@ -1,0 +1,1585 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf8">
+  <meta name="creation" content=" 2018_11_28@19:51 ">
+  <meta http-equiv="charset" content="utf8">
+  <title>phoges.pm</title>
+</head>
+<body>
+<h2>
+MODULE phoges
+</h2>
+<p><pre>
+</pre></p>
+<par>
+To get the content of the module <a href="phoges.pm">phoges.pm</a>
+</par>
+<p>
+&nbsp;
+&nbsp;
+A total of 25 subroutines was detected:
+&nbsp;
+</p>
+<table border="3">
+  <tbody>
+    <tr>
+    </tr>
+      <td><strong>analyze</strong></td>
+      <td>
+<a href="#sub analyze8kwd {">
+analyze8kwd
+</a>
+      </td>
+      <td>
+<a href="#sub analyze8line {">
+analyze8line
+</a>
+      </td>
+      <td>
+<a href="#sub analyze8series {">
+analyze8series
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>ax</strong></td>
+      <td>
+<a href="#sub read8ic7f7ax {">
+read8ic7f7ax
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>cat</strong></td>
+      <td>
+<a href="#sub cat1kwd {">
+cat1kwd
+</a>
+      </td>
+      <td>
+<a href="#sub rio2cat1kwd {">
+rio2cat1kwd
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>check</strong></td>
+      <td>
+<a href="#sub check8pi {">
+check8pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>col</strong></td>
+      <td>
+<a href="#sub col7pi2ind7pi {">
+col7pi2ind7pi
+</a>
+      </td>
+      <td>
+<a href="#sub update8col7pi {">
+update8col7pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>date</strong></td>
+      <td>
+<a href="#sub get8date {">
+get8date
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>di</strong></td>
+      <td>
+<a href="#sub di7f2tex1htm {">
+di7f2tex1htm
+</a>
+      </td>
+      <td>
+<a href="#sub ei7f2di7f1ic7f {">
+ei7f2di7f1ic7f
+</a>
+      </td>
+      <td>
+<a href="#sub update8image4di7f {">
+update8image4di7f
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>ei</strong></td>
+      <td>
+<a href="#sub ei7f2di7f1ic7f {">
+ei7f2di7f1ic7f
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>f</strong></td>
+      <td>
+<a href="#sub di7f2tex1htm {">
+di7f2tex1htm
+</a>
+      </td>
+      <td>
+<a href="#sub ei7f2di7f1ic7f {">
+ei7f2di7f1ic7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8ic7f {">
+read8ic7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8ic7f7ax {">
+read8ic7f7ax
+</a>
+      </td>
+      <td>
+<a href="#sub read8sl7f {">
+read8sl7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8st7f {">
+read8st7f
+</a>
+      </td>
+      <td>
+<a href="#sub update8image4di7f {">
+update8image4di7f
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>get</strong></td>
+      <td>
+<a href="#sub get8date {">
+get8date
+</a>
+      </td>
+      <td>
+<a href="#sub get8picture4rio {">
+get8picture4rio
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>htm</strong></td>
+      <td>
+<a href="#sub di7f2tex1htm {">
+di7f2tex1htm
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>html</strong></td>
+      <td>
+<a href="#sub rio2html {">
+rio2html
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>ic</strong></td>
+      <td>
+<a href="#sub ei7f2di7f1ic7f {">
+ei7f2di7f1ic7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8ic7f {">
+read8ic7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8ic7f7ax {">
+read8ic7f7ax
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>image</strong></td>
+      <td>
+<a href="#sub image9 {">
+image9
+</a>
+      </td>
+      <td>
+<a href="#sub select8image {">
+select8image
+</a>
+      </td>
+      <td>
+<a href="#sub update8image4di7f {">
+update8image4di7f
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>ind</strong></td>
+      <td>
+<a href="#sub col7pi2ind7pi {">
+col7pi2ind7pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>kwd</strong></td>
+      <td>
+<a href="#sub analyze8kwd {">
+analyze8kwd
+</a>
+      </td>
+      <td>
+<a href="#sub cat1kwd {">
+cat1kwd
+</a>
+      </td>
+      <td>
+<a href="#sub rio2cat1kwd {">
+rio2cat1kwd
+</a>
+      </td>
+      <td>
+<a href="#sub str2kwd {">
+str2kwd
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>line</strong></td>
+      <td>
+<a href="#sub analyze8line {">
+analyze8line
+</a>
+      </td>
+      <td>
+<a href="#sub pi2line {">
+pi2line
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>new</strong></td>
+      <td>
+<a href="#sub new7pi {">
+new7pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>pi</strong></td>
+      <td>
+<a href="#sub check8pi {">
+check8pi
+</a>
+      </td>
+      <td>
+<a href="#sub col7pi2ind7pi {">
+col7pi2ind7pi
+</a>
+      </td>
+      <td>
+<a href="#sub new7pi {">
+new7pi
+</a>
+      </td>
+      <td>
+<a href="#sub pi2line {">
+pi2line
+</a>
+      </td>
+      <td>
+<a href="#sub print8pi {">
+print8pi
+</a>
+      </td>
+      <td>
+<a href="#sub update8col7pi {">
+update8col7pi
+</a>
+      </td>
+      <td>
+<a href="#sub update8st7pi {">
+update8st7pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>picture</strong></td>
+      <td>
+<a href="#sub get8picture4rio {">
+get8picture4rio
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>print</strong></td>
+      <td>
+<a href="#sub print8pi {">
+print8pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>read</strong></td>
+      <td>
+<a href="#sub read8ic7f {">
+read8ic7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8ic7f7ax {">
+read8ic7f7ax
+</a>
+      </td>
+      <td>
+<a href="#sub read8sl7f {">
+read8sl7f
+</a>
+      </td>
+      <td>
+<a href="#sub read8st7f {">
+read8st7f
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>rio</strong></td>
+      <td>
+<a href="#sub get8picture4rio {">
+get8picture4rio
+</a>
+      </td>
+      <td>
+<a href="#sub rio2cat1kwd {">
+rio2cat1kwd
+</a>
+      </td>
+      <td>
+<a href="#sub rio2html {">
+rio2html
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>select</strong></td>
+      <td>
+<a href="#sub select8image {">
+select8image
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>series</strong></td>
+      <td>
+<a href="#sub analyze8series {">
+analyze8series
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>sl</strong></td>
+      <td>
+<a href="#sub read8sl7f {">
+read8sl7f
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>st</strong></td>
+      <td>
+<a href="#sub read8st7f {">
+read8st7f
+</a>
+      </td>
+      <td>
+<a href="#sub update8st7pi {">
+update8st7pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>str</strong></td>
+      <td>
+<a href="#sub str2kwd {">
+str2kwd
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>tex</strong></td>
+      <td>
+<a href="#sub di7f2tex1htm {">
+di7f2tex1htm
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>update</strong></td>
+      <td>
+<a href="#sub update8col7pi {">
+update8col7pi
+</a>
+      </td>
+      <td>
+<a href="#sub update8image4di7f {">
+update8image4di7f
+</a>
+      </td>
+      <td>
+<a href="#sub update8st7pi {">
+update8st7pi
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>z...</strong></td>
+  </tbody>
+</table>
+<ol>
+<li>
+<a href="#sub analyze8kwd {">
+sub analyze8kwd {             (get the values of a line similar to keywords)
+</a>
+</li>
+<li>
+<a href="#sub analyze8line {">
+sub analyze8line {            (get type and content from an eif line)
+</a>
+</li>
+<li>
+<a href="#sub analyze8series {">
+sub analyze8series {          (get the values of a line similar to technical ones)
+</a>
+</li>
+<li>
+<a href="#sub cat1kwd {">
+sub cat1kwd {                 (sorting out categories and keywords)
+</a>
+</li>
+<li>
+<a href="#sub check8pi {">
+sub check8pi {                (check the validity of an collective pi series)
+</a>
+</li>
+<li>
+<a href="#sub col7pi2ind7pi {">
+sub col7pi2ind7pi {           (prepare a individual pi's)
+</a>
+</li>
+<li>
+<a href="#sub di7f2tex1htm {">
+sub di7f2tex1htm {            (generates a latex|html file from a dif file)
+</a>
+</li>
+<li>
+<a href="#sub ei7f2di7f1ic7f {">
+sub ei7f2di7f1ic7f {          (transforming an eif into a dif or a icf)
+</a>
+</li>
+<li>
+<a href="#sub get8date {">
+sub get8date {                (date of a picture)
+</a>
+</li>
+<li>
+<a href="#sub get8picture4rio {">
+sub get8picture4rio {         (selecting pictures)
+</a>
+</li>
+<li>
+<a href="#sub image9 {">
+sub image9 {                  (image name?)
+</a>
+</li>
+<li>
+<a href="#sub new7pi {">
+sub new7pi {                  (return an empty pi or complete a add)
+</a>
+</li>
+<li>
+<a href="#sub pi2line {">
+sub pi2line {                 (generates a line from a series of pi's)
+</a>
+</li>
+<li>
+<a href="#sub print8pi {">
+sub print8pi {                (print any pi)
+</a>
+</li>
+<li>
+<a href="#sub read8ic7f {">
+sub read8ic7f {               (read a raw index file)
+</a>
+</li>
+<li>
+<a href="#sub read8ic7f7ax {">
+sub read8ic7f7ax {            (ancillary function for 'read8ic7f')
+</a>
+</li>
+<li>
+<a href="#sub read8sl7f {">
+sub read8sl7f {               (reading a slf file)
+</a>
+</li>
+<li>
+<a href="#sub read8st7f {">
+sub read8st7f {               (reading a stf file)
+</a>
+</li>
+<li>
+<a href="#sub rio2cat1kwd {">
+sub rio2cat1kwd {             (list of categories/keywords)
+</a>
+</li>
+<li>
+<a href="#sub rio2html {">
+sub rio2html {                (create an html page from a rio)
+</a>
+</li>
+<li>
+<a href="#sub select8image {">
+sub select8image {            (selection of images)
+</a>
+</li>
+<li>
+<a href="#sub str2kwd {">
+sub str2kwd {                 (getting the collection of keywords)
+</a>
+</li>
+<li>
+<a href="#sub update8col7pi {">
+sub update8col7pi {           (update the collective pi's)
+</a>
+</li>
+<li>
+<a href="#sub update8image4di7f {">
+sub update8image4di7f {       (updates a set of reduced images)
+</a>
+</li>
+<li>
+<a href="#sub update8st7pi {">
+sub update8st7pi {            (replace shortcuts by their values)
+</a>
+</li>
+</ol>
+<h2>
+General Presentation of phoges.pm
+</h2>
+<p><pre>
+#
+# 'phoges' for 'photo-gestion'.
+#
+# This module was written to support a series of
+# programs focused to the annotation of my photos. Principles
+# are presented in a small document named 'annotation-photo'.
+#
+# Nevertheless some words have to be added here to precise
+# which Perl structures are associated to the different concepts.
+#
+# To each picture can be associated:
+#    - a name, but take care that the same name cannot be attributed
+#              to different pictures even in different directories !!!
+#    - a set of nested circumstances, comprising at least one element
+#    - a time period, "0000" when it is missing,
+#    - a set of places, possibly empty,
+#    - a set of people, possibly empty,
+#    - a set of keywords, possibly empty,
+#    - a set of categories, possibly empty,
+#    - a set of paragraphs for the comment, possibly empty.
+# 
+# The storage of this information is done through four important
+# structures : individual pi's, collective pi's, circumstance pi's
+# and additional pi's. Empty ones can be created with &new7pi (where
+# they are implicitly descrived and their validity checked with
+# check8pi.
+#
+# A set of pictures ('sepi') is coded with a hash whose keys
+# are their names and the value is a reference to
+# an array of size 5 such that
+#   [0] refers to a string giving the date,
+#   [1] refers to an array of the circumstances,
+#   [2] refers to an array of the categories,
+#   [3] refers to an array of the keywords,
+#   [4] refers to an array of the comment paragraphs.
+#
+# IT IS STRONGLY SUGGESTED TO READ THE DOCUMENT
+# <annotation-photo.pdf> WHERE THE GENERAL
+# APPROACH WHICH IS USED IS DESCRIBED.
+#
+</pre></p>
+<h2>
+<a name="sub analyze8kwd {"></a>
+1 sub analyze8kwd {
+</h2>
+<p><pre>
+    #
+    # title : get the values of a line similar to keywords
+    #
+    # aim : the difficulty is that keywords can comprise
+    #      several words indicated with some framing
+    #
+    # output : an error object if something
+    #         was wrong, if not an array reference giving
+    #         in the same order the different components
+    #
+    # arguments
+    my $hrsub = {lin  =>[              undef, "c","The string to analyze"],
+                 sep  =>[           $sepa{k}, "c","Separator between components"],
+                 fra  =>[[$can{ko},$can{kc}], "a","Framing for multiple word components"]
+                };
+</pre></p>
+<h2>
+<a name="sub analyze8line {"></a>
+2 sub analyze8line {
+</h2>
+<p><pre>
+    #
+    # title : get type and content from an eif line
+    #
+    # aim : the line to analyze can be
+    #      (0) a specific line to be ignored 
+    #          starting with a value of %telquel
+    #      (i) an image line with all possible pi's
+    #          leading to an ind7pi
+    #     (ii) a circumstance line, then this is
+    #          its only pi leading to a cir7pi
+    #    (iii) a additional line, proposing pi's
+    #          for futher images leading to a col7pi
+    #      
+    #      Other line types are considered as
+    #          an error.
+    # 
+    #      'lit' argument is reserved for self calls
+    #          it provides the type of pi to be
+    #          analyzed.
+    #
+    # output : 
+    #        In case of (0) a pi of type 'spe' is returned 
+    #         with the complete content is key 'c'.
+    #        If not the associated pi to the line.
+    #         Of course, an error message when some
+    #         inconsistency in the input is found.
+    #         ((or its contents when the type is given in input,
+    #           'undef' when not present.)).
+    #        In case of inconsistency an error is returned.
+    #
+    # remarks :
+    #           * shortcuts are not transformed
+    #
+    # arguments
+    my $hrsub = {lin  => [undef,"c","The line to analyze"],
+                 sht  => [   {},"h","Definition of the shortcuts"],
+                 lit  => [   "","c","When '', line type is asked for",
+                                    "else must be a valid line type and",
+                                    "the content will be returned whereever it is."]
+                };
+</pre></p>
+<h2>
+<a name="sub analyze8series {"></a>
+3 sub analyze8series {
+</h2>
+<p><pre>
+    #
+    # title : get the values of a line similar to technical ones
+    #
+    # aim : an axillary function to aliviate
+    #      and secure the programming task
+    #      when getting different components similar to
+    #      technical parameters
+    #
+    # output : an error object if something
+    #         was wrong, if not a hash with
+    #         different components using natural keys
+    #
+    # arguments
+    my $hrsub = {lin  =>[undef, "uc","The string to analyze"],
+                 sep  =>[undef, "c","Separators between components"],
+                 def  =>[   {}, "h","Default values for some components"]
+                };
+</pre></p>
+<h2>
+<a name="sub cat1kwd {"></a>
+4 sub cat1kwd {
+</h2>
+<p><pre>
+    #
+    # title : sorting out categories and keywords
+    #
+    # aim : ancillary subroutine of 'read8ic7f'
+    #      to separate categories from keywords
+    #
+    # notice that repetitions are not eliminated
+    # 
+    # output : the reference to an hash with 
+    #         two components: {cat} and {kwd}
+    #         referring to arrays of the categories
+    #         and the keywords.
+    #
+    # arguments
+    my $hrsub = {c1k  =>[undef,  "c","The string to investigate",
+                                      "must be given as a reference",
+                                      "to be modified."],
+                 cat  =>[   [],  "a","Array of the possible categories"]
+                };
+</pre></p>
+<h2>
+<a name="sub check8pi {"></a>
+5 sub check8pi {
+</h2>
+<p><pre>
+    #
+    # title : check the validity of an collective pi series
+    #
+    # aim : to ease the programming task. Can be avoid with
+    #      the global variable pi7check.
+    # 
+    #  Have a look to the code to know what are the components of
+    #      of the different types of pi's. These are given by
+    #      '$xpi->{y} which is compulsory and can take the
+    #      following six values: 
+    #        'ind' pi of a precise image (individual)
+    #        'col' pi for a set of images (collective)
+    #        'cir' circumstances
+    #        'add' for additional pi
+    #        'ext' for external paragraph
+    #        'spe' for specific lines external to phoges
+    #
+    #   - All components must be present except for 
+    #         the 'add' and 'spe' types
+    #   - Array components must be [] when empty
+    #   - String components must be "" when empty
+    #
+    # output : 1 when right if not an error
+    #
+    # arguments
+    my $hrsub = {xpi  =>[undef,  "h","The series of pi's to check"]
+                };
+</pre></p>
+<h2>
+<a name="sub col7pi2ind7pi {"></a>
+6 sub col7pi2ind7pi {
+</h2>
+<p><pre>
+    #
+    # title : prepare a individual pi's
+    #
+    # aim : using the current collective pi's
+    #        adapt an individual pi's according
+    #        to the planned file (dif/icf).
+    # 
+    # output : an error object if something
+    #         was wrong, if not a hash with
+    #         different pi's corresponding
+    #         to the individual pi series.
+    #
+    # remarks: only for 'icf' output, the individual pi is
+    #          modified. This is done with the following rules.
+    #         (i) escaped pi's are left are they are
+    #             (escaping commands are looked within the
+    #              categories).
+    #         (ii) collective time is used only when there
+    #              is no individual time. Nevertheless, missing
+    #              year can be taken from the collective time.
+    #         (iii) collective technical parameters are used
+    #               when there are no individual ones.
+    #         (iii) collective directory is integrated if any
+    #         (iv) p-q-k-g-m pi's are integrated
+    #         (v) the stack of circumstances is introduced
+    #
+    # arguments
+    my $hrsub = {cpi  =>[undef,  "h","collective pi's"],
+                 ipi  =>[undef,  "h","Individual pi's to adjust"],
+                 lpi  =>[undef,  "h","pi's of the last image in case of 'identical'"],
+                 whi  =>[undef,  "c","'dif' or 'icf' to indicate which type of file",
+                         "will be created"]
+                };
+</pre></p>
+<h2>
+<a name="sub di7f2tex1htm {"></a>
+7 sub di7f2tex1htm {
+</h2>
+<p><pre>
+    #
+    # title : generates a latex|html file from a dif file
+    #
+    # aim : produce catalogues from series of annotated
+    #      pictures.
+    # 
+    # output : either an error object if something
+    #         was wrong, or just 1.
+    #
+    # remarks :(x) Preexisting tex and html files will be destroyed.
+    #          (x) For the moment, only the following technical parameters
+    #              are taken into account. They can be collective [C] and/or
+    #              individual [I]  (as examples):
+    #                 - [CI] 'wid=3cm' width of the images,
+    #                 - [CI] 'hei=5cm' height of the images
+    #                 - [C]  'WID=3cm' width of the images,
+    #                 - [C]  'HEI=5cm' height of the images
+    #                 - [I]  'rot=-90' the rotation to apply to the image (default 0),
+    #                 - [C]  'nbi=3' number of images to introduce into a grid (default 1),
+    #                 - [C]  'gnl=2' number of lines into the grid (default 1),
+    #                 - [C]  'gnc=2' number of columns of the grid (default 1)
+    #                 - [C]  'cap=common features are...' possible collective caption for a
+    #                               a grid of images
+    #                    (See below to know how they are used),
+    #          (x) Be aware that some collective pi's can be lost if not associated to 
+    #                 a set of images. The aim is to annotate, not to build a text.
+    #                 For that, other tools are available, in particular lines starting
+    #                 with '(*)'. The loss is made when building the DIF from the EIF.
+    #
+    #
+    #  Here are the main rules about the technical parameters [TP]:
+    #   * Individual TPs only apply to the present image.
+    #   * When 'wid' and/or 'hei' is present in individual TP,
+    #     collective 'wid/hei/WID/HEI' are not considered for the present image
+    #     but are still considered for the following ones until they be
+    #     resetted.
+    #   * 'nbi','gnl','gnc','cap' are only possible at a collective level, they apply only to 
+    #     the following grid (reset to the default afterwards).
+    #   * 'rot' is only possible at an individual level.
+    #   * For the moment, 'cap' is reduced to a simple comment.
+    #   * A collective line with explicit technical parameters 'nbi' is supposed to be followed by
+    #                 'nbi' image lines. If not a fatal error is raised.
+    #   * A new collective TP line resets previous values to the default if not defined
+    #     except 'WID/HEI' which are resetted only by a void collective TP
+    #   * To retrieve all default values of collective TPs just introduce a void one '<[]>'.
+    #   * When 'wid' and 'WID' are defined, 'wid' is used
+    #   * When 'hei' and 'HEI' are defined, 'hei' is used
+    #
+    #
+    # arguments
+    my $hrsub = {dif  =>[undef,  "c","Name root of the dif (decoded index file)"],
+                 roo  =>[    0,  "c","Prefix of the latex/html files to generate",
+                                     " (without '.tex' or '.html' suffix)",
+                                     "When '0' the default value, the name is taken from the dif."],
+                 ppa  =>[{},"h","hash allowing to modify a number of default parameters,",
+                                "more precisely:",
+                                " - the argument 'par' of &lhattmel::start, default values in %pls",
+                                " - some latex specifications (default in %plt):",
+                                "       . num=>0 for the sections,... not to be numbered (default 1)",
+                                "       . red=>0.5 to get the picture half the size which is specified",
+                                "                  in the technical parameters (default 1)",
+                                " - framing used when building the picture captions (default in %cfra):",
+                                "     'cfraon' for the 'o'pening of the 'n'ame",
+                                "     'cfracp' for the 'c'losing of the 'p'lace",
+                                "              and so on (see the 'cfra' definition)",
+                                " - separating components when building the picture captions (default in %sepb):",
+                                "     'sepbn' for the 'n'ame",
+                                "     'sepbp' for the 'p'lace",
+                                "              and so on (see the 'cfra' definition)"],
+                 cap  =>["Intpmx","c","Define the way to compute individual captions:",
+                                      "'I' for identifying the different components (see %phoges::id)",
+                                      "'B' for introducing a new line between the components: doesn't work",
+                                      "'X' for indicating missing fields",
+                                      " 'n','t','p','q','k','g','m' to introduce them.",
+                                      "(Notice that the technical parameters 'h' cannot be included",
+                                      " since it is not an array but a hash so the same algorithm",
+                                      "cannot be used.)"],
+                 typ  =>[  "l",  "c","type of the output : 'l' for latex, 'h' for html"]
+                };
+</pre></p>
+<h2>
+<a name="sub ei7f2di7f1ic7f {"></a>
+8 sub ei7f2di7f1ic7f {
+</h2>
+<p><pre>
+    #
+    # title : transforming an eif into a dif or a icf
+    #
+    # aim : produces either a decoded index file (dif) 
+    #      or a image centered file (icf) from an edited
+    #      index file (eif)
+    # 
+    # output : 1 when the analysis of the edited
+    #         file was without trouble, if not an 
+    #         error message testable with '&uie::err9'
+    #         and printable with '&uie::print8err'.
+    #
+    #   The definition of shortcuts for people, categories and keywords
+    #         can be done within the eif and/or through specialized
+    #         stf files indicated with a stf line.
+    #
+    #   A dif is just the eif after:
+    #           - replacing shortcuts by their value (except for categories)
+    #           - including all used categories within the index file
+    #             (and only the necessary ones)
+    #           - attributing at an individual level time period,
+    #             place, people, category, keyword.
+    #
+    #   A icf is the list of images after integrating in them all
+    #           collective attributions, including the title,
+    #           only are left the directory lines and those
+    #           defining the categories plus, of course, image lines.
+    #
+    #   To the transformation can be added a selection of the retained
+    #          images according to some criteria (defined in a slf file).
+    #
+    #   BE AWARE THAT SOME COLLECTIVE PI'S CAN BE LOST if not associated to 
+    #          a set of images. The aim is to annotate, not to build a text,
+    #          so information not focused to annotation of pictures is 
+    #          not considered.
+    #
+    #   Nevertheless, you can write paragraphs (then also lists, see lhattmel::parag
+    #          subroutine) with the specific lines starting with (*).
+    #
+    #   To give more flexibility in producing documents, specific lines are
+    #          reproduce without interpretation or checking in the dif file. These are
+    #          marked up with values of %telquel.
+    #
+    #   As the subroutine is quite long and intricated, possible intermediary
+    #          printing can be asked by modifying the local variable $impint.
+    #
+    # arguments
+    my $hrsub = {eif  =>[undef,  "c","The root of the edited index file to transform",
+                                     "('-eif.txt' suffix will be added)."],
+                 out  =>[undef,  "c","The root of the transformed file to create",
+                                     "('-dif.txt' or '-icf.txt' suffix will be added)."],
+                 typ  =>["dif",  "c","Type of the created file if not must be 'icf'"],
+                 new  =>[    1,  "n","Must not the 'out' file to already exist?",
+                                     "If so a message error is issued."],
+                 slf  =>[   "",  "c","Root of the selection definition file to use",
+                                     "when '', no selection is performed",
+                                     "('-slf.txt' suffix will be added)."]
+                };
+</pre></p>
+<h2>
+<a name="sub get8date {"></a>
+9 sub get8date {
+</h2>
+<p><pre>
+    #
+    # title : date of a picture
+    #
+    # aim : determine the date of a picture
+    # 
+    # output : a string associated to the date,
+    #         possibly "".
+    #
+    # arguments
+    my $hrsub = {nam  =>[undef,  "c","The file name of the picture"],
+                 tim  =>[   "",  "cu","The date proposed by the annotation file,",
+                                      "can be the year when 'pmdd*' coding",
+                                      "not taken into account when the name is",
+                                      "formatted 'yyyy_mm_dd.*'."]
+                };
+</pre></p>
+<h2>
+<a name="sub get8picture4rio {"></a>
+10 sub get8picture4rio {
+</h2>
+<p><pre>
+    #
+    # title : selecting pictures
+    #
+    # aim : according different alternative criteria
+    #      a set of picture is extracted from
+    #      a raw index object.
+    #
+    # output : array of the keys of the selected pictures
+    #
+    # arguments
+    my $hrsub = {rip  =>[undef,  "h","The hash from which to get the images",
+                                     "({pic} of a rio)"],
+                 sel  =>[    1, "na","Indicates a possible selection of images",
+                                     "within the rip to explore. When 1 all",
+                                     "images are considered, if not must be",
+                                     "the array of their keys. Non existing labels",
+                                     "are not considered faulty"],
+                 tys  =>[undef,  "c","Type of selection among the following possibilities:",
+                                     " - 'be' between two lines",
+                                     " - 'ck' the presence of at least a category and/or a keyword",
+                                     " - 'ci' checking a set of categories using 'and'",
+                                     " - 'cu' checking a set of categories using 'or'",
+                                     " - 'KI' checking a set of keywords strictly using 'and'",
+                                     " - 'KU' checking a set of keywords strictly using 'or'",
+                                     " - 'ki' checking a set of keywords loosely using 'and'",
+                                     " - 'ku' checking a set of keywords loosely using 'or'",
+                                     " - 'CI' checking a sub-string into comments unsing 'and'",
+                                     " - 'CU' checking a sub-string into comments unsing 'or'"], 
+                 wha  =>[undef,  "a","Reference to an array providing details about the",
+                                     "selection to perform:",
+                                     " - 'be' first and last lines not included",
+                                     "       [0,undef] means all lines",
+                                     " - 'ci','cu' categories to use for the selections",
+                                     " - 'KI','KU' same for keywords strictly /^keyword$/",
+                                     " - 'ki','ku' same for keywords loosely /keyword/",
+                                     " - 'CI','CU' same for comments loosely"]
+                };
+</pre></p>
+<h2>
+<a name="sub image9 {"></a>
+11 sub image9 {
+</h2>
+<p><pre>
+    #
+    # title : image name?
+    #
+    # aim : check if a string is considered as
+    #      an image name from the format profiles
+    #      defined in '%prim'
+    # 
+    # output : 1 if true, 0 if not
+    #
+    # arguments
+    my $hrsub = {nam  =>[undef,  "c","The name to investigate"]
+                };
+</pre></p>
+<h2>
+<a name="sub new7pi {"></a>
+12 sub new7pi {
+</h2>
+<p><pre>
+    #
+    # title : return an empty pi or complete a add
+    #
+    # aim : create a pi which can be:
+    #      - an [ind]ividual pi, describing an image
+    #        (the compulsory name is set to 'NULL.PNG')
+    #      - a [col]lective pi, all information
+    #        gathered outside image descriptions
+    #      - a [cir]cumstance
+    #      - an [add]ition for a collective pi
+    #        (if an already created 'add' is proposed
+    #         as argument, its non existing pi's
+    #         are completed with null values)
+    #
+    # output : the empty newly created/completed pi
+    #         (possibly an error)
+    #
+    # arguments
+    my $hrsub = {wha  =>[undef,  "ch","The type to create 'ind'/'col'/'cir'/'add'",
+                                      "(or the add pi to be completed with void values"]
+                };
+</pre></p>
+<h2>
+<a name="sub pi2line {"></a>
+13 sub pi2line {
+</h2>
+<p><pre>
+    #
+    # title : generates a line from a series of pi's
+    #
+    # aim : an ancillary functions to write
+    #        lines of dif and icf.
+    #      When a collective pi's the following pi's
+    #        are gathered "t","p","q","g","k","m","h","d"
+    #        where last circumstance levels are taken
+    #        for "p","q","g","k","m".
+    #      When an individual pi's are given only non empty
+    #        components are considered.
+    #
+    # remarks: + as 'add' pi's must not be written
+    #            their occurrence produces an error
+    #          + a resulting white line is turned to a comment line
+    #
+    # output : a single string
+    #         or an error when something was not
+    #         acceptable
+    #
+    # arguments
+    my $hrsub = {xpi  =>[undef,  "h","The colpis to translate"]
+                };
+</pre></p>
+<h2>
+<a name="sub print8pi {"></a>
+14 sub print8pi {
+</h2>
+<p><pre>
+    #
+    # title : print any pi
+    #
+    # aim : print a small title and the structure itself
+    #
+    # output : 1 or an error when the pi is checked [$pi7check].
+    #
+    # arguments
+    my $hrsub = {xpi  =>[undef,  "h","The pi's to print"],
+                 eve  =>[    0,  "n","Must empty components be displayed for types 'col' and 'ind'?"]
+                };
+</pre></p>
+<h2>
+<a name="sub read8ic7f {"></a>
+15 sub read8ic7f {
+</h2>
+<p><pre>
+    #
+    # title : read a raw index file
+    #
+    # aim : produce a raw index object where all
+    #      information is coded into a structure.
+    # 
+    # output : either the built structure
+    #         or an error something went wrong
+    #
+    # The structure is a reference to a hash 
+    # with few components: com,dir,cir,pic.
+    # Each are a reference to another hash
+    # having as keys the numbering of the lines
+    # of the read file; associated values
+    # are references to arrays described
+    # as follow and depending on the type:
+    # for {com} comment lines (starting with '#')
+    # for {dir} relative directories
+    # for {cr} reference to an array containing
+    #        [0] the depth of the circumstance (e.g. 2),
+    #        [1] the hierarquical coding of the levels (e.g. 3.2),
+    #        [2] the strict title (e.g. "labrador")
+    #            When the level is just the close of 
+    #            some level then without any new title
+    #            it is replaced with a number of hyphens.
+    #        [3] reference to an array with the nested (1..depth) titles
+    #                (e.g. '["chien","labrador"]')
+    #        [4] reference to the array of collective comments
+    #        [5] reference to the array of individual comments
+    #            given at the image level.
+    #        [6] reference to the array of
+    #            keys of the representative
+    #            pictures of the section
+    #        [7] reference to the array of
+    #            keys of all the pictures of
+    #            the section
+    #        [8] reference to the array of
+    #            the pictures having at least a category or a keyword
+    # for {pic} reference to an array comprising 5 components:
+    #        [0] the name of the image (e.g. PC12003.JPG),
+    #        [1] the time period of the image,
+    #        [2] a reference to an array of associated categories,
+    #        [3] a reference to an array of associated keywords.
+    #        [4] the string of all associated comments,
+    #
+    #
+    # arguments
+    my $hrsub = {icf  =>[undef,  "c","The name of the raw index file"],
+                 cat  =>[   [],  "a","Array of the category names"]   
+                };
+</pre></p>
+<h2>
+<a name="sub read8ic7f7ax {"></a>
+16 sub read8ic7f7ax {
+</h2>
+<p><pre>
+    #
+    # title : ancillary function for 'read8ic7f'
+    #
+    # aim : deal with the nested circumstances
+    # 
+    # output : the new three necessary structures.
+    #          (see the code for details)
+    #
+    # arguments
+    my $hrsub = {nli  =>[undef,  "c","the new level line"],
+                 old  =>[undef,  "h","The three necessary structures"]
+                };
+</pre></p>
+<h2>
+<a name="sub read8sl7f {"></a>
+17 sub read8sl7f {
+</h2>
+<p><pre>
+    #
+    # title : reading a slf file
+    #
+    # aim : read, check and developp the content of a slf file.
+    #      'slf' means SeLection definition File".
+    # 
+    # output : a reference to a hash having as keys
+    #            the possible combinations of selection types defined
+    #            in phoges::sety[1,2,3] hashes.
+    #         The associated values are reference to an
+    #           array having the words (or time period) defining
+    #           the criteria selection.
+    #
+    #         BUT in case of inconsistency, an error object is
+    #         returned which can be checked with &uie::err9 and
+    #         displayed with &uie::print8err.
+    #
+    # arguments
+    my $hrsub = {fil  =>[undef,  "c","The file to be read"]
+                };
+</pre></p>
+<h2>
+<a name="sub read8st7f {"></a>
+18 sub read8st7f {
+</h2>
+<p><pre>
+    #
+    # title : reading a stf file
+    #
+    # aim : read and developp the content of a stf file.
+    #      'stf' means ShortcuT definition File".
+    # 
+    # output : a reference to a hash having as keys
+    #            the values of %phoges::idrf.
+    #         The associated values are references to hashes
+    #           having shortcuts for keys and their definition
+    #           for values.
+    #
+    #         BUT in case of inconsistency, an error object is
+    #         returned which can be checked with &uie::err9 and
+    #         displayed with &uie::print8err.
+    #
+    # arguments
+    my $hrsub = {fil  =>[undef,  "c","The file to be read"],
+                 ref  =>[{},  "h","The previous reference to complete.",
+                                   "It is advised that it be the result",
+                                   "of a previous call with 'read8st7f.",
+                                   "Particularly, only specific keys", '(%idrf)',
+                                   "are admitted."]
+                };
+</pre></p>
+<h2>
+<a name="sub rio2cat1kwd {"></a>
+19 sub rio2cat1kwd {
+</h2>
+<p><pre>
+    #
+    # title : list of categories/keywords
+    #
+    # aim : explorates a rio and find out
+    #      all used categories/keywords and their
+    #      scores.
+    # 
+    # output : either an error object if something
+    #         was wrong, or a hash whose keys are
+    #         a generated alphabetical sequence
+    #         such that more referred categories
+    #         appears first;
+    #         associated values are arrays with:
+    #         [0] the name of the category/keyword
+    #         [1] the number of pictures referring it
+    #         [2] reference to the array of
+    #             keys of all the pictures 
+    #             referring it.
+    #
+    #
+    # arguments
+    my $hrsub = {rio  =>[undef,  "h","The raw index object"],
+                 qoi  =>["cat",  "c","'cat' for categories if not keywords"]
+                };
+</pre></p>
+<h2>
+<a name="sub rio2html {"></a>
+20 sub rio2html {
+</h2>
+<p><pre>
+    #
+    # title : create an html page from a rio
+    #
+    # aim : writes an html file displaying
+    #      the content of a rio more or less
+    #      precisely according to the argument.
+    # 
+    # output : either 1 or an error object if something
+    #         was wrong
+    #
+    # arguments
+    my $hrsub = {rio  =>[undef,  "h","The raw index object to exploit"],
+                 fil  =>[undef,  "c","Name of the file to create"],
+                 tit  =>[""   ,  "c","Titre de la page"],
+                 opt  =>["nh1c0k0","c","chain indicating which options are retained",
+                                     " 'n' the file to create must not exist",
+                                     "'h0' table of contents",
+                                     "'h1' h0 plus numbers of contents",
+                                     "'h2' h1 plus comments",
+                                     "'h3' h2 plus image names",
+                                     "'c0' list of categories and image numbers",
+                                     "'c1' c0 plus image names",
+                                     "'k0' list of keywords and image numbers",
+                                     "'k1' k0 plus image names"]
+                };
+</pre></p>
+<h2>
+<a name="sub select8image {"></a>
+21 sub select8image {
+</h2>
+<p><pre>
+    #
+    # title : selection of images
+    #
+    # aim : basic function for selection
+    # 
+    # output : 1 if selected 0 if not,
+    #         or an error in case of any inconsistency.
+    #
+    # arguments
+    my $hrsub = {ima  =>[undef,  "h","The pi's describing the image"],
+                 cri  =>[undef,  "h","array of the criteria for selection,",
+                                     "simple regulars expression are admissible."]
+                };
+</pre></p>
+<h2>
+<a name="sub str2kwd {"></a>
+22 sub str2kwd {
+</h2>
+<p><pre>
+    #
+    # title : getting the collection of keywords
+    #
+    # aim : ancillary subroutine to gather the set
+    #      of keywords included into a structure
+    #      into a simple array where framing is
+    #      kept only for multiword keywords
+    # notice that set of keywords framing is
+    #      supposed to be already eliminated
+    #      when 'str' is a reference to an array
+    #      but it can be present in a simple
+    #      string of characters.
+    # 
+    # output : the reference to the resulting array
+    #
+    # arguments
+    my $hrsub = {str  =>[undef,  "ca","The structure to investigate",
+                                      "can be a simple character chain"]
+                };
+</pre></p>
+<h2>
+<a name="sub update8col7pi {"></a>
+23 sub update8col7pi {
+</h2>
+<p><pre>
+    #
+    # title : update the collective pi's
+    #
+    # aim : an ancillary functions to update the current collective pi's.
+    # 
+    # output : the updated collective pi
+    #         or an error when something was not
+    #         acceptable
+    #
+    # arguments
+    my $hrsub = {cop  =>[undef,  "h","The colpi to be updated"],
+                 sup  =>[undef,  "h","The additional addpi or cirpi to use"]
+                };
+</pre></p>
+<h2>
+<a name="sub update8image4di7f {"></a>
+24 sub update8image4di7f {
+</h2>
+<p><pre>
+    #
+# faire plus général d'extraction de pi
+    # title : updates a set of reduced images
+    #
+    # aim : produces images with convenient sizes
+    #      from an original image base, accordingly
+    #      with the dimensions they will be printed.
+    #      Already prepared images are not rebuilt.
+    #
+    #      Basically three input are used:
+    #         a dif file indicating which images
+    #             are needed and the dimensions
+    #             they will be displayed.
+    #         a directory of original images, supposed
+    #             to contain of the used images
+    #         a directory where the reduced images
+    #             will be stored, not repeated
+    #             when present in the right sizes
+    # 
+    #      To which some specifications about the
+    #             level of reduction to apply:
+    #          (i) must it be computed on the
+    #              /w/idth, the /h/eight, the /l/argest
+    #              dimension of both, the /s/mallest of 
+    #              both or the /a/rea.
+    #              Notice that if the rotation is not 0
+    #              or 180, width and height are shifted.
+    #         (ii) how many pixels are asked for one inch
+    #         
+    #      Also, the desired accuracy to decide if
+    #              a preexisting image must be rebuilt
+    #              or not.
+    #
+    # notice that care can be taken from the portrait shots
+    #        with the auto-orient option of ImageMagick::convert
+    #
+    # output : the number of replaced images
+    #         or an error message when something went wrong
+    #
+    # remarks : x For simplicity, but not for safety original and reduced images 
+    #             have the same name. To prevent the destruction of original
+    #             images, when a replaced image has got more pixels that the
+    #             original one, a precautionary question is raised on the screen.
+    #             Nevertheless, it can be desactivated.
+    #           x ImageMagick facilities are used for the reduction
+    #           x Perl module Image::Size is used to know image dimensions
+    #
+    # arguments
+    my $hrsub = {dif  =>[undef,  "c","Name root of the dif (decoded index file)"],
+                 ori  =>[undef,  "c","Directory where the original images can be found"],
+                 red  =>[undef,  "c","Directory where the reduced images can be found or must be introduced"],
+                 opt  =>[{typ=>"a",ppi=>300}, "h","'typ' indicates the way the scale is computed as explained",
+                                                "in the general comments. 'ppi' is the number of pixels per inch",
+                                                "(Be aware that when changing any default value(s), all components",
+                                                " of the hash must be provided: default is global"]
+                };
+</pre></p>
+<h2>
+<a name="sub update8st7pi {"></a>
+25 sub update8st7pi {
+</h2>
+<p><pre>
+    #
+    # title : replace shortcuts by their values
+    #
+    # aim : copy and transform a [ind,col] pi replacing
+    #      and relocalizing shortcuts with
+    #      their associated values.
+    # 
+    # output : an error object if something
+    #         was wrong, if not the transformed
+    #         pi.
+    #
+    #
+    # arguments
+    my $hrsub = {xpi  =>[undef,  "h","Initial pi's with possible shortcuts"],
+                 stc  =>[   {},  "h","Definition of the shortcuts, as provided",
+                                     "by 'read8st7f"]
+                };
+</pre></p>
+<h2>
+A total of 26 test scripts was detected:
+</h2>
+<p><pre>
+</pre></p>
+<ol>
+<li>
+<a href="phoges_analyze8kwd.pl">
+phoges_analyze8kwd.pl
+</a>
+</li>
+<li>
+<a href="phoges_analyze8line.pl">
+phoges_analyze8line.pl
+</a>
+</li>
+<li>
+<a href="phoges_analyze8series.pl">
+phoges_analyze8series.pl
+</a>
+</li>
+<li>
+<a href="phoges_cat1kwd.pl">
+phoges_cat1kwd.pl
+</a>
+</li>
+<li>
+<a href="phoges_check8col7pi.pl">
+phoges_check8col7pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_check8ind7pi.pl">
+phoges_check8ind7pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_check8pi.pl">
+phoges_check8pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_col7pi2ind7pi.pl">
+phoges_col7pi2ind7pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_di7f2tex1htm.pl">
+phoges_di7f2tex1htm.pl
+</a>
+</li>
+<li>
+<a href="phoges_ei7f2di7f1ic7f.pl">
+phoges_ei7f2di7f1ic7f.pl
+</a>
+</li>
+<li>
+<a href="phoges_get8date.pl">
+phoges_get8date.pl
+</a>
+</li>
+<li>
+<a href="phoges_get8pictures4rio.pl">
+phoges_get8pictures4rio.pl
+</a>
+</li>
+<li>
+<a href="phoges_image9.pl">
+phoges_image9.pl
+</a>
+</li>
+<li>
+<a href="phoges_new7pi.pl">
+phoges_new7pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_pi2line.pl">
+phoges_pi2line.pl
+</a>
+</li>
+<li>
+<a href="phoges_print8pi.pl">
+phoges_print8pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_read8ic7f.pl">
+phoges_read8ic7f.pl
+</a>
+</li>
+<li>
+<a href="phoges_read8sl7f.pl">
+phoges_read8sl7f.pl
+</a>
+</li>
+<li>
+<a href="phoges_read8st7f.pl">
+phoges_read8st7f.pl
+</a>
+</li>
+<li>
+<a href="phoges_rio2cat1kwd.pl">
+phoges_rio2cat1kwd.pl
+</a>
+</li>
+<li>
+<a href="phoges_rio2html.pl">
+phoges_rio2html.pl
+</a>
+</li>
+<li>
+<a href="phoges_select8image.pl">
+phoges_select8image.pl
+</a>
+</li>
+<li>
+<a href="phoges_str2kwd.pl">
+phoges_str2kwd.pl
+</a>
+</li>
+<li>
+<a href="phoges_update8col7pi.pl">
+phoges_update8col7pi.pl
+</a>
+</li>
+<li>
+<a href="phoges_update8image4di7f.pl">
+phoges_update8image4di7f.pl
+</a>
+</li>
+<li>
+<a href="phoges_update8st7pi.pl">
+phoges_update8st7pi.pl
+</a>
+</li>
+</ol>
+</body>
+</html>

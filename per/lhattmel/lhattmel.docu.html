@@ -1,0 +1,437 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf8">
+  <meta name="creation" content=" 2018_11_28@19:49 ">
+  <meta http-equiv="charset" content="utf8">
+  <title>lhattmel.pm</title>
+</head>
+<body>
+<h2>
+MODULE lhattmel
+</h2>
+<p><pre>
+</pre></p>
+<par>
+To get the content of the module <a href="lhattmel.pm">lhattmel.pm</a>
+</par>
+<p>
+&nbsp;
+&nbsp;
+A total of 9 subroutines was detected:
+&nbsp;
+</p>
+<table border="3">
+  <tbody>
+    <tr>
+    </tr>
+      <td><strong>latex</strong></td>
+      <td>
+<a href="#sub latex2pdf {">
+latex2pdf
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>pdf</strong></td>
+      <td>
+<a href="#sub latex2pdf {">
+latex2pdf
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>z...</strong></td>
+      <td>
+<a href="#sub end {">
+end
+</a>
+      </td>
+      <td>
+<a href="#sub indent {">
+indent
+</a>
+      </td>
+      <td>
+<a href="#sub list {">
+list
+</a>
+      </td>
+      <td>
+<a href="#sub parag {">
+parag
+</a>
+      </td>
+      <td>
+<a href="#sub picture {">
+picture
+</a>
+      </td>
+      <td>
+<a href="#sub police {">
+police
+</a>
+      </td>
+      <td>
+<a href="#sub start {">
+start
+</a>
+      </td>
+      <td>
+<a href="#sub subtit {">
+subtit
+</a>
+      </td>
+  </tbody>
+</table>
+<ol>
+<li>
+<a href="#sub end {">
+sub end {                     (constitutes the document end)
+</a>
+</li>
+<li>
+<a href="#sub indent {">
+sub indent {                  (just add some spaces before a string)
+</a>
+</li>
+<li>
+<a href="#sub latex2pdf {">
+sub latex2pdf {               (produce a pdf file from a latex file)
+</a>
+</li>
+<li>
+<a href="#sub list {">
+sub list {                    (constitutes a list)
+</a>
+</li>
+<li>
+<a href="#sub parag {">
+sub parag {                   (constitutes a series of paragraphes)
+</a>
+</li>
+<li>
+<a href="#sub picture {">
+sub picture {                 (introduce a table of picture into the document)
+</a>
+</li>
+<li>
+<a href="#sub police {">
+sub police {                  (introduce police style modification)
+</a>
+</li>
+<li>
+<a href="#sub start {">
+sub start {                   (constitutes the document head)
+</a>
+</li>
+<li>
+<a href="#sub subtit {">
+sub subtit {                  (constitutes a document subtitle)
+</a>
+</li>
+</ol>
+<h2>
+General Presentation of lhattmel.pm
+</h2>
+<p><pre>
+#
+# 'lhattmel' for 'LATEx/HTML Generator'.
+#
+# This module was written to automatically produce pdf files
+# first of all to generate albums from annotated series of
+# pictures. As the task is quite general, I decided to give
+# it an independent development.
+#
+# As html and latex files have got similar structures, both
+# developments were undertaken at the same time.
+#
+#
+#
+</pre></p>
+<h2>
+<a name="sub end {"></a>
+1 sub end {
+</h2>
+<p><pre>
+    #
+    # title : constitutes the document end
+    #
+    # aim : according to the type, necessary
+    #      tagging is produced.
+    # 
+    # output : an array of characters
+    #
+    # arguments
+    my $hrsub = {typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]
+                };
+</pre></p>
+<h2>
+<a name="sub indent {"></a>
+2 sub indent {
+</h2>
+<p><pre>
+    #
+    # title : just add some spaces before a string
+    #
+    # aim : ease the presentation of latex/html source
+    # 
+    # output : the transformed string
+    #
+    # arguments
+    my $hrsub = {cha  =>[undef,"ac","The string or array of string to transform"],
+                 ind  =>[    1,"n","Number of indentations to add"],
+                 siz  =>[    2,"n","Size of each indentation"]
+                };
+</pre></p>
+<h2>
+<a name="sub latex2pdf {"></a>
+3 sub latex2pdf {
+</h2>
+<p><pre>
+    #
+    # title : produce a pdf file from a latex file
+    #
+    # aim : compile a latex file with 'pddlatex'
+    # 
+    # output : 1 when job was fine, an error if not
+    #
+    # remark : - if it exists the pdf file will be replaced
+    #            without saving it.
+    #
+    # arguments
+    my $hrsub = {tex =>[undef,"c","File of the latex source"],
+                 nbc =>[    3,"n","Number of compilation to perform"]
+                };
+</pre></p>
+<h2>
+<a name="sub list {"></a>
+4 sub list {
+</h2>
+<p><pre>
+    #
+    # title : constitutes a list
+    #
+    # aim : according to the type, necessary
+    #      tagging is produced.
+    # 
+    # output : an array of characters
+    #
+    # arguments
+    my $hrsub = {lst  =>[undef,"ah","Array of the different items to introduce",
+                                    "for bullet and numbered list. Hash of the different",
+                                    "items for definition list, however array of successive",
+                                    "(key,value) pairs are admitted but the size of the",
+                                    "array must be even; in fact this is the way to keep",
+                                    "the order of the components"],
+                 tli  =>["B",  "c","Indication of the list type: 'B' for bullet,",
+                                   "'N' for number, 'D' for definition and also",
+                                   "'b' for flat bullet list, 'n' for flat numbered list and",
+                                   "'d' for flat definition list."],
+                 typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
+</pre></p>
+<h2>
+<a name="sub parag {"></a>
+5 sub parag {
+</h2>
+<p><pre>
+    #
+    # title : constitutes a series of paragraphes
+    #
+    # aim : according to the type, necessary
+    #      tagging is produced.
+    #
+    # remark : When the first work of a paragraph is
+    #         'LISTEx' where x =~ /[BNDbnd]/,
+    #         the paragraph is interpreted,respectively, as
+    #         a itemized/flat bullet, numbered or definition list.
+    #         The format is described from the following
+    #         simple examples comprising each three items:
+    #            'LISTEB First Item;;Second Item;;Last Item'
+    #            'LISTEN First Item;;Second Item;;Last Item'
+    #            'LISTED premier;;First Item;;second;;Second Item;;dernier;;Last Item'
+    #
+    # output : an array of characters
+    #
+    # arguments
+    my $hrsub = {prg  =>[undef,"a","Array of the different paragraphs to introduce"],
+                 typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
+</pre></p>
+<h2>
+<a name="sub picture {"></a>
+6 sub picture {
+</h2>
+<p><pre>
+    #
+    # title : introduce a table of picture into the document
+    #
+    # aim : replace simple tags in appropriate tags
+    #      according to the type
+    # 
+    # output : the array of characters after modification
+    #
+    # details: Images are always introduced
+    #          into a table (1x1 at minimum).
+    #          There is no obligation to fill every cell,
+    #          even more empty cells can not be the last
+    #          one but calls must be made in the order.
+    #          Individual captions are gathered into
+    #          a general table caption but a collective
+    #          caption can be also included.
+    #
+    # to do: implement the rotation of images for html outputs
+    #        escaping "\" befor { in caption to be suppress
+    #
+    # arguments
+    my $hrsub = {ima  =>[undef,"a","Array of references of hashes describing each image.",
+                                   "hash keys must be: 'fil' (c) for the file, 'wid' (c) for the width,",
+                                   "'hei' (c) for the height,'cap' (a) for the individual captions",
+                                   "'rot' (n) for the rotation to apply in degrees"],
+                 dim  =>[[1,1],"a","Array of size 2 giving the number of lines and the number",
+                                   "of columns of the table"],
+                 pla  =>[    0,"na","Cells to give to each image in the table. When '0' images",
+                                    "are placed in the natural order. If not an array of same",
+                                    "length of 'ima' giving references to arrays of size 2",
+                                    "giving the line and column placement. Any inconsistency",
+                                    "will produce a fatal error"],
+                 cca  =>[[],"a","Array of the collective caption; each component is a paragraph"],
+                 opt  =>["HIb","c","General options:",
+                                      " 'H' to place the table here,",
+                                      " 'I' to add the image name in the caption,",
+                                      " 'X' not to introduce the designation of the cell '[i,j]' in the caption,",
+                                      " 'c' to break lines between paragraphs of the collective captions,",
+                                      " 'b' to break lines between collective and individual captions",
+                                      "      ('b' is implied by 'c' and 'i'),",
+                                      " 'i' to break lines between the individual captions,",
+                                      " 'l' to break lines between the paragraphs of the individual captions.",
+                                      " 'n' to force the numbering of images by latex when the caption is empty",
+                                    "FOR THE MOMENT BREAKING LINES DOESN'T WORK PROPERLY!!!"
+                        ],
+                 typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]
+                };
+</pre></p>
+<h2>
+<a name="sub police {"></a>
+7 sub police {
+</h2>
+<p><pre>
+    #
+    # title : introduce police style modification
+    #
+    # aim : replace simple tags in appropriate tags
+    #      according to the type
+    # 
+    # output : the array of characters after modification
+    #
+    #      Usually this subroutine is called once the o
+    #      complete text has been elaborated
+    #
+    #  standard tags are introduced as constants and can be
+    #      easily modified:
+    my %ttxt = (bo=>'_*',bc=>'*_',
+                io=>'_+',ic=>'+_',
+                eo=>'_%',ec=>'%_');
+    my %ttex = (bo=>'\textbf{',bc=>'}',
+                io=>'\textit{',ic=>'}',
+                eo=>'\emph{'  ,ec=>'}');
+    my %thtm = (bo=>'<b>',bc=>'</b>',
+                io=>'<i>',ic=>'</i>',
+                eo=>'<em>',ec=>'</em>');
+    #
+    # arguments
+    my $hrsub = {txt  =>[undef,"a","Array of the text to be transformed"],
+                 typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
+</pre></p>
+<h2>
+<a name="sub start {"></a>
+8 sub start {
+</h2>
+<p><pre>
+    #
+    # title : constitutes the document head
+    #
+    # aim : according to the type, necessary
+    #      tagging is produced.
+    # 
+    # output : an array of characters
+    #
+    # arguments
+    my $hrsub = {typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."],
+                 par  =>[{cod=>"utf8",tit=>"",aut=>"",dat=>1,
+                          toc=>1,npa=>1,two=>0,lma=>"15mm",
+                          rma=>"15mm",tma=>"15mm",bma=>"15mm",
+                          lgu=>"french",par=>[]
+                          },
+                            "h","The different parameters for the heading:",
+                                      "cod: encoding",
+                                      "tit: the title",
+                                      "aut: the author",
+                                      "dat: the date (when '0' no date, when '1' present day",
+                                      "toc: 1 to get the table of contents",
+                                      "npa: 1 to get a new page after the preamble",
+                                      "two: 1 to get two columns (only for latex)",
+                                      "lma: left margin (only for latex)",
+                                      "rma: right margin (only for latex)",
+                                      "tma: top margin (only for latex)",
+                                      "bma: bottom margin in mm (only for latex)",
+                                      "lgu: language (only for latex)",
+                                      "par: some paragraph to add after the title (can comprise lists)"]
+                };
+</pre></p>
+<h2>
+<a name="sub subtit {"></a>
+9 sub subtit {
+</h2>
+<p><pre>
+    #
+    # title : constitutes a document subtitle
+    #
+    # aim : according to the type, necessary
+    #      tagging is produced.
+    # 
+    # output : an array of characters
+    #
+    # arguments
+    my $hrsub = {tit  =>[undef,"c","Title for this subtitle"],
+                 lev  =>[1,  "n","level of the subtitle, from 1 to 6",
+                                 "negative values means not numbering the subtitle in Latex"],
+                 typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
+</pre></p>
+<h2>
+A total of 6 test scripts was detected:
+</h2>
+<p><pre>
+</pre></p>
+<ol>
+<li>
+<a href="lhattmel_list.pl">
+lhattmel_list.pl
+</a>
+</li>
+<li>
+<a href="lhattmel_parag.pl">
+lhattmel_parag.pl
+</a>
+</li>
+<li>
+<a href="lhattmel_picture.pl">
+lhattmel_picture.pl
+</a>
+</li>
+<li>
+<a href="lhattmel_police.pl">
+lhattmel_police.pl
+</a>
+</li>
+<li>
+<a href="lhattmel_start.pl">
+lhattmel_start.pl
+</a>
+</li>
+<li>
+<a href="lhattmel_subtit.pl">
+lhattmel_subtit.pl
+</a>
+</li>
+</ol>
+</body>
+</html>

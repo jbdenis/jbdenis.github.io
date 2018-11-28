@@ -1,0 +1,6 @@
+# some info to test pg.cata
+{ 
+ aut => "Toi",
+ two => 1,
+ cfracn => "....."
+}

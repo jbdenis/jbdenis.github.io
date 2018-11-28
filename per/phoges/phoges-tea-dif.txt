@@ -1,0 +1,30 @@
+# 
+# file created/completed by '&phoges::ei7f2di7f1ic7f' on Le mercredi 10 octobre 2018 à 16 heures et 9 minutes
+# the input eif file was phoges-tea-eif.txt 
+# no slf file was used 
+# a dif (decoded index file) was asked for 
+# 
+# 
+<(0)> Exemple d'eif pour les tests de pg.cata
+<(1)> Tout au Début
+<[wid=5cm,hei=5 cm]> [|2018|] (|Dans la grande ville du roi tout seul|)
+phoges-pic01.jpg  (|petite place seule|)
+<[wid=5cm,hei=5 cm]> [|2018|] (|Cour de la mairie|) ((Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !))
+phoges-pic02.jpg  (|place 2//place 3|) <<a b c>> {{boum,place 1,tic-tac}}
+<[wid=6cm ,nbi=2 ,gnl=2 ,gnc=1 ]> [|2018|] (|Cour de la mairie|) ((Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !))
+phoges-pic03.jpg <[rot=-90 ,hei=5cm]> (|images nettes//place cinq//place 2//place 3|) [[Jeanie]] {{place 1}}
+phoges-pic03.jpg <[wid=2cm ,hei=2cm]> ((Pour faire la deuxième de la grille))
+<(2)> Mais c'était loin d'être fini
+<[wid=6cm ,nbi=1 ,gnl=1 ,gnc=1 ]> [|2018|] [[Papou]] ((Toujours personne en vue, et le soleil qui commençait à décliner.))
+phoges-pic04.jpg  (|place cinq|) [[Personne]] {{palabra clave premera,palabra clave,keyword}} ((5ème en place)) <|2018|>
+<(1)> Il fallait aller encore plus loin
+<[wid=6cm ,nbi=2 ,gnl=2 ,gnc=1 ]> [|2018|]
+phoges-pic05.jpg  (|place cinq|) ((aussi la 5ème par individuel))
+phoges-pic05.jpg  ((bissée))
+<(1)> Jamais on n'en voyait la fin
+<(2)> Encore un mirage
+ [|2018|]
+phoges-pic06.jpg  (|place 3|) <<b c>> {{palabra clave cuarta}} ((5 et 3))
+<(1)> C'est la fin des haricots
+<[wid=6cm ,nbi=1 ,gnl=1 ,gnc=1 ]> [|2018|]
+phoges-pic07.jpg <[wid=8cm,rot=0]> (|de plus//place 3//place 2|) {{palabra clave segunda,palabra clave premera}}

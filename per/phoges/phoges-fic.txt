@@ -1,0 +1,54 @@
+# a tiny annotation file to test eif2dif
+sdir /home/jbdenis/a ## directory where the following images are located
+kwd cle pour ouvrir la porte sans la casser
+stf phoges-fi2.txt  ## a file defining categories and keyword shortcuts
+stf phoges-fib.txt  ## another file defining categories and keyword shortcuts
+kwd vvx deux vé et un iquse
+#
+<(1)> Preparation
+{<France>}
+(( Les bagages doivent être préparés ))
+P01.jpg vc fl [[ma préférée]] [[ville sous la mer]] {{encore deux [[1 2]]}} ((no comment!))
+<(1)> Voyage en Espagne
+{<Espagne>}
+((Nous voilà partis))
+<(2)> Cordoue
+{{vin eau essence PSG}}
+P02.jpg vvn vn vvx CRM --A--
+((un commentaire intermédiaire))
+P03.JPG nn --K--
+((on change le commentaire))
+P03b.jpg --K--
+<[h=1200,l=800]>
+P03c.jpg --K--
+(())
+P03d.jpg
+cat bof pour une photo douteuse
+kwd 1 un one uno
+# dur à cuire
+[<2007>]
+<(2)> Bordeaux
+{<Retour en France>}
+<(3)> Le port
+((un autre commentaire intermédiaire (SECOND)))
+P04.png (( vue imprenable )) --C--
+P05.jpg [<2000_12>] {{[[très personnelle]]}} zoo ((image unique // image rare))
+<(3)> La gare
+{{trenes}}
+P06.png pv v nn xc --C--
+P07.jpg piano vx pvv vvx vvc
+2012_04_04.P08.jPG 
+<(1)> Retour en France
+{{[[un deux]] [[un dos tres]]}}
+<(2)> Visite chez les filles
+{{one two three four}}
+{<>}
+P07bb.jpg vx pvv vvx vvc
+toto.png
+<(2)> Passage des garçons
+[<2007_12_08>]
+pc12ttt.png
+[<>]
+p430uuu.png pvv
+cat beuh Pour une photo moche...
+# coucou, c'est fini

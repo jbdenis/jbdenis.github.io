@@ -1,0 +1,184 @@
+##
+## 16_07_24 16_07_25 16_07_27 16_07_28 16_08_04
+## 17_08_04 17_09_20
+##
+##-------<( a animaux)>------------------------ 
+cat ad animaux domestiques
+cat as animaux sauvages
+cat ax animaux ## le reste (il y en a comme les représentations de chimères)
+##-------<( c chemins)>------------------------  
+cat ce voies d'eau
+cat cf voies ferrées
+cat ch routes humaines
+cat cn voies, pistes naturelles ou presque
+cat cx autres voies de communication
+##-------<( f foules)>------------------------ 
+cat fa ensemble d'amis
+cat fc ensemble de collègues
+cat ff plusieurs de la famille étendue
+cat fj plusieurs de la famille des jjb
+cat fk plusieurs au niveau d'une école
+cat fm rassemblement de corps de métiers
+cat fn lorsque le sujet principal est le photographe dans quelque reflet
+cat fp ensemble de personnes d'une association
+cat fr ensemble de personnes liées par la religion
+cat fx foule
+cat fz personnes faisant de la musique
+##-------<( g groupes)>------------------------ 
+cat ga groupe d'amis
+cat gc groupe de collègues
+cat gf groupe de famille étendue
+cat gj groupe de la famille des jjb
+cat gk groupe dans un cadre scolaire
+cat gm groupe de personnes développant une certaine activité
+cat gn comme gm mais le photographe apparaît d'une manière ou d'une autre
+cat go groupe représenté par son ombre
+cat gp groupe d'une association
+cat gr groupe de personnes liées par la religion
+cat gx groupe, sous-entendu, posant pour la photo
+cat gz groupe de musiciens
+##-------<( k kollections de photos )>------------------------ 
+cat k2 autoportrait jjb
+cat kb représentation de Saint Jean-Baptiste
+cat kc château d'eau
+cat ke autour de l'eau
+cat kf autour du feu
+cat kj jeu de bois
+cat kl luminaires
+cat km portrait de métier
+cat kn numéro inscrit publiquement
+cat ko ombre
+cat kr route, chemin
+cat ks escalier
+cat kv voiture
+cat ky bicyclette(s), plus généralement deux roues
+##-------<( m monuments)>------------------------ 
+cat ma bâtiment archéologique
+cat mc châteaux d'eau, phares, clochers, verticalité,...
+cat md dôme vu du dessous, coupole, voûte, plafond, arcs divers
+cat me églises
+cat mf façades
+cat mh château
+cat mi intérieur de monument (décoration, charpente,...)
+cat mj propriétés de la famille jjb au sens étendu
+cat mp portes, portails,...
+cat mr croix de bord de chemin
+cat mt monument lié au travail
+cat mu trait architectural
+cat mv église Saint Victor
+cat mx autres monuments
+##-------<( n nature)>------------------------ 
+cat na milieu marin
+cat nc ciel, nuages,
+cat ne étangs de la Minière
+cat ni campus Inra
+cat ng neige
+cat nh eau dont rivière
+cat no montagne
+cat np panorama
+cat nr rural, agriculture dans un sens très large
+cat ns soleil
+cat nx autres éléments naturel
+##-------<( o objets)>------------------------ 
+cat oa avions
+cat ob bateaux
+cat oc machines de calcul 
+cat oj jeux
+cat oh heure, cadrans, horloges,...
+cat ol lumière : bougies, lustres, ombres,...
+cat om mobilier
+cat on nourriture
+cat ot trains
+cat ov véhicules
+cat ox autres objets
+cat oz musique
+##-------<( p portraits)>------------------------  
+cat pa portrait d'ami
+cat pc portrait de collègue
+cat pf portrait de famille non jjb
+cat pj portrait de famille jjb
+cat pk portrait de quelqu'un d'une école
+cat pm portrait de métier
+cat pn autoportrait
+cat po portrait par ombre
+cat pp portrait de quelqu'un dans le cadre d'une association
+cat pr portrait religieux
+cat px autres portraits
+cat pz musicien
+##-------<( q quelqu'un de bien connu)>------------------------ 
+kwd qal Alexandre
+kwd qau Aurélie
+kwd qho Hombeline
+kwd qin Ines
+kwd qjb Jean-Baptiste
+kwd qje Jeanie
+kwd qli Louis
+kwd qlb Loubna
+kwd qmo Monique Robineau
+kwd qna Naëlle
+kwd qNI Naëlle et Ines
+kwd qst Stéphane
+kwd qto Tom
+kwd qTL Tom et Louis
+kwd qvi Victor
+kwd qyo Yoann
+##-------<( r art)>------------------------ 
+cat ra ambiance (ombre, reflet, lumière,...)
+cat rp peinture, vitrail, représentation plane
+cat rs sculpture
+cat rx autre élément artistique
+##-------<( s scène)>------------------------ 
+cat sa scène entre amis
+cat sc scène entre collègues
+cat sf scène en famille étendue
+cat sg scène rurale (de campagne)
+cat sj scène en famille jjb
+cat sk scène dans une école
+cat sm scène liée à un métier
+cat sn scène où le photographe intervient
+cat so scène perçue par sa seule ombre
+cat sp scène dans le contexte d'association
+cat sr scène lors d'une rencontre religieuse
+cat sw scène citadine
+cat sx scène d'activité humaine autre
+cat sz scène relative à la musique
+##-------<( v végétal)>------------------------ 
+cat va arbre(s)
+cat vb bouquet
+cat vf fleur(s)
+cat vl légume(s)
+cat vp peuplement végétal
+cat vx autres végétaux
+##-------<( w ville, town)>------------------------ 
+cat wa ambiance en ville
+cat we enseignes
+cat wf façades en ville, village ou de simple maison
+cat wg graffitis
+cat wj jardins publics
+cat wp panorama de ville, village et aussi places
+cat wr rivière, fleuve en ville
+cat wt toits d'habitations
+cat ws scène urbaine
+cat wv pavages
+cat wx autres éléments d'aglomération
+##-------<( x divers)>------------------------  
+cat xa abstraction, peu figuratif
+cat xi architecture intérieure, design
+cat xm motifs comme briques, pierres, bois, feuilles,..
+cat xx inclassable
+##-------<( z niveaux d'intérêt intrinsèque)>------------------------ 
+cat z0 intéressante
+cat z1 notable
+cat z2 assez bonne
+cat z3 bien
+cat z4 bonne
+cat z5 très bonne
+cat z6 très très bonne
+cat z7 remarquable
+cat z8 exceptionnelle
+cat z9 extraordinaire, à couper le souffle
+##-------<( * commands for edited index files)>------------------------ 
+com -k common keywords must not be considered for this picture
+com -c common comments must not be considered for this picture
+com -a common comments and keywords must not be considered for this picture
+##-------<(  F I N  )>------------------------ 

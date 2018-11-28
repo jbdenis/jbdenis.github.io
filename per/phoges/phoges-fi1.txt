@@ -1,0 +1,10 @@
+# a very simple shortcut file
+kwd :: vx :: plants :: every kind of plants;;kwd :: vc :: cultivated plants :: plants needing the human help
+kwd :: fl :: flowers :: decorative flowers
+kwd :: vn natural plants
+kwd :: vvn fleurs artificielles
+cat :: pv Un élément vertical dans un paysage, comme une tour, un château d'eau, un clocher, une éolienne,...
+kwd :: qvi Victor Huet
+bad :: uu :: pas connu
+qui :: jp :: Jean-Pierre :: Jean-Pierre Rospars, un ami de début de carrière
+pla :: stv :: St Victor :: notre vieille église paroissiale

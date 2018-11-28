@@ -1,0 +1,4 @@
+# a tiny annotation file to test eif2dif
+IUk vin un
+XUk piano trompette one
+# coucou, c'est fini

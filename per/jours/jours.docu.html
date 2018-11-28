@@ -1,0 +1,395 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf8">
+  <meta name="creation" content=" 2018_11_28@19:50 ">
+  <meta http-equiv="charset" content="utf8">
+  <title>jours.pm</title>
+</head>
+<body>
+<h2>
+MODULE jours
+</h2>
+<p><pre>
+</pre></p>
+<par>
+To get the content of the module <a href="jours.pm">jours.pm</a>
+</par>
+<p>
+&nbsp;
+&nbsp;
+A total of 7 subroutines was detected:
+&nbsp;
+</p>
+<table border="3">
+  <tbody>
+    <tr>
+    </tr>
+      <td><strong>cano</strong></td>
+      <td>
+<a href="#sub cano8day {">
+cano8day
+</a>
+      </td>
+      <td>
+<a href="#sub cano8tipe {">
+cano8tipe
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>check</strong></td>
+      <td>
+<a href="#sub check8day {">
+check8day
+</a>
+      </td>
+      <td>
+<a href="#sub check8tipe {">
+check8tipe
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>compa</strong></td>
+      <td>
+<a href="#sub compa8tipe {">
+compa8tipe
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>day</strong></td>
+      <td>
+<a href="#sub cano8day {">
+cano8day
+</a>
+      </td>
+      <td>
+<a href="#sub check8day {">
+check8day
+</a>
+      </td>
+      <td>
+<a href="#sub month7day {">
+month7day
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>month</strong></td>
+      <td>
+<a href="#sub month7day {">
+month7day
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>tipe</strong></td>
+      <td>
+<a href="#sub cano8tipe {">
+cano8tipe
+</a>
+      </td>
+      <td>
+<a href="#sub check8tipe {">
+check8tipe
+</a>
+      </td>
+      <td>
+<a href="#sub compa8tipe {">
+compa8tipe
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>z...</strong></td>
+      <td>
+<a href="#sub duration {">
+duration
+</a>
+      </td>
+  </tbody>
+</table>
+<ol>
+<li>
+<a href="#sub cano8day {">
+sub cano8day {                (gives a canonical format to a reduced day)
+</a>
+</li>
+<li>
+<a href="#sub cano8tipe {">
+sub cano8tipe {               (gives a canonical format to a reduced time period)
+</a>
+</li>
+<li>
+<a href="#sub check8day {">
+sub check8day {               (check the format of a day)
+</a>
+</li>
+<li>
+<a href="#sub check8tipe {">
+sub check8tipe {              (check the canonical format of a time period)
+</a>
+</li>
+<li>
+<a href="#sub compa8tipe {">
+sub compa8tipe {              (Makes a crude comparison of two tipes)
+</a>
+</li>
+<li>
+<a href="#sub duration {">
+sub duration {                (duration of a time period)
+</a>
+</li>
+<li>
+<a href="#sub month7day {">
+sub month7day {               (gives the number of days of a given month)
+</a>
+</li>
+</ol>
+<h2>
+General Presentation of jours.pm
+</h2>
+<p><pre>
+#
+# 'jours' gives access to some subroutines to handle my
+#       favorite way of coding the day dates.
+#
+</pre></p>
+<h2>
+<a name="sub cano8day {"></a>
+1 sub cano8day {
+</h2>
+<p><pre>
+    #
+    # title : gives a canonical format to a reduced day
+    #
+    # aim: the canonical format of a day is
+    #        'yyyy_mm_dd'
+    #
+    #      Accepted reduced formats by this subroutines are:
+    #      yyyy             -> yyyy_01_01 or yyyy_12_31
+    #      yyyy_mm          -> yyyy_mm_01 or yyyy_mm_[28,29,30,31]
+    #
+    # remark: the not available time '' is accepted and not modified
+    #
+    # output: a chain giving the canonical form or an error
+    #         when inconsistency is found when analyzing
+    #         the input.
+    #
+# arguments
+my $hrsub = {day =>[undef,"c","The proposed day"],
+             war =>[undef,"n","0 for before / 1 for after"]
+	    };
+</pre></p>
+<h2>
+<a name="sub cano8tipe {"></a>
+2 sub cano8tipe {
+</h2>
+<p><pre>
+    #
+    # title : gives a canonical format to a reduced time period
+    #
+    # aim: the canonical format of a time period is
+    #        'yyyy_mm_dd|zzzz_nn_ee'
+    #      where each substring before and after '|' is
+    #      the mere indication of a day, the first day
+    #      must be identical or before the second day,
+    #      both days must exist (past or future).
+    #
+    #      Accepted reduced formats by this subroutines are:
+    #      yyyy             -> yyyy_01_01|yyyy_12_31
+    #      yyyy_mm          -> yyyy_mm_01|yyyy_mm_[28,29,30,31]
+    #      yyyy_mm_dd       -> yyyy_mm_dd|yyyy_mm_dd
+    #      yyyy_mm_dd|ee    -> yyyy_mm_dd|yyyy_mm_ee
+    #      yyyy_mm_dd|nn_ee -> yyyy_mm_dd|yyyy_nn_ee
+    #      yyyy|zzzz        -> yyyy_01_01|zzzz_12_31
+    #      yyyy|zzzz_nn     -> yyyy_01_01|zzzz_mm_[28,29,30,31]
+    #      yyyy|            -> yyyy_01_01|4000_12_31
+    #          |zzzz        -> 1000_01_12|zzzz_12_31
+    #          |            -> 1000_01_12|4000_12_31
+    #                       -> 1000_01_12|4000_12_31
+    #      and so on.
+    #
+    # output: a chain giving the canonical form or an error
+    #         when inconsistency is found when analyzing
+    #         the input.
+    #
+# arguments
+my $hrsub = {tip =>[undef,"c","The proposed time period"]
+	    };
+</pre></p>
+<h2>
+<a name="sub check8day {"></a>
+3 sub check8day {
+</h2>
+<p><pre>
+    #
+    # title : check the format of a day
+    #
+    # aim: to detect errors without too much trouble
+    #
+    # output: the input or an error message when
+    #         an inconsistency was detected.
+    #         An idea could be to call it through 
+    #         a call to &uie::check9err.
+# arguments
+my $hrsub = {ymd =>[undef,"c","the yyyy_mm_dd to check"]
+	    };
+</pre></p>
+<h2>
+<a name="sub check8tipe {"></a>
+4 sub check8tipe {
+</h2>
+<p><pre>
+    #
+    # title : check the canonical format of a time period
+    #
+    # aim: to detect errors without too much trouble
+    #
+    # output: the input or an error message when
+    #         an inconsistency was detected.
+    #         An idea could be to call it through 
+    #         a call to &uie::check9err.
+# arguments
+my $hrsub = {tip =>[undef,"c","the time period to check"]
+	    };
+</pre></p>
+<h2>
+<a name="sub compa8tipe {"></a>
+5 sub compa8tipe {
+</h2>
+<p><pre>
+    #
+    # title : Makes a crude comparison of two tipes
+    #
+    # aim: the comparison of two discrete segments
+    #      is not that obvious... It seems not to be
+    #      symmetrical. Here six cases are distinguished
+    #
+    #      Let the first segment be [a,A] and the 
+    #      second one be [b,B].
+    #      
+    #      In square brackets, the returned value:
+    #      
+    #       1: b <= B <  a <= A  ["GT"]
+    #       2: a <= A <  b <= B  ["LT"]
+    #       3: b =  a <= A =  B  ["EQ"]
+    #       4: b <  a <= A <  B  ["IN"]
+    #       5: a <  b <= B <  A  ["OU"]
+    #       6: <remaining cases> ["??"]
+    #     
+    # Remark: the comparison of two discrete segments
+    #      is not that obvious... It seems not to be
+    #      symmetrical. 
+    #      Let the first segment be [a,A] and the 
+    #      second one be [b,B].
+    #      
+    #      11 cases have to be distinguished, in 
+    #      square bracket, possible returned values:
+    #      
+    #       1: b <= B <  a <= A [ 5]
+    #       2: b <  B =  a <  A [ 4]
+    #       3: b <  a <  B <  A [ 3]
+    #       4: b <  a <  B =  A [ 2]
+    #       5: b =  a <  B <  a [ 1]
+    #       6: b =  a <= A =  B [ 0]
+    #       7: a <  b <  A =  B [-1]
+    #       8: a =  b <  A <  B [-2]
+    #       9: a <  b <  A <  B [-3]
+    #      10: a <  b =  A <  B [-4]
+    #      11: a <= A <  b <= B [-5]
+    #     
+    #  This is not satisfactory... to be thought again     
+    #
+    # output: the obtained answer unless unconsistency
+    #         of one of the tipe which rises a fatal 
+    #         error after the printing of a message.
+    #
+# arguments
+my $hrsub = {tp1 =>[undef,"c","The  first time period"],
+             tp2 =>[undef,"c","The second time period"],
+	    };
+</pre></p>
+<h2>
+<a name="sub duration {"></a>
+6 sub duration {
+</h2>
+<p><pre>
+    #
+    # title : duration of a time period
+    #
+    # aim: computes the duration in days of a time period
+    #
+    # output: the number of days or an error if the input
+    #         is not consistent.
+    #         The limit days are included so "2018_01_07|2018_01_07"
+    #         will give one day.
+    #
+# arguments
+my $hrsub = {tip =>[undef,"c","the time period to evaluate"]
+	    };
+</pre></p>
+<h2>
+<a name="sub month7day {"></a>
+7 sub month7day {
+</h2>
+<p><pre>
+    #
+    # title : gives the number of days of a given month
+    #
+    # aim: takes care of leap years
+    #
+    # output: the number of days of the month or the number
+    #         of days of the year when the month doesn't exist
+    #         returns 0.
+    #
+# arguments
+my $hrsub = {yyy =>[undef,"c","the year"],
+             mmm =>["" ,"c","the month"]
+	    };
+</pre></p>
+<h2>
+A total of 7 test scripts was detected:
+</h2>
+<p><pre>
+</pre></p>
+<ol>
+<li>
+<a href="jours_cano8day.pl">
+jours_cano8day.pl
+</a>
+</li>
+<li>
+<a href="jours_cano8tipe.pl">
+jours_cano8tipe.pl
+</a>
+</li>
+<li>
+<a href="jours_check8day.pl">
+jours_check8day.pl
+</a>
+</li>
+<li>
+<a href="jours_check8tipe.pl">
+jours_check8tipe.pl
+</a>
+</li>
+<li>
+<a href="jours_compa8tipe.pl">
+jours_compa8tipe.pl
+</a>
+</li>
+<li>
+<a href="jours_duration.pl">
+jours_duration.pl
+</a>
+</li>
+<li>
+<a href="jours_month7day.pl">
+jours_month7day.pl
+</a>
+</li>
+</ol>
+</body>
+</html>
