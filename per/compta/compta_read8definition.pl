@@ -2,7 +2,7 @@
 #
 # 16_02_28 16_03_30 16_05_05
 #
-use lib "/home/jbdenis/liana/info/perl/uie";
+use lib "/home/jbdenis/o/info/perl/uie";
 use File::Copy;
 use strict;
 use compta; 

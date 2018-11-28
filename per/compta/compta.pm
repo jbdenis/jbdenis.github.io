@@ -7,7 +7,9 @@
 # 16_03_23 16_03_24 16_03_26 16_03_29 16_03_30
 # 16_04_13 16_04_16 16_04_22 16_05_03 16_05_05
 # 16_05_08 16_05_12 16_05_22 16_05_23 16_05_24
-# 16_06_03
+# 16_06_03 16_06_29 16_08_28 16_11_02 17_05_01
+# 17_05_05 17_05_06 17_05_07 18_01_24 18_11_16
+# 18_11_20 
 #
 package compta;
 use strict;
@@ -73,9 +75,9 @@ my $inasep = "=>";
 ##<<
 sub split8transaction {
     #
-    # aim: split a transaction into its components
+    # title : split a transaction into its components
     # 
-    # output: a reference to a hash of references in the following order:
+    # output : a reference to a hash of references in the following order:
     #          the year (integer),
     #          the month (integer),
     #          the day within the month (integer),
@@ -129,9 +131,9 @@ sub split8transaction {
 ##<<
 sub print8transaction {
     #
-    # aim: print a transaction
+    # title : print a transaction
     #
-    # output: nothing but a display is produced on the screen.
+    # output : nothing but a display is produced on the screen.
     #
     #
     # arguments
@@ -175,9 +177,9 @@ sub print8transaction {
 ##<<
 sub join8transaction {
     #
-    # aim: reconstitute a transaction from the individual components
+    # title : reconstitute a transaction from the individual components
     #
-    # output: the transaction such it is in a journal line
+    # output : the transaction such it is in a journal line
     #
     #
     # arguments
@@ -189,15 +191,15 @@ sub join8transaction {
     my $rtransa = $argu->{rtransa};
     # recomposing
     my $res = "$$rtransa{y}/";
-    $res = $res.&uie::juste(chain=>$$rtransa{m},long=>2,just=>"r")."/";
-    $res = $res.&uie::juste(chain=>$$rtransa{d},long=>2,just=>"r");
+    $res = $res.&uie::juste(cha=>$$rtransa{m},lon=>2,jus=>"r")."/";
+    $res = $res.&uie::juste(cha=>$$rtransa{d},lon=>2,jus=>"r");
     $res = $res." ";
     $res = $res."$$rtransa{re}$$rtransa{e}";
     $res = $res."->";
     $res = $res."$$rtransa{r}$$rtransa{rr}";
-    $res = $res."-".&uie::juste(chain=>$$rtransa{p},long=>2,just=>"r");
+    $res = $res."-".&uie::juste(cha=>$$rtransa{p},lon=>2,jus=>"r");
     $res = $res."-$$rtransa{t}=";
-    $res = $res.&uie::juste(chain=>"$$rtransa{hm}",long=>10,just=>"r");
+    $res = $res.&uie::juste(cha=>"$$rtransa{hm}",lon=>10,jus=>"r");
     $res = $res."|$$rtransa{ds}|";
     # returning
     $res;
@@ -210,9 +212,9 @@ sub join8transaction {
 ##<<
 sub read8journal {
     #
-    # aim: read a journal file
+    # title : read a journal file
     #
-    # output: a reference to a hash of references, each associated
+    # output : a reference to a hash of references, each associated
     #         to one array providing one column of the journal
     #         The keys of %trint (global variable) are used for the keys
     #         of the hash of references.
@@ -227,8 +229,11 @@ sub read8journal {
     my $argu   = &uie::argu("read8journal",$hrsub,@_);
     if ($argu == 1) { return 1;}
     my $fic = $argu->{fic};
+    #
+    my $nbmo = 100;
     # opening the file
-    open(FIC,'<:encoding(UTF-8)',$fic) or 
+#    open(FIC,'<:encoding(UTF-8)',$fic) or 
+    open(FIC,'<',$fic) or 
 	die "'read8journal cannot open > $fic file: $!";
     # reading the file
     my $nbt = 0;
@@ -237,15 +242,18 @@ sub read8journal {
     foreach (keys %tran) {
         $tran{$_} = [];
     }
+    $| = 1;
     while (<FIC>) { if (!(m/^#/)) {
 	my $trs= $_;
         chomp $trs; $nbt++;
+        if (($nbt % $nbmo) == 0) { print $nbt," ";}
 	my $rtransa = &split8transaction(transa=>$trs);
 	foreach my $cle (keys %trint) {
 	    @{$tran{$cle}} = (@{$tran{$cle}},$$rtransa{$cle});
 	}
         #print8transaction(rtransa=>$rtransa,details=>0);
     }}
+    print "\n";
     # closing the file
     print "'read8journal' read a total of $nbt transactions\n";
     close(FIC);
@@ -260,9 +268,9 @@ sub read8journal {
 ##<<
 sub write8journal {
     #
-    # aim: write a journal file
+    # title : write a journal file
     #
-    # output: 1 (in fact nothing is to be returned)
+    # output : 1 (in fact nothing is to be returned)
     #
     # From the reference to a text journal is constituted and 
     #          stored into text file.
@@ -272,7 +280,8 @@ sub write8journal {
     #
     # arguments
     my $hrsub = {rjou =>[undef,"h","A reference such it is returned by '&read8journal'"],
-                 jour =>[undef,"c","File name of the journal to write"]
+                 jour =>[undef,"c","File name of the journal to write",
+                                   "When '' the printing is done on the screen"]
                 };
 ##>>
     my $argu   = &uie::argu("write8journal",$hrsub,@_);
@@ -280,7 +289,12 @@ sub write8journal {
     my $jour = $argu->{jour};
     my $rjou = $argu->{rjou};
     # opening the file
-    open(my $fjou,'>:encoding(UTF-8)',$jour) or die "cannot open > $jour: $!";
+#    open(my $fjou,'>:encoding(UTF-8)',$jour) or die "cannot open > $jour: $!";
+    my $ou = 1; my $fjou;
+    if ($jour eq "") { $ou = 0;}
+    if ($ou) {
+        open($fjou,'>',$jour) or die "cannot open > $jour: $!";
+    }
     # checking
     if (!check8journal(rjou=>$rjou)) {
 	die("The proposed journal was not checked as consistent");
@@ -292,12 +306,17 @@ sub write8journal {
 	foreach my $j (keys %trint) {
 	    $tra{$j} = ${$$rjou{$j}}[$i];
 	}
-        print $fjou &join8transaction(rtransa=>\%tra);
-        print $fjou "\n";
+        if ($ou) {
+          print $fjou &join8transaction(rtransa=>\%tra);
+          print $fjou "\n";
+        } else {
+          print &join8transaction(rtransa=>\%tra);
+          print "\n";
+        }
     }
     # closing the file
     print "'write8journal' wrote a total of $nbt transactions\n";
-    close($fjou);
+    if ($ou) { close($fjou);}
     # returning
     1;
 }
@@ -309,9 +328,9 @@ sub write8journal {
 ##<<
 sub check8journal {
     #
-    # aim: check the consistency of a journal structure
+    # title : check the consistency of a journal structure
     #
-    # output: 1 when the check is positive, 0 if not.
+    # output : 1 when the check is positive, 0 if not.
     #           When 'O' some warning indications are printed.
     # arguments
     my $hrsub = {rjou  =>[undef,"h","A reference such it is returned by '&read8journal'"]
@@ -359,7 +378,7 @@ sub check8journal {
 ##<<
 sub read8montant {
     #
-    # aim: read the file giving the initial amount of each account
+    # title : read the file giving the initial amount of each account
     #      from a text file where comment lines (starting with '#') 
     #      are neglected.
     #
@@ -367,7 +386,7 @@ sub read8montant {
     #      it must have two fields separated with '=>':
     #        the name of the account and the amount of its.
     #
-    # output: a reference to a hash of the initial amount of each account.
+    # output : a reference to a hash of the initial amount of each account.
     #         (keys are account names)
     #
     # arguments
@@ -378,7 +397,8 @@ sub read8montant {
     if ($argu == 1) { return 1;}
     my $mon = $argu->{mon};
     # opening the file
-    open(my $fic,'<:encoding(UTF-8)',$mon) 
+#    open(my $fic,'<:encoding(UTF-8)',$mon) 
+    open(my $fic,'<',$mon) 
 	or die "'read8montant cannot open > $mon file: $!";
     # reading the file
     my $nbt = 0;
@@ -393,8 +413,8 @@ sub read8montant {
             print "The number of fields: ",scalar @ligne," is not TWO as expected.\n";
 	    die("'read8montant' found a non acceptable line for a 'compte'");
 	}
-        my $clef = &uie::juste(chain=>$ligne[0],just=>"n");
-        my $vale = &uie::juste(chain=>$ligne[1],just=>"n");
+        my $clef = &uie::juste(cha=>$ligne[0],jus=>"n");
+        my $vale = &uie::juste(cha=>$ligne[1],jus=>"n");
 	$ina{$clef} = $vale;
     }}
     # closing the file
@@ -411,9 +431,9 @@ sub read8montant {
 ##<<
 sub sort8journal {
     #
-    # aim: sort a journal structure
+    # title : sort a journal structure
     #
-    # output: $res: the reference to the sorted journal
+    # output : $res: the reference to the sorted journal
     #
     # arguments
     my $hrsub = {rjou  =>[undef,"h","Reference such as returned by '&read8journal'"],
@@ -428,13 +448,15 @@ sub sort8journal {
                                    "'val' for the amount of the transactions",
                                    "'\$ref' a reference to an array of two components giving",
                                    "   the first and last columns of the set of columns",
-                                   "   to be used for an alphabetical sorting."] 
+                                   "   to be used for an alphabetical sorting."],
+                incr  =>[1,"c","1 for increasing order, 0 for decreasing order"]
                };
 ##>>
     my $argu   = &uie::argu("sort8journal",$hrsub,@_);
     if ($argu == 1) { return 1;}
     my $rjou = $argu->{rjou};
     my $sort = $argu->{sort};
+    my $incr = $argu->{incr};
     # checking the journal
     if (!&check8journal(rjou=>$rjou)) {
 	die "The journal given to 'sort8journal' was not found valid!\n";
@@ -481,7 +503,7 @@ sub sort8journal {
 	}
     }
     # getting the sorting permutation
-    my $permu = &uie::ordre(rar=>\@lvec,inc=>1,num=>0);
+    my $permu = &uie::ordre(rar=>\@lvec,inc=>$incr,num=>0);
     # building the permuted journal
     my $res = {};
     foreach (keys %trint) { $$res{$_} = [];}
@@ -502,12 +524,12 @@ sub sort8journal {
 ##<<
 sub select8journal {
     #
-    # aim: select some transaction from a journal structure and create
+    # title : select some transaction from a journal structure and create
     #      a new one from them
     #
-    # output: $res: the reference to the journal after selection
+    # output : $res: the reference to the journal after selection
     #
-    # Remark: to select over an interval, 'select8journal' must be applied twice.
+    # Remark : to select over an interval, 'select8journal' must be applied twice.
     #
     # arguments
     my $hrsub = {rjou  =>[undef,"c","Text file to be read"],
@@ -616,7 +638,7 @@ sub select8journal {
 ##<<
 sub read8definition {
     #
-    # aim : read a definition file to get all accounts, systematic 
+    # title : read a definition file to get all accounts, systematic 
     #       transactions... proposed as standard blocks as defined
     #       in '&uie::read8block' subroutine.
     #
@@ -633,7 +655,7 @@ sub read8definition {
     # The used separator is encoded with the scalar variable '$sep'.
     #
     #
-    # output: a reference to a hash having as keys the different block names
+    # output : a reference to a hash having as keys the different block names
     #         and values reference ot blocks as produced by '&uie::read8block'.
     #
     # constants
@@ -646,7 +668,8 @@ sub read8definition {
     if ($argu == 1) { return 1;}
     my $fdef = $argu->{fdef};
     # opening the file
-    open(my $fic,'<:encoding(UTF-8)',$fdef) 
+#    open(my $fic,'<:encoding(UTF-8)',$fdef) 
+    open(my $fic,'<',$fdef) 
 	or die "'read8definition cannot open > $fdef file: $!";
     # looking for the block names
     my @blocs = ();
@@ -682,10 +705,10 @@ sub read8definition {
 ##<<
 sub make8autra {
     #
-    # aim: from a definition, produce a journal file of
+    # title : from a definition, produce a journal file of
     #      automatic transaction for a precised month.
     #
-    # output: 1 if everything was fine, if not a fatal error is issued.
+    # output : 1 if everything was fine, if not a fatal error is issued.
     #
     # arguments
     my $hrsub = {ropau    =>[undef,"a","reference to the array of automatic transaction",
@@ -703,7 +726,8 @@ sub make8autra {
     my $year    = $argu->{year};
     my $journal = $argu->{journal};
     # opening the file
-    open(my $fic,'>>:encoding(UTF-8)',$journal) 
+#    open(my $fic,'>>:encoding(UTF-8)',$journal) 
+    open(my $fic,'>>',$journal) 
 	or die "'make8autra cannot open > $journal file: $!";
     # looping on the different automatic transactions
     my $nbopau = 0;
@@ -715,14 +739,14 @@ sub make8autra {
 	for my $mois (@mois) { if ($mois eq $month) {$oui =1;}}
 	if ($oui) {
 	    $nbopau++;
-	    my $trec = &uie::juste(chain=>$year,long=>4)."/".
-                       &uie::justn(numb=>$month,digi=>2)."/".
-                       &uie::justn(numb=>$transa[1],digi=>2);
-	    $trec = $trec."   ".&uie::juste(chain=>$transa[3],long=>1)."->".
-                                &uie::juste(chain=>$transa[4],long=>1)."  ";
-	    $trec = $trec."-".&uie::justn(numb=>$transa[2],digi=>2)."-";
-	    $trec = $trec.&uie::juste(chain=>$transa[0],avant=>"OA",long=>4)."=";
-            $trec = $trec.&uie::juste(chain=>$transa[8],long=>10,just=>"r")."|";
+	    my $trec = &uie::juste(cha=>$year,lon=>4)."/".
+                       &uie::justn(num=>$month,dig=>2)."/".
+                       &uie::justn(num=>$transa[1],dig=>2);
+	    $trec = $trec."   ".&uie::juste(cha=>$transa[3],lon=>1)."->".
+                                &uie::juste(cha=>$transa[4],lon=>1)."  ";
+	    $trec = $trec."-".&uie::justn(num=>$transa[2],dig=>2)."-";
+	    $trec = $trec.&uie::juste(cha=>$transa[0],ava=>"OA",lon=>4)."=";
+            $trec = $trec.&uie::juste(cha=>$transa[8],lon=>10,jus=>"r")."|";
             $trec = $trec.$transa[5].":";
             $trec = $trec.$transa[6].":";
             $trec = $trec.$transa[7]."|";
@@ -742,10 +766,10 @@ sub make8autra {
 ##<<
 sub questions4transactions {
     #
-    # aim  : provides questions for each component of a transaction
+    # title : provides questions for each component of a transaction
     #
-    # output: a reference to a series of questions such as used
-    #                 by '&uie::get8answers'
+    # output : a reference to a series of questions such as used
+    #                 by '&uie::get8answer'
     #
     # arguments
     my $hrsub = {rdefi  =>[undef,"h","A reference to a structure as produced by '&read8definition'"],
@@ -778,7 +802,7 @@ sub questions4transactions {
         if (($i % 3) == 0) { $aide_postes = $aide_postes."\n";}
         my $listep = join(" : ",($rdefi->{Postes}->[$i][0],
                                  $rdefi->{Postes}->[$i][1]));
-        $listep = &uie::juste(chain=>$listep,long=>30);
+        $listep = &uie::juste(cha=>$listep,lon=>30);
         $aide_postes = $aide_postes.$listep;
     }
     # getting the date
@@ -849,7 +873,7 @@ sub questions4transactions {
     # type de transaction
     my %quest = ("ques"=>"De quel type ?",
              "help"=>("Selon les formats suivant"),
-             "chec"=>["p",'^((\d\d\d\d)|(OA\d\d)|(Virt)|(Cheq)|(Plvt)|(\sCBJ)|(CBJB))$'],
+             "chec"=>["p",'^((\d\d\d\d)|(OA\d\d)|(Virt)|(Cheq)|(Plvt)|(\sCBJ)|(CBJB)|(Liqu))$'],
              "defa"=>undef);
     $rquestions->{"t"} = \%quest;
     # montant de transaction
@@ -876,19 +900,19 @@ sub questions4transactions {
 ##<<
 sub get8transa4journal {
     #
-    # aim: get a series of transaction and constitute a journal from them
+    # title : get a series of transaction and constitute a journal from them
     #
-    # output: reference to the hash of accepted answers. 
+    # output : reference to the hash of accepted answers. 
     #
     # constants
     my @trana = ("A","B","C","D","E");
     # arguments
     my $hrsub = {rquest  =>[undef,"h","reference to the hash of questions to ask.",
-                                      " (to be given to 'get8answers' see its comments",
+                                      " (to be given to 'get8answer' see its comments",
                                       "  for details)"],
                  rordre  =>[undef,"a","reference to an array of 'keys %\$rquest'", 
                                       "in the desired asking order to be given",
-                                      "to '&uie::get8answers'"],
+                                      "to '&uie::get8answer'"],
                  journal =>[undef,"c","File name where to write as a journal the received transactions",
                                       " (written in append mode)"] ,
                  largeur=>[100,"n","width of the two pannels"],
@@ -903,7 +927,7 @@ sub get8transa4journal {
     my $journal = $argu->{journal};
     my $largeur = $argu->{largeur};
     my $longhelp = $argu->{longhelp};
-    # checking consistency between questions and question order is done within '&uie::get8answers'
+    # checking consistency between questions and question order is done within '&uie::get8answer'
     # adding the question to continue or not
     # type de transaction
     my %quesui = ("ques"=>"Comment Continuer ?",
@@ -919,7 +943,8 @@ sub get8transa4journal {
     foreach (1..$nbtra) { push @rplaca,$rien;}
     my @controle;
     # opening the file
-    open(FIC,'>>:encoding(UTF-8)',$journal) or 
+#    open(FIC,'>>:encoding(UTF-8)',$journal) or 
+    open(FIC,'>>',$journal) or 
 	die "'get8transa4journal' cannot open $journal file: $!";
     my $nbtran = 0;
     # asking the different transactions
@@ -928,22 +953,22 @@ sub get8transa4journal {
         for (my $i = 0; $i < $nbtra; $i++) {
             my $numero = $nbtran-$nbtra+1+$i;
             if ($numero < 0) { $numero = 0;}
-            my $coco = &uie::juste(chain=>$numero,long=>3,just=>"r");
+            my $coco = &uie::juste(cha=>$numero,lon=>3,jus=>"r");
             $coco = $coco." <".$trana[$i]."> ".$rplaca[$i];
             $controle[$i] = \$coco;
 	}
         # getting a new transaction
-        my $noutra = &uie::get8answers(rplaca=>\@controle,
-                                       rquest=>$rquest,rordre=>$rordre,
-                                       largeur=>$largeur,longhelp=>$longhelp,
-                                       construc=>"s");
+        my $noutra = &uie::get8answer(rpl=>\@controle,
+                                       rqu=>$rquest,ror=>$rordre,
+                                       lah=>$largeur,loh=>$longhelp,
+                                       con=>"s");
 	$nbtran++;
         # what to do
         my $suite = $noutra->{"QQ"};
         my $quel = "";
-        if (&uie::belongs2(sca=>\$suite,arr=>\@trana)) {
+        if (&uie::belong9(sca=>\$suite,arr=>\@trana)) {
             # a stored transaction must be deleted
-            my @quel = &uie::belongs2(sca=>\$suite,arr=>\@trana);
+            my @quel = &uie::belong9(sca=>\$suite,arr=>\@trana);
             $quel = $quel[0];
         }
         # 
@@ -955,7 +980,7 @@ sub get8transa4journal {
         if ($suite eq "s") {
             # the newly entered transaction is valid
             # fitting decimal for the amount
-            $noutra->{hm} = &uie::justn(numb=>$noutra->{hm},deci=>2,digi=>-1);
+            $noutra->{hm} = &uie::justn(num=>$noutra->{hm},dec=>2,dig=>-1);
             # reconstituting the transaction
             my $ntran = &join8transaction(rtransa=>$noutra);
             print $ntran,"\n";
@@ -970,7 +995,7 @@ sub get8transa4journal {
         } elsif ( $quel ne "") {
             # the newly entered transaction is valid
             # fitting decimal for the amount
-            $noutra->{hm} = &uie::justn(numb=>$noutra->{hm},deci=>2,digi=>-1);
+            $noutra->{hm} = &uie::justn(num=>$noutra->{hm},dec=>2,dig=>-1);
             # reconstituting the transaction
             my $ntran = &join8transaction(rtransa=>$noutra);
             # getting the transaction to remove
@@ -1028,10 +1053,10 @@ sub get8transa4journal {
 ##<<
 sub make8balance {
     #
-    # aim: make the balance of a journal (and initial amounts)
+    # title : make the balance of a journal (and initial amounts)
     #                       based on a definition set.
     #
-    # output: reference to the hash of the balance
+    # output : reference to the hash of the balance
     #                       (see &print8balance for details). 
     #
     # arguments
@@ -1067,7 +1092,8 @@ sub make8balance {
     my $nuli = 0;
     $res->[$nuli] = [" "]; 
     foreach (sort keys %$comptes) {
-        push @$res[$nuli],$_.":".$comptes->{$_};
+        #push @$res[$nuli],$_.":".$comptes->{$_};
+        push @{$res->[$nuli]},$_.":".$comptes->{$_};
     }
     # initializing the initial amounts
     my %idc = ();
@@ -1077,7 +1103,8 @@ sub make8balance {
         my $nuc = 1;
         foreach my $c (sort keys %$comptes) {
             my $v = $comptes->{$c};
-            push @$res[$nuli],$rmon->{$v};
+            #push @$res[$nuli],$rmon->{$v};
+            push @{$res->[$nuli]},$rmon->{$v};
             $idc{$c} = $nuc; $nuc++;
         }
     }
@@ -1087,7 +1114,8 @@ sub make8balance {
         $nuli++;
         $res->[$nuli] = [$p.":".$postes->{$p}];
         foreach my $c (sort keys %$comptes) {
-            push @$res[$nuli],0;
+            #push @$res[$nuli],0;
+            push @{$res->[$nuli]},0;
             $idp{$p} = $nuli;
         }
     }
@@ -1098,7 +1126,8 @@ sub make8balance {
         $nuli++;
         $res->[$nuli] = [$p];
         foreach my $c (sort keys %$comptes) {
-            push @$res[$nuli],0;
+            #push @$res[$nuli],0;
+            push @{$res->[$nuli]},0;
         }
         $idm{$num} = $nuli; $num++;
     }
@@ -1110,7 +1139,8 @@ sub make8balance {
         $res->[$nuli] = [$p];
         foreach my $c (sort keys %$comptes) {
             my $v = $comptes->{$c};
-            push @$res[$nuli],$rmon->{$v};
+            #push @$res[$nuli],$rmon->{$v};
+            push @{$res->[$nuli]},$rmon->{$v};
         }
         $idr{$nur} = $nuli; $nur++;
     }
@@ -1119,8 +1149,8 @@ sub make8balance {
     foreach (@$njou) {
         # filtrage sur la date
         my $an = $_->{y};
-        my $mo = $_->{m}; $mo = &uie::justn(numb=>$mo,digi=>2);
-        my $jo = $_->{d}; $jo = &uie::justn(numb=>$jo,digi=>2);
+        my $mo = $_->{m}; $mo = &uie::justn(num=>$mo,dig=>2);
+        my $jo = $_->{d}; $jo = &uie::justn(num=>$jo,dig=>2);
         my $da = "$an/$mo/$jo";
         # 
         if ($da lt $$peri[0]) {
@@ -1128,7 +1158,7 @@ sub make8balance {
 	    # extraction de la transaction
 	    my $monta = $_->{hm};
 	    my $poste = $_->{p};
-	    if ($poste < 10) { $poste = &uie::justn(numb=>$poste,digi=>1);}
+	    if ($poste < 10) { $poste = &uie::justn(num=>$poste,dig=>1);}
 	    my $emett = $_->{e};
 	    my $recep = $_->{r};
 	    my $relem = $_->{re};
@@ -1151,7 +1181,7 @@ sub make8balance {
 	    # extraction de la transaction
 	    my $monta = $_->{hm};
 	    my $poste = $_->{p};
-	    if ($poste < 10) { $poste = &uie::justn(numb=>$poste,digi=>2);}
+	    if ($poste < 10) { $poste = &uie::justn(num=>$poste,dig=>2);}
 	    my $emett = $_->{e};
 	    my $recep = $_->{r};
 	    my $relem = $_->{re};
@@ -1193,16 +1223,17 @@ sub make8balance {
 ##<<
 sub print8balance {
     #
-    # aim: print a balance made by &make8balance
+    # title : print a balance made by &make8balance
     #                       
     #
-    # output: 1 but a file has been created
+    # output : 1 but a file has been created
     #
     # arguments
     my $hrsub = {rbal =>[undef,"a","reference to the array containing the balance."],
                  file =>[undef,"c","the file where to write it in appending mode."],
                  rdef =>[undef,"h","reference to the hash of a definition set (for the synthesis)."],
-                 form =>[[12,8],"a","widths for the title and the amounts"]
+                 form =>[[12,8],"a","widths for the title and the amounts"],
+                 mont =>["","c","File name where to write the ammount, default means no writing"]
                 };
 ##>>
     my $argu   = &uie::argu("print8balance",$hrsub,@_);
@@ -1211,6 +1242,7 @@ sub print8balance {
     my $file = $argu->{file};
     my $rdef = $argu->{rdef};
     my $form = $argu->{form};
+    my $mont = $argu->{mont};
     # getting the number of postes and accounts
     my $nbp = (scalar @$rbal) - 7;
     my $nba = scalar @{$rbal->[0]};
@@ -1222,13 +1254,13 @@ sub print8balance {
     }
     $sepa = $sepa."\n";
     # opening the output file
-    open(TUTU,'>>:encoding(UTF-8)',$file);
+    open(TUTU,'>>',$file);
     print TUTU $sepa;
     my $quel = 0;
     # printing the account titles
     for (my $j=0; $j < $nba; $j++) {
         my $cic = $rbal->[$quel]->[$j]; 
-        print TUTU &uie::juste(chain=>$cic,long=>$fmt[$j],just=>"r");
+        print TUTU &uie::juste(cha=>$cic,lon=>$fmt[$j],jus=>"r");
     }
     print TUTU "\n";
     $quel++;
@@ -1236,11 +1268,11 @@ sub print8balance {
     # printing the initial amounts
     foreach my $i (1) {
         my $cic = $rbal->[$quel]->[0]; 
-        print TUTU &uie::juste(chain=>$cic,long=>$fmt[0],just=>"L");
+        print TUTU &uie::juste(cha=>$cic,lon=>$fmt[0],jus=>"L");
 	for (my $j=1; $j < $nba; $j++) {
 	    my $cic = $rbal->[$quel]->[$j]; 
-            $cic = &uie::justn(numb=>$cic,deci=>0,digi=>-1,roun=>1);
-	    print TUTU &uie::juste(chain=>$cic,long=>$fmt[$j],just=>"r");
+            $cic = &uie::justn(num=>$cic,dec=>0,dig=>-1);
+	    print TUTU &uie::juste(cha=>$cic,lon=>$fmt[$j],jus=>"r");
 	}
 	print TUTU "\n";
         $quel++;
@@ -1249,11 +1281,11 @@ sub print8balance {
     # printing the core matrix
     foreach my $i (1..$nbp) {
         my $cic = $rbal->[$quel]->[0]; 
-        print TUTU &uie::juste(chain=>$cic,long=>$fmt[0],just=>"L");
+        print TUTU &uie::juste(cha=>$cic,lon=>$fmt[0],jus=>"L");
 	for (my $j=1; $j < $nba; $j++) {
 	    my $cic = $rbal->[$quel]->[$j]; 
-            $cic = &uie::justn(numb=>$cic,deci=>0,digi=>-1,roun=>1);
-	    print TUTU &uie::juste(chain=>$cic,long=>$fmt[$j],just=>"r");
+            $cic = &uie::justn(num=>$cic,dec=>0,dig=>-1);
+	    print TUTU &uie::juste(cha=>$cic,lon=>$fmt[$j],jus=>"r");
 	}
 	print TUTU "\n";
         $quel++;
@@ -1262,35 +1294,57 @@ sub print8balance {
     # printing the three totals
     foreach my $i (1..3) {
         my $cic = $rbal->[$quel]->[0]; 
-        print TUTU &uie::juste(chain=>$cic,long=>$fmt[0],just=>"L");
+        print TUTU &uie::juste(cha=>$cic,lon=>$fmt[0],jus=>"L");
 	for (my $j=1; $j < $nba; $j++) {
 	    my $cic = $rbal->[$quel]->[$j]; 
-            $cic = &uie::justn(numb=>$cic,deci=>0,digi=>-1,roun=>1);
-	    print TUTU &uie::juste(chain=>$cic,long=>$fmt[$j],just=>"r");
+            $cic = &uie::justn(num=>$cic,dec=>0,dig=>-1);
+	    print TUTU &uie::juste(cha=>$cic,lon=>$fmt[$j],jus=>"r");
 	}
 	print TUTU "\n";
         $quel++;
     }
     print TUTU $sepa;
     # printing the final amounts
+    my $bibi = 1;
+    if ($mont ne "") {
+        unless (open(BIBI,'>',$mont)) {
+            print "\n\n WAS NOT POSSIBLE TO WRITE THE AMOUNT FILE: $mont\n\n\n";
+            $bibi = 0;
+        } else {
+	    print BIBI "#\n# created on ",&uie::now(),"\n#\n";
+        }
+    } else {
+        $bibi = 0;
+    }
     my $fquel = $quel+1;
     foreach my $i (1..2) {
         my $cic = $rbal->[$quel]->[0]; 
-        print TUTU &uie::juste(chain=>$cic,long=>$fmt[0],just=>"L");
+        print TUTU &uie::juste(cha=>$cic,lon=>$fmt[0],jus=>"L");
 	for (my $j=1; $j < $nba; $j++) {
 	    my $cic = $rbal->[$quel]->[$j]; 
-            $cic = &uie::justn(numb=>$cic,deci=>0,digi=>-1,roun=>1);
-	    print TUTU &uie::juste(chain=>$cic,long=>$fmt[$j],just=>"r");
+            if ($bibi) {
+                if ($i == 2) {
+                    my $libb = $rbal->[0]->[$j];
+                    $libb =~ s/^.+://;
+                    print BIBI "  ",$libb," => ",$cic,"\n";
+                }
+	    }
+            $cic = &uie::justn(num=>$cic,dec=>0,dig=>-1);
+	    print TUTU &uie::juste(cha=>$cic,lon=>$fmt[$j],jus=>"r");
 	}
 	print TUTU "\n";
         $quel++;
+    }
+    if ($bibi) {
+        print BIBI "# End of the file\n";
+        close(BIBI);
     }
     print TUTU $sepa;
     $quel = 0;
     # printing the account titles
     for (my $j=0; $j < $nba; $j++) {
         my $cic = $rbal->[$quel]->[$j]; 
-        print TUTU &uie::juste(chain=>$cic,long=>$fmt[$j],just=>"r");
+        print TUTU &uie::juste(cha=>$cic,lon=>$fmt[$j],jus=>"r");
     }
     print TUTU "\n";
     print TUTU $sepa;
@@ -1306,7 +1360,7 @@ sub print8balance {
             $tota = $tota + $cic;
         }
         print TUTU "\t",
-              &uie::justn(numb=>$tota,deci=>0,digi=>-1,roun=>1),
+              &uie::justn(num=>$tota,dec=>0,dig=>-1),
               "  (@wha)",
               "\n";
     }
@@ -1323,10 +1377,10 @@ sub print8balance {
 ##<<
 sub transa4journal {
     #
-    # aim: extracts transactions from a journal
+    # title : extracts transactions from a journal
     #                       
     #
-    # output: a reference to an array of the transactions (a reference to a hash each)
+    # output : a reference to an array of the transactions (a reference to a hash each)
     #
     # arguments
     my $hrsub = {rjou =>[undef,"h","reference to a journal such those produced by &read8journal."],

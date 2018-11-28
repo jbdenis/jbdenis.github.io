@@ -2,7 +2,7 @@
 #
 # 16_05_10
 #
-use lib "/home/jbdenis/liana/info/perl/uie";
+use lib "/home/jbdenis/o/info/perl/uie";
 use strict;
 use warnings;
 use compta; 
@@ -14,7 +14,7 @@ my $rjou = &compta::read8journal(fic=>$fjou);
 #
 # getting all the first three transactions
 my $transas = &compta::transa4journal(rjou=>$rjou,tran=>[1,3]);
-&uie::print8structure(stru=>$transas);
+&uie::print8structure(str=>$transas);
 &uie::pause;
 #
 #

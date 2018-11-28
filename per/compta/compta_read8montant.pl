@@ -2,7 +2,7 @@
 #
 # 16_03_30 16_05_05
 #
-use lib "/home/jbdenis/liana/info/perl/uie";
+use lib "/home/jbdenis/o/info/perl/uie";
 use File::Copy;
 use strict;
 use compta; 
@@ -14,7 +14,7 @@ print "\n\n";
 #
 my $fimo = "compta-solsol.txt";
 my $resu = &compta::read8montant(mon=>$fimo);
-&uie::print8structure(stru=>$resu);
+&uie::print8structure(str=>$resu);
 #
 print "-"x4,"Fin du test de read8montant","-"x25,"\n";
 #

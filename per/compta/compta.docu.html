@@ -1,11 +1,336 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf8">
-  <meta name="creation" content=" 2016_06_03@17:13 ">
+  <meta name="creation" content=" 2018_11_28@21:13 ">
   <meta http-equiv="charset" content="utf8">
   <title>compta.pm</title>
 </head>
 <body>
+<h2>
+MODULE compta
+</h2>
+<p><pre>
+</pre></p>
+<par>
+To get the content of the module <a href="compta.pm">compta.pm</a>
+</par>
+<p>
+&nbsp;
+&nbsp;
+A total of 16 subroutines was detected:
+&nbsp;
+</p>
+<table border="3">
+  <tbody>
+    <tr>
+    </tr>
+      <td><strong>autra</strong></td>
+      <td>
+<a href="#sub make8autra {">
+make8autra
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>balance</strong></td>
+      <td>
+<a href="#sub make8balance {">
+make8balance
+</a>
+      </td>
+      <td>
+<a href="#sub print8balance {">
+print8balance
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>check</strong></td>
+      <td>
+<a href="#sub check8journal {">
+check8journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>definition</strong></td>
+      <td>
+<a href="#sub read8definition {">
+read8definition
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>get</strong></td>
+      <td>
+<a href="#sub get8transa4journal {">
+get8transa4journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>join</strong></td>
+      <td>
+<a href="#sub join8transaction {">
+join8transaction
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>journal</strong></td>
+      <td>
+<a href="#sub check8journal {">
+check8journal
+</a>
+      </td>
+      <td>
+<a href="#sub get8transa4journal {">
+get8transa4journal
+</a>
+      </td>
+      <td>
+<a href="#sub read8journal {">
+read8journal
+</a>
+      </td>
+      <td>
+<a href="#sub select8journal {">
+select8journal
+</a>
+      </td>
+      <td>
+<a href="#sub sort8journal {">
+sort8journal
+</a>
+      </td>
+      <td>
+<a href="#sub transa4journal {">
+transa4journal
+</a>
+      </td>
+      <td>
+<a href="#sub write8journal {">
+write8journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>make</strong></td>
+      <td>
+<a href="#sub make8autra {">
+make8autra
+</a>
+      </td>
+      <td>
+<a href="#sub make8balance {">
+make8balance
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>montant</strong></td>
+      <td>
+<a href="#sub read8montant {">
+read8montant
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>print</strong></td>
+      <td>
+<a href="#sub print8balance {">
+print8balance
+</a>
+      </td>
+      <td>
+<a href="#sub print8transaction {">
+print8transaction
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>questions</strong></td>
+      <td>
+<a href="#sub questions4transactions {">
+questions4transactions
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>read</strong></td>
+      <td>
+<a href="#sub read8definition {">
+read8definition
+</a>
+      </td>
+      <td>
+<a href="#sub read8journal {">
+read8journal
+</a>
+      </td>
+      <td>
+<a href="#sub read8montant {">
+read8montant
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>select</strong></td>
+      <td>
+<a href="#sub select8journal {">
+select8journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>sort</strong></td>
+      <td>
+<a href="#sub sort8journal {">
+sort8journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>split</strong></td>
+      <td>
+<a href="#sub split8transaction {">
+split8transaction
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>transa</strong></td>
+      <td>
+<a href="#sub get8transa4journal {">
+get8transa4journal
+</a>
+      </td>
+      <td>
+<a href="#sub transa4journal {">
+transa4journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>transaction</strong></td>
+      <td>
+<a href="#sub join8transaction {">
+join8transaction
+</a>
+      </td>
+      <td>
+<a href="#sub print8transaction {">
+print8transaction
+</a>
+      </td>
+      <td>
+<a href="#sub split8transaction {">
+split8transaction
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>transactions</strong></td>
+      <td>
+<a href="#sub questions4transactions {">
+questions4transactions
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>write</strong></td>
+      <td>
+<a href="#sub write8journal {">
+write8journal
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>z...</strong></td>
+  </tbody>
+</table>
+<ol>
+<li>
+<a href="#sub check8journal {">
+sub check8journal {           (check the consistency of a journal structure)
+</a>
+</li>
+<li>
+<a href="#sub get8transa4journal {">
+sub get8transa4journal {      (get a series of transaction and constitute a journal from them)
+</a>
+</li>
+<li>
+<a href="#sub join8transaction {">
+sub join8transaction {        (reconstitute a transaction from the individual components)
+</a>
+</li>
+<li>
+<a href="#sub make8autra {">
+sub make8autra {              (from a definition, produce a journal file of)
+</a>
+</li>
+<li>
+<a href="#sub make8balance {">
+sub make8balance {            (make the balance of a journal (and initial amounts))
+</a>
+</li>
+<li>
+<a href="#sub print8balance {">
+sub print8balance {           (print a balance made by &make8balance)
+</a>
+</li>
+<li>
+<a href="#sub print8transaction {">
+sub print8transaction {       (print a transaction)
+</a>
+</li>
+<li>
+<a href="#sub questions4transactions {">
+sub questions4transactions {  (provides questions for each component of a transaction)
+</a>
+</li>
+<li>
+<a href="#sub read8definition {">
+sub read8definition {         (read a definition file to get all accounts, systematic )
+</a>
+</li>
+<li>
+<a href="#sub read8journal {">
+sub read8journal {            (read a journal file)
+</a>
+</li>
+<li>
+<a href="#sub read8montant {">
+sub read8montant {            (read the file giving the initial amount of each account)
+</a>
+</li>
+<li>
+<a href="#sub select8journal {">
+sub select8journal {          (select some transaction from a journal structure and create)
+</a>
+</li>
+<li>
+<a href="#sub sort8journal {">
+sub sort8journal {            (sort a journal structure)
+</a>
+</li>
+<li>
+<a href="#sub split8transaction {">
+sub split8transaction {       (split a transaction into its components)
+</a>
+</li>
+<li>
+<a href="#sub transa4journal {">
+sub transa4journal {          (extracts transactions from a journal)
+</a>
+</li>
+<li>
+<a href="#sub write8journal {">
+sub write8journal {           (write a journal file)
+</a>
+</li>
+</ol>
 <h2>
 General Presentation of compta.pm
 </h2>
@@ -37,103 +362,15 @@ General Presentation of compta.pm
 #  everywhere in these files.
 #
 </pre></p>
-<p>
-&nbsp;
-&nbsp;
-A total of 16 subroutines was detected:
-&nbsp;
-</p>
-<ol>
-<li>
-<a href="#sub check8journal {">
-sub check8journal {           
-</a>
-</li>
-<li>
-<a href="#sub get8transa4journal {">
-sub get8transa4journal {      
-</a>
-</li>
-<li>
-<a href="#sub join8transaction {">
-sub join8transaction {        
-</a>
-</li>
-<li>
-<a href="#sub make8autra {">
-sub make8autra {              
-</a>
-</li>
-<li>
-<a href="#sub make8balance {">
-sub make8balance {            
-</a>
-</li>
-<li>
-<a href="#sub print8balance {">
-sub print8balance {           
-</a>
-</li>
-<li>
-<a href="#sub print8transaction {">
-sub print8transaction {       
-</a>
-</li>
-<li>
-<a href="#sub questions4transactions {">
-sub questions4transactions {  
-</a>
-</li>
-<li>
-<a href="#sub read8definition {">
-sub read8definition {         
-</a>
-</li>
-<li>
-<a href="#sub read8journal {">
-sub read8journal {            
-</a>
-</li>
-<li>
-<a href="#sub read8montant {">
-sub read8montant {            
-</a>
-</li>
-<li>
-<a href="#sub select8journal {">
-sub select8journal {          
-</a>
-</li>
-<li>
-<a href="#sub sort8journal {">
-sub sort8journal {            
-</a>
-</li>
-<li>
-<a href="#sub split8transaction {">
-sub split8transaction {       
-</a>
-</li>
-<li>
-<a href="#sub transa4journal {">
-sub transa4journal {          
-</a>
-</li>
-<li>
-<a href="#sub write8journal {">
-sub write8journal {           
-</a>
-</li>
-</ol>
 <h2>
 <a name="sub check8journal {"></a>
 1 sub check8journal {
 </h2>
 <p><pre>
     #
-    # aim: check the consistency of a journal structure
+    # title : check the consistency of a journal structure
     #
-    # output: 1 when the check is positive, 0 if not.
+    # output : 1 when the check is positive, 0 if not.
     #           When 'O' some warning indications are printed.
     # arguments
     my $hrsub = {rjou  =>[undef,"h","A reference such it is returned by '&read8journal'"]
@@ -145,19 +382,19 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: get a series of transaction and constitute a journal from them
+    # title : get a series of transaction and constitute a journal from them
     #
-    # output: reference to the hash of accepted answers. 
+    # output : reference to the hash of accepted answers. 
     #
     # constants
     my @trana = ("A","B","C","D","E");
     # arguments
     my $hrsub = {rquest  =>[undef,"h","reference to the hash of questions to ask.",
-                                      " (to be given to 'get8answers' see its comments",
+                                      " (to be given to 'get8answer' see its comments",
                                       "  for details)"],
                  rordre  =>[undef,"a","reference to an array of 'keys %\$rquest'", 
                                       "in the desired asking order to be given",
-                                      "to '&uie::get8answers'"],
+                                      "to '&uie::get8answer'"],
                  journal =>[undef,"c","File name where to write as a journal the received transactions",
                                       " (written in append mode)"] ,
                  largeur=>[100,"n","width of the two pannels"],
@@ -170,9 +407,9 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: reconstitute a transaction from the individual components
+    # title : reconstitute a transaction from the individual components
     #
-    # output: the transaction such it is in a journal line
+    # output : the transaction such it is in a journal line
     #
     #
     # arguments
@@ -185,10 +422,10 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: from a definition, produce a journal file of
+    # title : from a definition, produce a journal file of
     #      automatic transaction for a precised month.
     #
-    # output: 1 if everything was fine, if not a fatal error is issued.
+    # output : 1 if everything was fine, if not a fatal error is issued.
     #
     # arguments
     my $hrsub = {ropau    =>[undef,"a","reference to the array of automatic transaction",
@@ -205,10 +442,10 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: make the balance of a journal (and initial amounts)
+    # title : make the balance of a journal (and initial amounts)
     #                       based on a definition set.
     #
-    # output: reference to the hash of the balance
+    # output : reference to the hash of the balance
     #                       (see &print8balance for details). 
     #
     # arguments
@@ -226,16 +463,17 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: print a balance made by &make8balance
+    # title : print a balance made by &make8balance
     #                       
     #
-    # output: 1 but a file has been created
+    # output : 1 but a file has been created
     #
     # arguments
     my $hrsub = {rbal =>[undef,"a","reference to the array containing the balance."],
                  file =>[undef,"c","the file where to write it in appending mode."],
                  rdef =>[undef,"h","reference to the hash of a definition set (for the synthesis)."],
-                 form =>[[12,8],"a","widths for the title and the amounts"]
+                 form =>[[12,8],"a","widths for the title and the amounts"],
+                 mont =>["","c","File name where to write the ammount, default means no writing"]
                 };
 </pre></p>
 <h2>
@@ -244,9 +482,9 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: print a transaction
+    # title : print a transaction
     #
-    # output: nothing but a display is produced on the screen.
+    # output : nothing but a display is produced on the screen.
     #
     #
     # arguments
@@ -260,10 +498,10 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim  : provides questions for each component of a transaction
+    # title : provides questions for each component of a transaction
     #
-    # output: a reference to a series of questions such as used
-    #                 by '&uie::get8answers'
+    # output : a reference to a series of questions such as used
+    #                 by '&uie::get8answer'
     #
     # arguments
     my $hrsub = {rdefi  =>[undef,"h","A reference to a structure as produced by '&read8definition'"],
@@ -276,7 +514,7 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim : read a definition file to get all accounts, systematic 
+    # title : read a definition file to get all accounts, systematic 
     #       transactions... proposed as standard blocks as defined
     #       in '&uie::read8block' subroutine.
     #
@@ -293,7 +531,7 @@ sub write8journal {
     # The used separator is encoded with the scalar variable '$sep'.
     #
     #
-    # output: a reference to a hash having as keys the different block names
+    # output : a reference to a hash having as keys the different block names
     #         and values reference ot blocks as produced by '&uie::read8block'.
     #
     # constants
@@ -308,9 +546,9 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: read a journal file
+    # title : read a journal file
     #
-    # output: a reference to a hash of references, each associated
+    # output : a reference to a hash of references, each associated
     #         to one array providing one column of the journal
     #         The keys of %trint (global variable) are used for the keys
     #         of the hash of references.
@@ -328,7 +566,7 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: read the file giving the initial amount of each account
+    # title : read the file giving the initial amount of each account
     #      from a text file where comment lines (starting with '#') 
     #      are neglected.
     #
@@ -336,7 +574,7 @@ sub write8journal {
     #      it must have two fields separated with '=>':
     #        the name of the account and the amount of its.
     #
-    # output: a reference to a hash of the initial amount of each account.
+    # output : a reference to a hash of the initial amount of each account.
     #         (keys are account names)
     #
     # arguments
@@ -349,12 +587,12 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: select some transaction from a journal structure and create
+    # title : select some transaction from a journal structure and create
     #      a new one from them
     #
-    # output: $res: the reference to the journal after selection
+    # output : $res: the reference to the journal after selection
     #
-    # Remark: to select over an interval, 'select8journal' must be applied twice.
+    # Remark : to select over an interval, 'select8journal' must be applied twice.
     #
     # arguments
     my $hrsub = {rjou  =>[undef,"c","Text file to be read"],
@@ -388,9 +626,9 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: sort a journal structure
+    # title : sort a journal structure
     #
-    # output: $res: the reference to the sorted journal
+    # output : $res: the reference to the sorted journal
     #
     # arguments
     my $hrsub = {rjou  =>[undef,"h","Reference such as returned by '&read8journal'"],
@@ -405,7 +643,8 @@ sub write8journal {
                                    "'val' for the amount of the transactions",
                                    "'\$ref' a reference to an array of two components giving",
                                    "   the first and last columns of the set of columns",
-                                   "   to be used for an alphabetical sorting."] 
+                                   "   to be used for an alphabetical sorting."],
+                incr  =>[1,"c","1 for increasing order, 0 for decreasing order"]
                };
 </pre></p>
 <h2>
@@ -414,9 +653,9 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: split a transaction into its components
+    # title : split a transaction into its components
     # 
-    # output: a reference to a hash of references in the following order:
+    # output : a reference to a hash of references in the following order:
     #          the year (integer),
     #          the month (integer),
     #          the day within the month (integer),
@@ -442,10 +681,10 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: extracts transactions from a journal
+    # title : extracts transactions from a journal
     #                       
     #
-    # output: a reference to an array of the transactions (a reference to a hash each)
+    # output : a reference to an array of the transactions (a reference to a hash each)
     #
     # arguments
     my $hrsub = {rjou =>[undef,"h","reference to a journal such those produced by &read8journal."],
@@ -461,9 +700,9 @@ sub write8journal {
 </h2>
 <p><pre>
     #
-    # aim: write a journal file
+    # title : write a journal file
     #
-    # output: 1 (in fact nothing is to be returned)
+    # output : 1 (in fact nothing is to be returned)
     #
     # From the reference to a text journal is constituted and 
     #          stored into text file.
@@ -473,7 +712,8 @@ sub write8journal {
     #
     # arguments
     my $hrsub = {rjou =>[undef,"h","A reference such it is returned by '&read8journal'"],
-                 jour =>[undef,"c","File name of the journal to write"]
+                 jour =>[undef,"c","File name of the journal to write",
+                                   "When '' the printing is done on the screen"]
                 };
 </pre></p>
 <h2>

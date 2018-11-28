@@ -1,8 +1,9 @@
 #!/usr/bin/perl -w
 #
-# 16_05_09 16_05_24
+# 16_05_09 16_05_24 18_11_16 
 #
-use lib "/home/jbdenis/liana/info/perl/uie";
+use lib "/home/jbdenis/o/info/perl/uie";
+use lib "/home/jbdenis/o/info/perl/compta";
 use strict;
 use warnings;
 use compta; 
@@ -24,13 +25,14 @@ my $rjou = &compta::read8journal(fic=>$fjou);
 # making the balance
 unlink "tutu.txt";
 my $rbalance = &compta::make8balance(rdef=>$rdef,rmon=>$rmon,rjou=>$rjou);
+&uie::la(str=>$rbalance,mes=>"LE TABLEAU");
 &compta::print8balance(rbal=>$rbalance,file=>"tutu.txt",rdef=>$rdef);
 open(TUTU,"tutu.txt") or die "Peux Pas Ouvrir tutu.txt : $!.\n";
 while(my $l = <TUTU>) {
     print $l;
 }
 close TUTU;
-&uie::pause(mess=>"Bilan sur tout le journal");
+&uie::pause(mes=>"Bilan sur tout le journal");
 #
 unlink "tutu.txt";
 my $rbalance = &compta::make8balance(rdef=>$rdef,rmon=>$rmon,rjou=>$rjou,peri=>["2011/01/08","2011/01/09"]);
@@ -40,7 +42,7 @@ while(my $l = <TUTU>) {
     print $l;
 }
 close TUTU;
-&uie::pause(mess=>"Bilan sur une partie du journal");
+&uie::pause(mes=>"Bilan sur une partie du journal");
 #
 unlink "tutu.txt";
 my $rbalance = &compta::make8balance(rdef=>$rdef,rmon=>$rmon,rjou=>$rjou,rele=>"eb");
@@ -50,7 +52,7 @@ while(my $l = <TUTU>) {
     print $l;
 }
 close TUTU;
-&uie::pause(mess=>"Bilan jusqu'au relevé 'eb'");
+&uie::pause(mes=>"Bilan jusqu'au relevé 'eb'");
 #
 #
 print "-"x4,"Fin du test de 8balance","-"x25,"\n";
