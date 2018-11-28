@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# 16_03_20 16_04_11
+# 16_03_20 16_04_11 17_04_05
 #
 use strict;
 use warnings;
@@ -12,21 +12,22 @@ my $answer;
 &uie::pause;
 &uie::pause("HELP");
 &uie::pause;
-&uie::pause("mess");
-&uie::pause;
-&uie::pause("stst");
-&uie::pause;
 #
-$answer = &uie::pause(mess=>"give something to be returned...");
+&uie::pause(mes=>"a message");
+#
+$answer = &uie::pause(mes=>"give something to be returned...",con=>"CONT");
 print "'$answer' a été renvoyé\n";
 #
-$answer = &uie::pause(stst=>"ss",mess=>"ne pas stopper pour voir la suite !");
+$answer = &uie::pause(mes=>"give something to be returned...");
 print "'$answer' a été renvoyé\n";
 #
-$answer = &uie::pause(mess=>"J'ajouter une question\n en deux lignes");
+$answer = &uie::pause(sto=>"ss",mes=>"ne pas stopper pour voir la suite !");
 print "'$answer' a été renvoyé\n";
 #
-$answer = &uie::pause(mess=>"Rien à dire, cela marche...",stst=>"stop");
+$answer = &uie::pause(mes=>"J'ajouter une question\n en deux lignes");
+print "'$answer' a été renvoyé\n";
+#
+$answer = &uie::pause(mes=>"Rien à dire, cela marche...",sto=>"stop");
 print "'$answer' a été renvoyé\n";
 #
 print "-"x4,"test de 'pause' terminé","-"x25,"\n";

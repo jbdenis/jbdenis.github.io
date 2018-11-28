@@ -16,14 +16,14 @@ $rord = &uie::ordre(rar=>\@vector,num=>1);
 for (my $i=0; $i < scalar @vector; $i++) {
     print $i," : ",$vector[$i]," - ",$$rord[$i]," - ",$vector[$$rord[$i]],"\n";
 }
-uie::pause(mess=>"sur un vecteur numérique");
+uie::pause(mes=>"sur un vecteur numérique");
 print "^"x32,"\n";
 #
 $rord = &uie::ordre(rar=>\@vector,inc=>0,num=>1);
 for (my $i=0; $i < scalar @vector; $i++) {
     print $i," : ",$vector[$i]," - ",$$rord[$i]," - ",$vector[$$rord[$i]],"\n";
 }
-uie::pause(mess=>"sur un vecteur numérique décroissant");
+uie::pause(mes=>"sur un vecteur numérique décroissant");
 print "^"x32,"\n";
 #
 # tri alphabétique
@@ -34,14 +34,14 @@ $rord = &uie::ordre(rar=>\@vector);
 for (my $i=0; $i < scalar @vector; $i++) {
     print $i," : ",$vector[$i]," - ",$$rord[$i]," - ",$vector[$$rord[$i]],"\n";
 }
-uie::pause(mess=>"sur un vecteur alphabétique croissant");
+uie::pause(mes=>"sur un vecteur alphabétique croissant");
 print "^"x32,"\n";
 #
 $rord = &uie::ordre(rar=>\@vector,inc=>0);
 for (my $i=0; $i < scalar @vector; $i++) {
     print $i," : ",$vector[$i]," - ",$$rord[$i]," - ",$vector[$$rord[$i]],"\n";
 }
-uie::pause(mess=>"sur un vecteur alphabétique décroissant");
+uie::pause(mes=>"sur un vecteur alphabétique décroissant");
 print "^"x32,"\n";
 #
 print "-"x4,"Fin du test de ordre","-"x25,"\n";

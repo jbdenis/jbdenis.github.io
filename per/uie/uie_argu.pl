@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# 16_03_25 16_04_11
+# 16_03_25 16_04_11 17_04_04
 #
 use strict;
 use warnings;
@@ -36,7 +36,7 @@ sub essai {
     print "Argument ara    =  @$ara  \n";
     if (ref($arh) eq "HASH") {
         print "Argument arh    =  It's a hash\n";
-        &uie::print8structure(stru=>$arh);
+        &uie::print8structure(str=>$arh);
     } else {
         print "Argument arh    =  It's an array: @$arh\n";
     }
@@ -56,49 +56,49 @@ my $aa = 'A';
        arh=>["A"],
        arc=>"A",
        und=>"chaine pour und");
-&uie::pause(mess=>" (1) und par une chaine");
+&uie::pause(mes=>" (1) und par une chaine");
 #
 &essai(ars=>\$aa,
        arh=>["A"],
        arc=>"A",
        und=>undef);
-&uie::pause(mess=>" (1) und par undef");
+&uie::pause(mes=>" (1) und par undef");
 #
 &essai(ars=>\$aa,
        arh=>["A"],
        arc=>"A",
        und=>"chaine pour und");
-&uie::pause(mess=>" (2) arn par defaut");
+&uie::pause(mes=>" (2) arn par defaut");
 #
 &essai(ars=>\$aa,
        arh=>["A"],
        arc=>"A",
        arn=>5,
        und=>"chaine pour und");
-&uie::pause(mess=>" (2) arn par 5");
+&uie::pause(mes=>" (2) arn par 5");
 #
 &essai(ars=>\$aa,
        arh=>["A"],
        arc=>"A",
        arn=>undef,
        und=>"chaine pour und");
-&uie::pause(mess=>" (2) arn par undef");
+&uie::pause(mes=>" (2) arn par undef");
 #
 &essai("help");
-&uie::pause(mess=>"List of arguments");
+&uie::pause(mes=>"List of arguments");
 #
 &essai("ara");
-&uie::pause(mess=>"Details of one argument");
+&uie::pause(mes=>"Details of one argument");
 #
 &essai(ars=>\22,
        arh=>{a=>"A",d=>"D",z=>"Z"},
        arc=>"A la prochaine !");
-&uie::pause(mess=>"Calling the subroutine (1)");
+&uie::pause(mes=>"Calling the subroutine (1)");
 #
 &essai(ars=>\22,
        arh=>["A","D","Z"],
        arc=>"A la prochaine !");
-&uie::pause(mess=>"Calling the subroutine (2)");
+&uie::pause(mes=>"Calling the subroutine (2)");
 #
 print "-"x4,"Fin du test de argu","-"x25,"\n";
 #

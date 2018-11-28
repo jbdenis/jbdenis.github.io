@@ -1,32 +1,478 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf8">
-  <meta name="creation" content=" 2016_06_02@18:22 ">
+  <meta name="creation" content=" 2018_11_28@15:14 ">
   <meta http-equiv="charset" content="utf8">
   <title>uie.pm</title>
 </head>
 <body>
 <h2>
-General Presentation of uie.pm
+MODULE uie
 </h2>
 <p><pre>
-#
-# 'uie' are the three vocals of the French word 'UtIlEs',
-#       to remind the basic aim of the proposed subroutines.
-#
-# The module comprises a series of subroutines that I found of
-# use to have at hand. Probably, most of them already exist
-# somewhere else in a more efficient code... but it was a 
-# good exercise for me.
-#
 </pre></p>
+<par>
+To get the content of the module <a href="uie.pm">uie.pm</a>
+</par>
 <p>
 &nbsp;
 &nbsp;
-A total of 15 subroutines was detected:
+A total of 39 subroutines was detected:
 &nbsp;
 </p>
+<table border="3">
+  <tbody>
+    <tr>
+    </tr>
+      <td><strong>add</strong></td>
+      <td>
+<a href="#sub add8err {">
+add8err
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>answer</strong></td>
+      <td>
+<a href="#sub get8answer {">
+get8answer
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>ask</strong></td>
+      <td>
+<a href="#sub ask8question {">
+ask8question
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>belong</strong></td>
+      <td>
+<a href="#sub belong9 {">
+belong9
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>block</strong></td>
+      <td>
+<a href="#sub read8block {">
+read8block
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>check</strong></td>
+      <td>
+<a href="#sub check8err {">
+check8err
+</a>
+      </td>
+      <td>
+<a href="#sub check8ref {">
+check8ref
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>clean</strong></td>
+      <td>
+<a href="#sub clean8string {">
+clean8string
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>compare</strong></td>
+      <td>
+<a href="#sub compare8set {">
+compare8set
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>conca</strong></td>
+      <td>
+<a href="#sub conca8err { ">
+conca8err
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>copy</strong></td>
+      <td>
+<a href="#sub copy8structure {">
+copy8structure
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>csv</strong></td>
+      <td>
+<a href="#sub dim4csv {">
+dim4csv
+</a>
+      </td>
+      <td>
+<a href="#sub line4csv {">
+line4csv
+</a>
+      </td>
+      <td>
+<a href="#sub read8csv {">
+read8csv
+</a>
+      </td>
+      <td>
+<a href="#sub write8csv {">
+write8csv
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>dim</strong></td>
+      <td>
+<a href="#sub dim4csv {">
+dim4csv
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>eml</strong></td>
+      <td>
+<a href="#sub make8eml {">
+make8eml
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>err</strong></td>
+      <td>
+<a href="#sub add8err {">
+add8err
+</a>
+      </td>
+      <td>
+<a href="#sub check8err {">
+check8err
+</a>
+      </td>
+      <td>
+<a href="#sub conca8err { ">
+conca8err
+</a>
+      </td>
+      <td>
+<a href="#sub err9 {">
+err9
+</a>
+      </td>
+      <td>
+<a href="#sub print8err {">
+print8err
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>extract</strong></td>
+      <td>
+<a href="#sub extract8string {">
+extract8string
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>get</strong></td>
+      <td>
+<a href="#sub get8answer {">
+get8answer
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>hash</strong></td>
+      <td>
+<a href="#sub join8hash {">
+join8hash
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>hmat</strong></td>
+      <td>
+<a href="#sub print8hmat {">
+print8hmat
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>html</strong></td>
+      <td>
+<a href="#sub spec2html {">
+spec2html
+</a>
+      </td>
+      <td>
+<a href="#sub text2html {">
+text2html
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>join</strong></td>
+      <td>
+<a href="#sub join8hash {">
+join8hash
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>line</strong></td>
+      <td>
+<a href="#sub line4csv {">
+line4csv
+</a>
+      </td>
+      <td>
+<a href="#sub read8line {">
+read8line
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>make</strong></td>
+      <td>
+<a href="#sub make8eml {">
+make8eml
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>panneau</strong></td>
+      <td>
+<a href="#sub print8panneau {">
+print8panneau
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>print</strong></td>
+      <td>
+<a href="#sub print8err {">
+print8err
+</a>
+      </td>
+      <td>
+<a href="#sub print8hmat {">
+print8hmat
+</a>
+      </td>
+      <td>
+<a href="#sub print8panneau {">
+print8panneau
+</a>
+      </td>
+      <td>
+<a href="#sub print8structure {">
+print8structure
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>question</strong></td>
+      <td>
+<a href="#sub ask8question {">
+ask8question
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>read</strong></td>
+      <td>
+<a href="#sub read8block {">
+read8block
+</a>
+      </td>
+      <td>
+<a href="#sub read8csv {">
+read8csv
+</a>
+      </td>
+      <td>
+<a href="#sub read8line {">
+read8line
+</a>
+      </td>
+      <td>
+<a href="#sub read8structure {">
+read8structure
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>ref</strong></td>
+      <td>
+<a href="#sub check8ref {">
+check8ref
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>replace</strong></td>
+      <td>
+<a href="#sub replace8string {">
+replace8string
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>set</strong></td>
+      <td>
+<a href="#sub compare8set {">
+compare8set
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>spec</strong></td>
+      <td>
+<a href="#sub spec2html {">
+spec2html
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>split</strong></td>
+      <td>
+<a href="#sub split8string {">
+split8string
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>string</strong></td>
+      <td>
+<a href="#sub clean8string {">
+clean8string
+</a>
+      </td>
+      <td>
+<a href="#sub extract8string {">
+extract8string
+</a>
+      </td>
+      <td>
+<a href="#sub replace8string {">
+replace8string
+</a>
+      </td>
+      <td>
+<a href="#sub split8string {">
+split8string
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>structure</strong></td>
+      <td>
+<a href="#sub copy8structure {">
+copy8structure
+</a>
+      </td>
+      <td>
+<a href="#sub print8structure {">
+print8structure
+</a>
+      </td>
+      <td>
+<a href="#sub read8structure {">
+read8structure
+</a>
+      </td>
+      <td>
+<a href="#sub write8structure {">
+write8structure
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>text</strong></td>
+      <td>
+<a href="#sub text2html {">
+text2html
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>write</strong></td>
+      <td>
+<a href="#sub write8csv {">
+write8csv
+</a>
+      </td>
+      <td>
+<a href="#sub write8structure {">
+write8structure
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>z...</strong></td>
+      <td>
+<a href="#sub argu {">
+argu
+</a>
+      </td>
+      <td>
+<a href="#sub juste {">
+juste
+</a>
+      </td>
+      <td>
+<a href="#sub justn {">
+justn
+</a>
+      </td>
+      <td>
+<a href="#sub la {">
+la
+</a>
+      </td>
+      <td>
+<a href="#sub now {">
+now
+</a>
+      </td>
+      <td>
+<a href="#sub numerical {">
+numerical
+</a>
+      </td>
+      <td>
+<a href="#sub ordre {">
+ordre
+</a>
+      </td>
+      <td>
+<a href="#sub pause{">
+pause{
+</a>
+      </td>
+      <td>
+<a href="#sub retrouve {">
+retrouve
+</a>
+      </td>
+  </tbody>
+</table>
 <ol>
+<li>
+<a href="#sub add8err {">
+sub add8err {                 (creating and/or adding error messages)
+</a>
+</li>
 <li>
 <a href="#sub argu {">
 sub argu {                    (decoding and checking arguments given through hashes)
@@ -38,8 +484,13 @@ sub ask8question {            (asking one question on the screen without check)
 </a>
 </li>
 <li>
-<a href="#sub belongs2{">
-sub belongs2{                 (scalar belongs to array)
+<a href="#sub belong9 {">
+sub belong9 {                 (scalar belongs to array?)
+</a>
+</li>
+<li>
+<a href="#sub check8err {">
+sub check8err {               (check for an error object)
 </a>
 </li>
 <li>
@@ -48,8 +499,43 @@ sub check8ref {               (checking references)
 </a>
 </li>
 <li>
-<a href="#sub get8answers {">
-sub get8answers {             (asking a series of questions from the terminal)
+<a href="#sub clean8string {">
+sub clean8string {            (removes spacing and more into a string)
+</a>
+</li>
+<li>
+<a href="#sub compare8set {">
+sub compare8set {             (compare the elements of two arrays)
+</a>
+</li>
+<li>
+<a href="#sub conca8err { ">
+sub conca8err {               (concatanating two error objects)
+</a>
+</li>
+<li>
+<a href="#sub copy8structure {">
+sub copy8structure {          (copy a hierarquical structure of references)
+</a>
+</li>
+<li>
+<a href="#sub dim4csv {">
+sub dim4csv {                 (returns the dimensions of a csv table)
+</a>
+</li>
+<li>
+<a href="#sub err9 {">
+sub err9 {                    (detecting an error object)
+</a>
+</li>
+<li>
+<a href="#sub extract8string {">
+sub extract8string {          (extracting substrings from a string)
+</a>
+</li>
+<li>
+<a href="#sub get8answer {">
+sub get8answer {              (asking a series of questions from the terminal)
 </a>
 </li>
 <li>
@@ -68,8 +554,23 @@ sub justn {                   (justifying a number)
 </a>
 </li>
 <li>
-<a href="#sub now{">
-sub now{                      (present moment)
+<a href="#sub la {">
+sub la {                      (short call to 'print8structure' and 'pause')
+</a>
+</li>
+<li>
+<a href="#sub line4csv {">
+sub line4csv {                (returns one line of a csv table)
+</a>
+</li>
+<li>
+<a href="#sub make8eml {">
+sub make8eml {                (builds an electronic message for 'sendmail')
+</a>
+</li>
+<li>
+<a href="#sub now {">
+sub now {                     (present moment (or any))
 </a>
 </li>
 <li>
@@ -88,6 +589,16 @@ sub pause{                    (pausing to see and get answer)
 </a>
 </li>
 <li>
+<a href="#sub print8err {">
+sub print8err {               (printing an error object)
+</a>
+</li>
+<li>
+<a href="#sub print8hmat {">
+sub print8hmat {              (print (and check) a hash matrix)
+</a>
+</li>
+<li>
 <a href="#sub print8panneau {">
 sub print8panneau {           (printing a pannel)
 </a>
@@ -102,10 +613,135 @@ sub print8structure {         (printing a hierarquical structure of references)
 sub read8block {              (reading a block from a text file)
 </a>
 </li>
+<li>
+<a href="#sub read8csv {">
+sub read8csv {                (reading a CSV file)
+</a>
+</li>
+<li>
+<a href="#sub read8line {">
+sub read8line {               (reading lines from a text file)
+</a>
+</li>
+<li>
+<a href="#sub read8structure {">
+sub read8structure {          (read a structure previoulsy stored in a file)
+</a>
+</li>
+<li>
+<a href="#sub replace8string {">
+sub replace8string {          (replaces keywords into a string)
+</a>
+</li>
+<li>
+<a href="#sub retrouve {">
+sub retrouve {                (find directories or files)
+</a>
+</li>
+<li>
+<a href="#sub spec2html {">
+sub spec2html {               (replace special characters with html (or reduced) coding)
+</a>
+</li>
+<li>
+<a href="#sub split8string {">
+sub split8string {            (splitting a string in different ways)
+</a>
+</li>
+<li>
+<a href="#sub text2html {">
+sub text2html {               (transforms a text into an html version)
+</a>
+</li>
+<li>
+<a href="#sub write8csv {">
+sub write8csv {               (writing a CSV file)
+</a>
+</li>
+<li>
+<a href="#sub write8structure {">
+sub write8structure {         (write a structure in a file for future use)
+</a>
+</li>
 </ol>
 <h2>
+General Presentation of uie.pm
+</h2>
+<p><pre>
+#
+# 'uie' are the three vocals of the French word 'UtIlEs',
+#       to remind the basic aim of the proposed subroutines.
+#
+# The module comprises a series of subroutines that I found of
+# use to have at hand. Surely, most of them already exist
+# somewhere else in a more efficient code... but it was a 
+# good exercise for me.
+#
+# Except for 'argu', the use of arguments is somehow standardized: 
+#         (i) only character chains and references
+#             are used, 
+#         (ii) they are given with a hash of imposed
+#              keys of three characters (as 'uie'),
+#         (iii) if possible, sensible default values are
+#               provided,
+#         (iv) as far as possible, a check is done about
+#              the values which are proposed (done by
+#              subroutine 'argu').
+#
+# Reporting errors is a major concern of programmation
+# with nested calls of routines. To help a general
+# strategy has been attempted by some kind of an
+# error object which is no more than a reference
+# to an array whose first component contains
+# the value of constant '$uie::err_ide'. Other components
+# are error messages cumulated within the nested calls.
+#
+# It is worth distinguishing two levels:
+#  - different messages within an error
+#  - different errors within an error object
+# 
+# This can be implemented with the following 
+# subroutines:
+# 'error9' to detect if a scalar is an error object.
+# 'add8err' to add a message to an error, possibly
+#             creating it.
+# 'conca8err' to concatenate an additional error a
+#             pre-existing error object, possibly 
+#             creating it.
+# 'print8err' to print the content of an error object
+#             putting in light the two levels.
+#
+# TO BE DONE
+#   make the documentation index not with the simple
+#   subroutine names but with keywords deduced from
+#   the name splitting with digits.
+#
+</pre></p>
+<h2>
+<a name="sub add8err {"></a>
+1 sub add8err {
+</h2>
+<p><pre>
+    #
+    # title : creating and/or adding error messages
+    #
+    # aim: adding, possibly for the first time in that
+    #      case it is also a creation, some error messages
+    #      to an error object
+    #      See also &conca8err      
+    #
+    # output: the increased error object
+    #
+# arguments
+my $hrsub = {err => [undef,'ac',"Error object, give a string if it is a creation"],
+	     nsu => [undef,'c',"Identification string,",
+			       "usually the name of the calling subroutine"],
+	     erm => [undef,'a',"The error message"]
+	    };
+</pre></p>
+<h2>
 <a name="sub argu {"></a>
-1 sub argu {
+2 sub argu {
 </h2>
 <p><pre>
     #
@@ -117,6 +753,8 @@ sub read8block {              (reading a block from a text file)
     #       checks the validity of the user proposal and
     #       returns the completed hash. The arguments
     #       are scalars, 
+    #       All keys of the proposed hash (@argu) must be described
+    #                into the hash referenced by $rhsub.
     #
     # input : ($sub,$rhsub,@argu)
     #         $sub is the name of the concerned subroutine
@@ -126,7 +764,7 @@ sub read8block {              (reading a block from a text file)
     #           [0] is the default value (undef when there is not)
     #           [1] is the type of the argument:
     #                undef for no check.
-    #                'u' for 'undef'
+    #                'u' for 'undef' 
     #                'h' for a reference to a hash
     #                'a' for a reference to an array
     #                's' for a reference to a scalar
@@ -139,14 +777,14 @@ sub read8block {              (reading a block from a text file)
     #                   reference either to a scalar
     #                   or a hash
     #           [2..] the description of the argument
-    #                 to be use as an help; may not exist.
+    #                 to be used as an help; may not exist.
     # Notice that 'undef' cannot be a default value since such
     #        a value for [0]  means that the argument must 
     #        be provided by the call.
     #        Nevertheless, it is an acceptable value when [1] 
     #        comprises 'u'.
     #
-    # Be aware that quite not understable messages can be the 
+    # Be aware that quite not understandable messages can be the 
     # consequence that a hash or an array be proposed instead of a
     # reference... since values are interpreted as a hash when the
     # total number is even.
@@ -165,7 +803,7 @@ sub read8block {              (reading a block from a text file)
 </pre></p>
 <h2>
 <a name="sub ask8question {"></a>
-2 sub ask8question {
+3 sub ask8question {
 </h2>
 <p><pre>
     #
@@ -178,26 +816,26 @@ sub read8block {              (reading a block from a text file)
     #             without any checking
     #
     # 
-    # arguments
-    my $hrsub = {ques  =>[undef,"c","The question to be raised"],
-                 type  =>[    0,"n","Must the input numerically transformed?"],
-                 form  =>[{avant=>"=> ",apres=>" : ",long=>60,just=>"r"},"h",
-                          "The way the question be justified\n  ('{}' for no justification)"]
-                };
+# arguments
+my $hrsub = {que  =>[undef,"c","The question to be raised"],
+	     typ  =>[    0,"n","Must the input numerically transformed?"],
+	     fmt  =>[{avant=>"=> ",apres=>" : ",long=>60,just=>"r"},"h",
+		     "The way the question be justified\n  ('{}' for no justification)"]
+	    };
 </pre></p>
 <h2>
-<a name="sub belongs2{"></a>
-3 sub belongs2{
+<a name="sub belong9 {"></a>
+4 sub belong9 {
 </h2>
 <p><pre>
     #
-    # title : scalar belongs to array
+    # title : scalar belongs to array?
     #
     # aim : test if a scalar belongs to a given array
     #
     # output: an array of the element numbers of occurrence.
     #         so () means not found
-    #            (0,7) found in the first and eigth element
+    #            (0,7) found in the first and eigth elements
     #
     # arguments
     my $hrsub = {sca =>[undef,"s","The element to be checked."],
@@ -207,12 +845,38 @@ sub read8block {              (reading a block from a text file)
                                            "to be used for the comparison with the",
                                            "included operator. Default is the matching",
                                            "operator and the strict equality pattern;",
-                                           "it is equivalent to ['eq ','']"]
+                                           "it is equivalent to ['eq ','']",
+                                           "Some care must be taken with the '\', for",
+                                           "instance to remove spaces at the end, one",
+                                           'must enter: ["=~ /^\\s*","\\s*\$/"]'],
+                 sen =>[0,    "n","Must the comparison made 'array[#] =~ /...scalar.../'",
+                                  "or the opposite which is the default behavior",
+                                  "i.e. 'scalar =~ /...array[#].../'"]
                 };
 </pre></p>
 <h2>
+<a name="sub check8err {"></a>
+5 sub check8err {
+</h2>
+<p><pre>
+    #
+    # title : check for an error object
+    #
+    # aim: when an error object, prints it and
+    #      possibly die.
+    #
+    # output: the checked object if it is not an error
+    #
+# arguments
+my $hrsub = {obj => [undef,'uhasrnc',"Possible error object"],
+             wha => [    0,'n',"When '0' dies in case of error",
+                               "When '1' returns the error message"],
+             sig => [   "","c","A signature to add when printing the error"]
+	    };
+</pre></p>
+<h2>
 <a name="sub check8ref {"></a>
-4 sub check8ref {
+6 sub check8ref {
 </h2>
 <p><pre>
     #
@@ -224,21 +888,192 @@ sub read8block {              (reading a block from a text file)
     #           When 'O' some warning indications are printed.
     #
     # For the moment, only scalar, array and hash are checked. 
-    #     Giving 'check8ref' a reference of another type will
+    #     Giving 'check8ref' a reference to another type will
     #     be considered faultly.
     #
     # arguments
     my $hrsub = {ref =>[undef,"r","The reference to be checked"],
                  typ =>[ "sah","c","Type of the reference 'h','a','s' or a combination of them"],
-                 rlo =>[ [0,0],"a","minimum and maximum lengths when reference to array or to hash",
-                                   " ('[0,0]' means no check)"],
+                 rlo =>[ [-1,-1],"a","minimum and maximum lengths when reference to array or to hash",
+                                   " ('[-1,-1]' means no check)"],
                  key =>[ [],"a","Possible key values in the referred array when reference to a hash",
                                 " ('[]' means no check)"]
                 };
 </pre></p>
 <h2>
-<a name="sub get8answers {"></a>
-5 sub get8answers {
+<a name="sub clean8string {"></a>
+7 sub clean8string {
+</h2>
+<p><pre>
+    #
+    # title : removes spacing and more into a string
+    #
+    # aim: from a reference to an array of strings
+    #      returns it after some processing about spaces and
+    #      comments to each of its components. Actions follow
+    #      the presentation order of the arguments.
+    #      Be aware that when a line is splitted due
+    #         to the existence of a separator,
+    #         additionnal components are introduced.
+    #
+    # output: a reference to an array of strings
+    #
+    #
+# arguments
+my $hrsub = {str =>[undef,"ac","The reference to an array of strings to modify"],
+             sep =>[undef,"cu","Separator when some lines must be splitted",
+                              "'undef' means no splitting"],
+	     dbl =>[    1,"n","Transforms multiple spaces into unique spaces"],
+	     spa =>[    3,"n","0: nothing, 1: remove starting spaces,",
+			      "2: remove trailing spaces, 3: 1+2."],
+	     co1 =>[  "#","uc","If defined, any string starting with it is reduced to ' '"],
+	     co2 =>[ "##","uc","If defined, only the part of the string before it is retained"],
+	     nun =>[    1,"n","Must the space components be removed?"]
+	    };
+</pre></p>
+<h2>
+<a name="sub compare8set {"></a>
+8 sub compare8set {
+</h2>
+<p><pre>
+    #
+    # title : compare the elements of two arrays
+    #
+    # aim : two arrays are interpreted as two sets of
+    #       strings and this subroutine performs some
+    #       set operations on them
+    #
+    # output: a reference to an array of the element 
+    #         resulting from the operation onto the 
+    #         two sets.
+    #
+    # arguments
+    my $hrsub = {se1 =>[undef,"a","Reference to the first set"],
+                 se2 =>[undef,"a","Reference to the second set"],
+                 ope =>[  "d","c","The operation to perform onto the two sets",
+                                   "Possibilities are:",
+                                   "   'i' for intersection",
+                                   "   'u' for union",
+                                   "   'd' for symmetric difference",
+                                   "   'a' for complement of se2 in se1",
+                                   "   'b' for complement of se1 in se2"],
+                 rep =>[    1,"n","Must repetitions be considered (if not eliminated)."]
+                };
+</pre></p>
+<h2>
+<a name="sub conca8err { "></a>
+9 sub conca8err { 
+</h2>
+<p><pre>
+    #
+    # title : concatanating two error objects
+    #         (formerly 'cum8err')
+    #
+    # aim: to cumulate a new error with older ones
+    #      null error are accepted.
+    #      See also &add8err      
+    #
+    # output: the created error object
+    #
+# arguments
+my $hrsub = {er1 => [undef,'ac',"Initial error object"],
+	     er2 => [undef,'ac',"Error object to cumulate at the end"]
+	    };
+</pre></p>
+<h2>
+<a name="sub copy8structure {"></a>
+10 sub copy8structure {
+</h2>
+<p><pre>
+    #
+    # title : copy a hierarquical structure of references
+    #
+    # aim : when one wants to get an independent copy
+    #        of a structure of references, a complete
+    #        exploration of the structure is necessary,
+    #        this is tedious and hazardous. This subroutine
+    #        makes the job for you. See also '&print8structure'.
+    #
+    # output: the copied structure or an error message
+    #         (or 1 if help was asked about the arguments)
+    #
+# arguments
+my $hrsub = {str =>[undef,"csahu","The structure to be copied"],
+	     pro =>[0,"n","The depth of the copy (used for recursivity)."],
+	     prm =>[12,"n","The maximum depth admitted for recursivity",
+                           "when attained 0 is returned"]
+	    };
+</pre></p>
+<h2>
+<a name="sub dim4csv {"></a>
+11 sub dim4csv {
+</h2>
+<p><pre>
+    #
+    # title : returns the dimensions of a csv table
+    #
+    # aim: from reference to a matrix as obtained with
+    #      'read8csv', returns its dimensions.
+    #
+    # output: a reference to an array of length 2 with
+    #         the number of lines et the number of columns
+    #         '[nblig,nbcol]'.
+    #
+# arguments
+my $hrsub = {mat  =>[undef,"h","The matrix, as returned by 'read8csv'"]
+	    };
+</pre></p>
+<h2>
+<a name="sub err9 {"></a>
+12 sub err9 {
+</h2>
+<p><pre>
+    #
+    # title : detecting an error object
+    #
+    # aim: detecting an error object if the first argument
+    #      is reference to a non empty array whose first
+    #      component is '$uie::err_ide'.
+    #
+    # output: 1 if it is, 0 otherwise.
+    #
+# arguments
+my $hrsub = {obj  =>[undef,'uhasrnc',"Possible error object"]
+	    };
+</pre></p>
+<h2>
+<a name="sub extract8string {"></a>
+13 sub extract8string {
+</h2>
+<p><pre>
+    #
+    # title : extracting substrings from a string
+    #
+    # aim: from a string of characters extracts 
+    #      substrings designated by some framing.
+    #
+    # output: a reference to the array of the found substrings
+    #         (or a string in case of error when erro=0).
+    #         The extracted substrings can be the framed ones
+    #         (default) or their complementary ones. Be aware
+    #         that framing sequences are never returned, 
+    #         whatever be the choice.
+    #
+    #
+# arguments
+my $hrsub = {str =>[undef,"c","The string to extract from"],
+	     enc =>[ ['[',"]"],"a","Must be of length two,",
+				 "the framing pair of tags."],
+	     wit =>[    1,"n","to return substrings within the",
+			      "framing tags if no in between."],
+	     err =>[    1,"n","In case of error (framing not closed),",
+			      "0: returns a string with error",
+			      "1: prints the error and stops"]
+	    };
+</pre></p>
+<h2>
+<a name="sub get8answer {"></a>
+14 sub get8answer {
 </h2>
 <p><pre>
     #
@@ -250,50 +1085,50 @@ sub read8block {              (reading a block from a text file)
     #
     # Notice that questions are asked again when not correctly answered.
     #
-    # constants
-    my $skip = "ssss"; 
-    my $quit = "SSSS"; 
-    my $stop = "ZZZZ"; 
-    my $halting = "Type '$skip/$quit/$stop' as first four characters to quit the question/call/program";
-    # arguments
-    my $hrsub = {rplaca=> [undef,"a","reference to an array.\n".
-                                     "   to be printed with '&print8panneau'"],
-                 rquest=> [undef,"h","reference to the hash of questions to ask.\n".
-                                     "keys identifies the questions and values are\n".
-                                     "references to hashes of the different components\n".
-                                     "of the questions, each with the following keys:\n".
-                                     "  - 'ques' giving the question formula.\n".
-                                     "  - 'help' giving some hints about the formula to answer\n".
-                                     "           with the help of an array.\n".
-                                     "  - 'chec' a reference to an array specifying the possible answers.\n".
-                                     "      [0] is either 'n' for numeric, 'a' for alphabetical,\n".
-                                     "                 or 'p' for perl matching and anything else for no check.\n".
-                                     "              . when numeric [1..3] give respectively the \n".
-                                     "                      minimum [1], maximum [2] of accepted values\n".
-                                     "                      and the number of decimals of truncation [3].\n".
-                                     "              . when alphabetic the list of accepted values follow.\n".
-                                     "              . when perl matching [1] is any expression to be enclosed\n".
-                                     "                     into slashes; for instance ^[a-z][a-z]\$ to impose\n".
-                                     "                     just two lower case letters.\n".
-                                     "       Be aware that when [0] is 'n', the &numerical subroutine\n".
-                                     "                                          is applied to the answer.",
-                                     "  - 'defa' the default valeu proposed if a simple 'Enter' key is hit"],
-                 rordre=> [undef,"a","reference to an array of 'keys %\$rquest' in the desired asking order."],
-                 rforma=> [{}   ,"h","reference to a hash of references to arrays giving for each\n",
-                                      "question, the way to display them on the screen just above\n",
-                                      "the questionning line. Individual arrays gives the necessary\n",
-                                      "argument for a call to '&juste': \$avant,\$apres,\$long,\$just",
-                                      "or '[]' when no formatting is desired for this question.\n",
-                                      "Also when the hash is empty no formatting is done for any question."],
-                 largeur=>[100,"n","width of the help pannel before the question"],
-                 longhelp=>[17,"n","number of lines for the help pannel, just before questions"],
-                 construc=>["s","hc","Value for argument 'form' of '&join8hash' used when constructing",
-                                     "the progressive set of answers"]
-                };
+# constants
+my $skip = "ssss"; 
+my $quit = "SSSS"; 
+my $stop = "ZZZZ"; 
+my $halting = "Type '$skip/$quit/$stop' as first four characters to quit the question/call/program";
+# arguments
+my $hrsub = {rpl=> [undef,"a","reference to an array.\n".
+				 "   to be printed with '&print8panneau'"],
+	     rqu=> [undef,"h","reference to the hash of questions to ask.\n".
+				 "keys identifies the questions and values are\n".
+				 "references to hashes of the different components\n".
+				 "of the questions, each with the following keys:\n".
+				 "  - 'ques' giving the question formula.\n".
+				 "  - 'help' giving some hints about the formula to answer\n".
+				 "           with the help of an array.\n".
+				 "  - 'chec' a reference to an array specifying the possible answers.\n".
+				 "      [0] is either 'n' for numeric, 'a' for alphabetical,\n".
+				 "                 or 'p' for perl matching and anything else for no check.\n".
+				 "              . when numeric [1..3] give respectively the \n".
+				 "                      minimum [1], maximum [2] of accepted values\n".
+				 "                      and the number of decimals of truncation [3].\n".
+				 "              . when alphabetic the list of accepted values follow.\n".
+				 "              . when perl matching [1] is any expression to be enclosed\n".
+				 "                     into slashes; for instance ^[a-z][a-z]\$ to impose\n".
+				 "                     just two lower case letters.\n".
+				 "       Be aware that when [0] is 'n', the &numerical subroutine\n".
+				 "                                          is applied to the answer.",
+				 "  - 'defa' the default valeu proposed if a simple 'Enter' key is hit"],
+	     ror=> [undef,"a","reference to an array of 'keys %\$rquest' in the desired asking order."],
+	     rfo=> [{}   ,"h","reference to a hash of references to arrays giving for each\n",
+				  "question, the way to display them on the screen just above\n",
+				  "the questionning line. Individual arrays gives the necessary\n",
+				  "argument for a call to '&juste': \$avant,\$apres,\$long,\$just",
+				  "or '[]' when no formatting is desired for this question.\n",
+				  "Also when the hash is empty no formatting is done for any question."],
+	     lah=>[100,"n","width of the help pannel before the question"],
+	     loh=>[17,"n","number of lines for the help pannel, just before questions"],
+	     con=>["s","hc","Value for argument 'form' of '&join8hash' used when constructing",
+				 "the progressive set of answers"]
+	    };
 </pre></p>
 <h2>
 <a name="sub join8hash {"></a>
-6 sub join8hash {
+15 sub join8hash {
 </h2>
 <p><pre>
     #
@@ -302,53 +1137,53 @@ sub read8block {              (reading a block from a text file)
     # aim: prepares an array of strings displaying in
     #      a convenient way the contents of a hash
     #
-    # output: the reference ot the prepared array
+    # output: the reference to the prepared array
     #
-    # arguments
-    my $hrsub = {hash =>[undef,"h","The reference to the hash to be prepared"],
-                 orde =>[    "k","ac","defined the order to be used.",
-                                      " -'k' increasing alphabetical order of the keys",
-                                      " -'K' decreasing alphabetical order of the keys",
-                                      " -'v' increasing alphabetical order of the values",
-                                      " -'V' decreasing alphabetical order of the values",
-                                      " -'n' increasing numerical order of the values",
-                                      " -'N' decreasing numerical order of the values",
-                                      " - or the reference to an array of the keys",
-                                      "      in the desired order"],
-                 form =>[    "s","hc","Format to use for the presentation",
-                                      " -'s' standard way, that is each key between",
-                                      "      parentheses before it values",
-                                      " -'k' only the keys surrounded with parentheses",
-                                      "           and separated with a blank",
-                                      " -'v' only the values separated a blank",
-                                      " - or the reference to an hash with two keys",
-                                      "      ('k' and 'v') indicating respectively",
-                                      "      the way to prepare keys ans values:",
-                                      "      'undef' means that must not be included",
-                                      "      a reference to an array of four components",
-                                      "      giving (i) the length of the string to indicate",
-                                      "                 to &juste,",
-                                      "             (ii) the type of justification to indicate",
-                                      "                 to &juste,",
-                                      "             (iii) the string to introduce before and",
-                                      "             (iv) the string to put after.",
-                                      "      (here the same format is applied to every",
-                                      "       couple key/value in the next possibility",
-                                      "       they can be different)",
-                                      " - or the reference to an hash having keys belonging",
-                                      "      to those of '\%\$hash', when a key is not present",
-                                      "      the corresponding couple is not represented.",
-                                      "      The values of this hash are reference with the",
-                                      "      same pattern as in the previous possibility."],                     
-                 sepa =>[    1, "n","How to present the couples of key/value.",
-                                      " - 0 in a single string",
-                                      " - 1 in an array of two components, for keys and for values",
-                                      " - 2 in different components of an array for each couple"]
-                };
+# arguments
+my $hrsub = {has =>[undef,"h","The reference to the hash to be prepared"],
+	     ord =>[    "k","ac","defined the order to be used.",
+				 " -'k' increasing alphabetical order of the keys",
+				 " -'K' decreasing alphabetical order of the keys",
+				 " -'v' increasing alphabetical order of the values",
+				 " -'V' decreasing alphabetical order of the values",
+				 " -'n' increasing numerical order of the values",
+				 " -'N' decreasing numerical order of the values",
+				 " - or the reference to an array of the keys",
+				 "      in the desired order"],
+	     fmt =>[    "s","hc","Format to use for the presentation",
+				 " -'s' standard way, that is each key between",
+				 "      parentheses before it values",
+				 " -'k' only the keys surrounded with parentheses",
+				 "           and separated with a blank",
+				 " -'v' only the values separated a blank",
+				 " - or the reference to an hash with two keys",
+				 "      ('k' and 'v') indicating respectively",
+				 "      the way to prepare keys ans values:",
+				 "      'undef' means that must not be included",
+				 "      a reference to an array of four components",
+				 "      giving (i) the length of the string to indicate",
+				 "                 to &juste,",
+				 "             (ii) the type of justification to indicate",
+				 "                 to &juste,",
+				 "             (iii) the string to introduce before and",
+				 "             (iv) the string to put after.",
+				 "      (here the same format is applied to every",
+				 "       couple key/value in the next possibility",
+				 "       they can be different)",
+				 " - or the reference to an hash having keys belonging",
+				 "      to those of '\%\$hash', when a key is not present",
+				 "      the corresponding couple is not represented.",
+				 "      The values of this hash are reference with the",
+				 "      same pattern as in the previous possibility."],                     
+	     sep =>[    1, "n","How to present the couples of key/value.",
+				 " - 0 in a single string",
+				 " - 1 in an array of two components, for keys and for values",
+				 " - 2 in different components of an array for each couple"]
+	    };
 </pre></p>
 <h2>
 <a name="sub juste {"></a>
-7 sub juste {
+16 sub juste {
 </h2>
 <p><pre>
     #
@@ -363,33 +1198,39 @@ sub read8block {              (reading a block from a text file)
     #         character.
     #
     # arguments
-    my $hrsub = {chain=>[undef,"c","The chain to be justified"],
-                 trim =>[    1,"n","Must ending spaces be removed?"],
-                 avant=>[   "","c","Chain to introduce before"],
-                 apres=>[   "","c","Chain to introduce after"],
-                 long =>[   64,"n","Length of the justified chain",
-                                   " (when <= 0 no justification"],
-                 just =>[  "l","c","Type of justification can be:",
-                                   "   'l' for to the left without truncation",
-                                   "   'L' for to the left with    truncation",
-                                   "   'c' for centering without truncation",
-                                   "   'C' for centering with    truncation",
-                                   "   'r' for to the right without truncation",
-                                   "   'R' for to the right with    truncation",
-                                   "   'n' for no justification then",
-                                   "       long is not considered."],
-                 ulca =>[  "n","c","Type of capitalization can be:",
-                                   "   'n' nothing",
-                                   "   'U' every word uppercased",
-                                   "   'L' every word lowercased",
-                                   "   'c' first letter of each word uppercased",
-                                   "   'C' first letter of each word uppercased",
-                                   "       and remaining letters lowercased"]
+    my $hrsub = {cha =>[undef,"c","The chain to be justified"],
+                 tri =>[    1,"n","Must ending spaces be removed?"],
+                 ava =>[   "","c","Chain to introduce before"],
+                 apr =>[   "","c","Chain to introduce after"],
+                 lon =>[   64,"n","Length of the justified chain",
+                                  " (when <= 0 no justification"],
+                 jus =>[  "l","c","Type of justification can be:",
+                                  "   'l' for to the left without truncation",
+                                  "   'L' for to the left with    truncation",
+                                  "   'c' for centering without truncation",
+                                  "   'C' for centering with    truncation",
+                                  "   'r' for to the right without truncation",
+                                  "   'R' for to the right with    truncation",
+                                  "   'n' for no justification then",
+                                  "       long is not considered."],
+                 ulc =>[  "n","c","Type of capitalization can be:",
+                                  "   'n' nothing",
+                                  "   'U' every word uppercased",
+                                  "   'L' every word lowercased",
+                                  "   'c' first letter of each word uppercased",
+                                  "   'C' first letter of each word uppercased",
+                                  "       and remaining letters lowercased"],
+                 spa =>[  "n","c","Prior modifications (can comprise several",
+                                  "       modif, then performed in this order;",
+                                  "       then the presence of 'n' implies that",
+                                  "       nothing is done)",
+                                  "   'n' nothing",
+                                  "   's' multiple consecutive spaces are removed"]
                 };
 </pre></p>
 <h2>
 <a name="sub justn {"></a>
-8 sub justn {
+17 sub justn {
 </h2>
 <p><pre>
     #
@@ -406,23 +1247,114 @@ sub read8block {              (reading a block from a text file)
     #         remain "1000000" but truncation for decimals 0.1001 with
     #         two decimals will become "0.10".
     #
-    # arguments
-    my $hrsub = {numb =>[undef,"n","The number to be justified"],
-                 deci =>[    0,"n","Desired number of decimals.",
-                                   "Negative value means no modification."],
-                 digi =>[    3,"n","Desired number of digits",
-                                   "Negative value means no modification."],
-                 roun =>[    0,"n","Must a true rounding be done when the number",
-                                   "of decimals is precised?"]
-                };
+# arguments
+my $hrsub = {num =>[undef,"n","The number to be justified"],
+	     dec =>[    0,"n","Desired number of decimals.",
+			      "Negative value means no modification."],
+	     dig =>[    3,"n","Desired number of digits",
+			      "Negative value means no modification."]
+	    };
 </pre></p>
 <h2>
-<a name="sub now{"></a>
-9 sub now{
+<a name="sub la {"></a>
+18 sub la {
 </h2>
 <p><pre>
     #
-    # title : present moment
+    # title : short call to 'print8structure' and 'pause'
+    #
+    # aim : mainly to use when debugging.
+    #        'la' is a shortcut for 'look at'.
+    #
+    # output: 1
+    #
+# arguments
+my $hrsub = {str =>[undef,"csahu","The structure to be displayed"],
+             mes =>[   "","c","The associated message to the pause call",
+                              "When empty string (default) pause is not called"]
+	    };
+</pre></p>
+<h2>
+<a name="sub line4csv {"></a>
+19 sub line4csv {
+</h2>
+<p><pre>
+    #
+    # title : returns one line of a csv table
+    #
+    # aim: from reference to a matrix as obtained with
+    #      'read8csv', returns a line defined by its
+    #      number?
+    #
+    # output: a reference to a hash whose keys are
+    #         the column names of the matrix and the
+    #         values, those of the asked line.
+    #
+# arguments
+my $hrsub = {mat  =>[undef,"h","The matrix, as returned by 'read8csv'"],
+	     lin  =>[    1, "n","The number of the line to extract.",
+				"Be Aware that the first line is number 1",
+				"not following Perl standard conventions!"]
+	    };
+</pre></p>
+<h2>
+<a name="sub make8eml {"></a>
+20 sub make8eml {
+</h2>
+<p><pre>
+    #
+    # title : builds an electronic message for 'sendmail'
+    #
+    # aim: from the different parts of a message, builds
+    #      a text file supposed to satisfy the MIME format
+    #      possibly comprising attached files transformed
+    #      into base64 code. 
+    #      Notice that the message must comprise at least
+    #      one part and that they are introduced in the order
+    #      of the description of the arguments. Also the
+    #      list of main recipients cannot be empty.
+    #
+    # output: the output is stored into a file and returns 1.
+    #         BUT if something wrong no creation of file and
+    #         an error object is returned.
+    #         
+    #
+    #
+    # arguments
+    my $hrsub = {fil =>[undef,"c","Name of the file to create or replace"],
+                 sbj =>[undef,"c","Subject of the mail"],
+                 tow =>[undef,"ca","The string (or reference to an array of strings)",
+                                   "giving the recipients of the message"],
+                 cco =>["","ca","The string (or reference to an array of strings)",
+                                   "giving the recipients for information of the message;",
+                                   "'' which is the default value means none of them."],
+                 bcc =>["","ca","The string (or reference to an array of strings)",
+                                   "giving the hidden recipients of the message",
+                                   "'' which is the default value means none of them."],
+                 txt =>["","ca","The string (or reference to an array of strings)",
+                                   "giving the series of files to be included as plain",
+                                   "text parts of the message;",
+                                   "'' which is the default value means none of them."],
+                 htm =>["","ca","The string (or reference to an array of strings)",
+                                   "giving the series of files to be included as html",
+                                   "parts of the message; they are supposed to include",
+                                   "the necessary tags (which can be done with 'text2html';",
+                                   "'' which is the default value means none of them."],
+                 b64 =>["","ca","The string (or reference to an array of strings)",
+                                   "giving the series of files to be included after encoding",
+                                   "in base64 format (images, pdf,...);",
+                                   "'' which is the default value means none of them."],
+                 chs =>[$char_set,"c","Specification of the character set to be used in",
+                                      "text and html messages"]
+                };
+</pre></p>
+<h2>
+<a name="sub now {"></a>
+21 sub now {
+</h2>
+<p><pre>
+    #
+    # title : present moment (or any)
     #
     # aim : generates a string giving time and/or date
     #       according to different ways.
@@ -432,12 +1364,13 @@ sub read8block {              (reading a block from a text file)
     # arguments
     my $hrsub = {wha =>["dm","c","comprises 'd' for day; 'h' for hour; 'm' for minute; 's' for second."],
                  fmt =>["red","c","'red' to get a reduced way if not a verbose one"],
-                 sep =>[["_","@",":"],"a","The three separators to use in case of a reduced format"]
+                 sep =>[["_","@",":"],"a","The three separators to use in case of a reduced format"],
+                 whe =>["now","ca","either 'now' or a reference to the equivalent of 'localtime[0,1,2,3,4,5]'"]
                 };
 </pre></p>
 <h2>
 <a name="sub numerical {"></a>
-10 sub numerical {
+22 sub numerical {
 </h2>
 <p><pre>
     #
@@ -458,7 +1391,7 @@ sub read8block {              (reading a block from a text file)
 </pre></p>
 <h2>
 <a name="sub ordre {"></a>
-11 sub ordre {
+23 sub ordre {
 </h2>
 <p><pre>
     #
@@ -476,7 +1409,7 @@ sub read8block {              (reading a block from a text file)
 </pre></p>
 <h2>
 <a name="sub pause{"></a>
-12 sub pause{
+24 sub pause{
 </h2>
 <p><pre>
     #
@@ -487,16 +1420,68 @@ sub read8block {              (reading a block from a text file)
     #           either to continue or to stop the program.
     #         Another use is to get a string answer.
     #
-    # output: the resulting answer
+    # output: the resulting answer when the program is not
+    #           stopped.
     #
     # arguments
-    my $hrsub = {stst =>["q","c","Answer to exit the program. The chain is lowercased for the test."],
-                 mess =>["","c","When not the empty string, a message to add."]
+    my $hrsub = {sto =>["q","c","Answer to exit the program. The chain is lowercased for the test."],
+                 mes =>["" ,"c","When not the empty string, a message to add."],
+                 con =>["" ,"c","Answer to continue the program (also lowercased).",
+                                "When '' (default) this option is not considered,",
+                                "if not: takes the priority over argument 'sto'."]
                 };
 </pre></p>
 <h2>
+<a name="sub print8err {"></a>
+25 sub print8err {
+</h2>
+<p><pre>
+    #
+    # title : printing an error object
+    #
+    # aim: prints the first argument to be
+    #      supposed an error object when it is
+    #      not the case, nothing is printed.
+    #
+    # output: 1
+    #
+# arguments
+my $hrsub = {err => [undef,'ac',"Error object to print"]
+	    };
+</pre></p>
+<h2>
+<a name="sub print8hmat {"></a>
+26 sub print8hmat {
+</h2>
+<p><pre>
+    #
+    # title : print (and check) a hash matrix
+    #
+    # aim : print what is called a hash matrix, that is
+    #        a reference to a hash whose keys are associated
+    #        to columns of a matrix and values are references
+    #        to arrays providing the values of each columns.
+    #        The lengths of the columns must be identical.
+    #
+    #       Possibly a special key '$uie::ORD' gives the order
+    #        of the columns with an array containing the keys.
+    #        When it exists, it is used.
+    #
+    #       In case of inconsistency '@$uie::sei' is completed
+    #        with an appropriate message and the subroutines
+    #        returns 0.
+    #
+    # output: 1 (or 0 in case of inconsistency).
+    #
+# arguments
+my $hrsub = {
+	     hma =>[undef,"h","The structure to be printed"],
+	     wid =>[   10,"n","Width to give to each column"]
+	    };
+</pre></p>
+<h2>
 <a name="sub print8panneau {"></a>
-13 sub print8panneau {
+27 sub print8panneau {
 </h2>
 <p><pre>
     #
@@ -512,40 +1497,40 @@ sub read8block {              (reading a block from a text file)
     #
     # output: 1
     #
-    # arguments
-    my $hrsub = {rpan =>[undef,  "a","Reference to an array of references to strings",
-                                     "  (each associated to a line of the pannel)",
-                                     "  (of course can be '[]' for an empty pannel"],
-                 tfra =>["*"x80, "cu"," line to be added before the pannel",
-                                     "    when 'undef' no line is added.",
-                                     "    and the constant 'uie::width' is used",
-                                     "    to define the width of the pannel."],
-                 tvoi =>[1,      "n"," number of empty lines after the added line"],
-                 lfra =>["* ",   "c"," string to be added before each line"],
-                 rfra =>[" *",   "c"," string to be included to finish each line"],
-                 bvoi =>[1,      "n"," number of empty lines before the last line"],
-                 bfra =>["*"x80, "cu"," line to be added at the end of the pannel",
-                                     "    when 'undef' no line is added."],
-                 just =>[  "l","c"," type of justification for each line ('l', 'c' or 'r')",
-                                     "  either a scalar then the same justification",
-                                     "  is applied to all the lines, or a reference",
-                                     '  to an array having the same length than "@$rpan"',
-                                     "  specifying the justification for each line."],
-                 tcol =>["green","cua"," text coloration: either 'undef' for no coloration",
-                                     "   or a scalar containing the color to apply to every line",
-                                     "   or a reference to an array containing the color".
-                                     "   for each line."],
-                 fcol =>["white","cu"," frame coloration: either 'undef' for no coloration",
-                                     "   or a scalar containing the color to apply to the",
-                                     "   vertical and horizontal parts of the frame.",
-                                     "   Notice that you can also defined the foreground",
-                                     "   color and painting this way the frame for instance",
-                                     "   with 'on_blue blue'"]
-    };
+# arguments
+my $hrsub = {rpa =>[undef,  "a","Reference to an array of references to strings",
+				"  (each associated to a line of the pannel)",
+				"  (of course can be '[]' for an empty pannel"],
+	     tfr =>["*"x80, "cu"," line to be added before the pannel",
+				"    when 'undef' no line is added.",
+				"    and the constant 'uie::width' is used",
+				"    to define the width of the pannel."],
+	     tvo =>[1,      "n"," number of empty lines after the added line"],
+	     lfr =>["* ",   "c"," string to be added before each line"],
+	     rfr =>[" *",   "c"," string to be included to finish each line"],
+	     bvo =>[1,      "n"," number of empty lines before the last line"],
+	     bfr =>["*"x80, "cu"," line to be added at the end of the pannel",
+				"    when 'undef' no line is added."],
+	     jus =>[  "l","c"," type of justification for each line ('l', 'c' or 'r')",
+				"  either a scalar then the same justification",
+				"  is applied to all the lines, or a reference",
+				'  to an array having the same length than "@$rpa"',
+				"  specifying the justification for each line."],
+	     tco =>["green","cua"," text coloration: either 'undef' for no coloration",
+				"   or a scalar containing the color to apply to every line",
+				"   or a reference to an array containing the color".
+				"   for each line."],
+	     fco =>["white","cu"," frame coloration: either 'undef' for no coloration",
+				"   or a scalar containing the color to apply to the",
+				"   vertical and horizontal parts of the frame.",
+				"   Notice that you can also defined the foreground",
+				"   color and painting this way the frame for instance",
+				"   with 'on_blue blue'"]
+};
 </pre></p>
 <h2>
 <a name="sub print8structure {"></a>
-14 sub print8structure {
+28 sub print8structure {
 </h2>
 <p><pre>
     #
@@ -554,57 +1539,424 @@ sub read8block {              (reading a block from a text file)
     # aim : print a structure recursively when referred hashes
     #        and array contains references. Admitted values
     #        are scalars and references to scalars, arrays and
-    #        hashes.
+    #        hashes. In case of a hash, the printing is done
+    #        after sorting.
     #
     # output: 1
     #
-    # arguments
-    my $hrsub = {stru =>[undef,"csahu","The structure to be displayed"],
-                 inde =>[{h=>"xx",a=>"++","s"=>'..',p=>"  "},"h",
-                         "The way to make indentation:",
-                         " h for hash reference, a for array reference",
-                         " s for scalar reference and p for printing."],
-                 prof =>[0,"n","The depth of the display",
-                               "  (used for indentation and recursivity)."],
-                 prin =>[0,"n","Must types of reference be added?",
-                               "0 for no, 1 for starting and 2 for also ending."],
-                 addi =>[0,"n","Must a new line added after a reference?"],
-                 prmx =>[5,"n","The maximum depth admitted for recursivity"],
-                 prpr =>[0,"n","Must the depth degree be printed before each line?"],
-                 clef =>["","c","For the hash keys (internal use)"]
-                };
+# arguments
+my $hrsub = {str =>[undef,"csahu","The structure to be displayed"],
+             rtd =>[0,"n","Possibly a restriction for arrays and hashes",
+                      "0: all components displayed",
+                      "'#': only component from 1 to '#'",
+                      "'-#': only component from last+1-'#' to last"],
+	     ind =>[{h=>"xx",a=>"++","s"=>'..',p=>"  "},"h",
+		    "The way to make indentation:",
+		    " h for hash reference, a for array reference",
+		    " s for scalar reference and p for printing."],
+	     pro =>[0,"n","The depth of the display",
+			  "  (used for indentation and recursivity)."],
+	     pri =>[0,"n","Must types of reference be added?",
+			  "0 for no, 1 for starting and 2 for also ending."],
+	     add =>[0,"n","Must a new line added after a reference?"],
+	     prm =>[5,"n","The maximum depth admitted for recursivity"],
+	     prp =>[0,"n","Must the depth degree be printed before each line?"],
+	     cle =>["","c","For the hash keys (internal use)"]
+	    };
+## To be corrected: when a value of a hash is empty array, the key appears twice! 
+##                  See also the case of empty hashes.
+##                  When restriction is applied on components (argument 'rtd')
+##                       the mark with '. . . . ...' doesn't appear on some levels?
 </pre></p>
 <h2>
 <a name="sub read8block {"></a>
-15 sub read8block {
+29 sub read8block {
 </h2>
 <p><pre>
     #
     # title : reading a block from a text file
     #
     # aim: read a block of lines between two tags.
-    #               '<$blo>' at the beginning of the tag to open the block
-    #                   (the end of this line is not considered)
-    #               '</$blo>' at the beginning of the tag to close the block
-    #
-    # output: a reference to an array of references associated
-    #         to each line of the block, these references point
-    #         towards arrays of the different components of each
-    #         lines.
-    #
-    # arguments
-    my $hrsub = {com  =>[  "#","uc","Lines beginning with it are neglected.",
-                                   "When 'undef' every line is considered."],
-                 sep  =>[ "::","cu","Separator between fields within each line.",
-                                   "When 'undef' no separation is performed."],
-                 fil  =>[undef,"c","Name of the file to be read."],
-                 bbl  =>["##<<","c","Tag to begin a block"],
-                 ebl  =>["##>>","c","Tag to   end a block"],
-                 uni  =>[    0,"n","Must the reading be restricted to the first block?"]
-                };
+    #               'bbl' at the beginning of the tag to open the block
+#                   (the end of this line is not considered)
+#               'ebl' at the beginning of the tag to close the block
+#               Ending components can be cleared out from their 
+#                      starting and ending blanks characters.
+#
+# output: a reference to an array of references associated
+#         to each line of the block, these references point
+#         towards arrays of the different components of each
+#         lines except when 'sep' is 'undef' where the referred
+#         array is just the array of the lines.
+#
+# arguments
+my $hrsub = {com  =>[  "#","uc","Lines beginning with it are neglected.",
+			       "When 'undef' every line is considered."],
+	     sep  =>[ "::","cu","Separator between fields within each line.",
+			       "When 'undef' no separation is performed."],
+	     fil  =>[undef,"c","Name of the file to be read."],
+	     bbl  =>["##<<","c","Tag to begin a block"],
+	     ebl  =>["##>>","c","Tag to   end a block"],
+             bla  =>[    0,"n","Must framing blanks be removed?"],
+	     uni  =>[    0,"n","Must the reading be restricted to the first block?"]
+	    };
 </pre></p>
 <h2>
-A total of 15 test scripts was detected:
+<a name="sub read8csv {"></a>
+30 sub read8csv {
+</h2>
+<p><pre>
+    #
+    # title : reading a CSV file
+    #
+    # aim: read a Coma Separated Values file whose first line
+    #               gives the names of the columns
+    #
+    # remarks: - Every line must count the same number of separators
+    #            which is the number of columns minus one. Empty
+    #            values are possible.
+    #          - Of course empty names of columns are prohibited.
+    #
+    # output: a reference to a hash whose keys are the column
+    #         names and the values are references associated
+    #         to arrays of the columns (first line being removed).
+    #         But when an inconsistence is detected, the output
+    #         is an error object.
+    #
+# arguments
+my $hrsub = {csv  =>[undef,"c","Name of the CSV file to extract",],
+	     sep  =>[  ";","c","Separator between fields within each line."],
+	     com  =>[  "#","c","Starting characters of comment lines to be ignored."]
+	    };
+</pre></p>
+<h2>
+<a name="sub read8line {"></a>
+31 sub read8line {
+</h2>
+<p><pre>
+    #
+    # title : reading lines from a text file
+    #
+    # aim: reads a text file giving back its lines after some processing
+    #               (removing comments, splitting and concatinating
+    #                initial lines) in a variety of way according to the
+    #                arguments). True lines can be splitted or concatanated.
+    #      The processing of the file follows the order of the presentation
+    #                of the arguments.
+    #
+    # output: either (typ=1) a reference to an array. One element of it
+    #                    for each meaningful line of the file;
+    #             or (typ=2) a reference to a hash. Its possible keys are
+    #                    indicated by arguments plus (possibly) the special
+    #                    word '$STD'. Except for '$STD', the keys can be found
+    #                    as first word of lines, zero, one or more time. 
+    #                    These keys (including '$STD') belongs to two categories
+    #                    pointing to an array or to an hash. 
+    #                    When it is an array, the remaining part of the line
+    #                    is the content of one element of the array.
+    #                    When it is a hash, the second word of the line is
+    #                    one key (so must be unique) of the hash, the remaining
+    #                    part being the value.
+    #                    When '$STD' is not indicated, lines not starting
+    #                    with an indicated key are ignored.
+    #                    Empty lines are ignored not having a key.
+    #                    Second level hashes can be completed with a special key
+    #                    named '$ORD' refering to an array containing the other keys in 
+    #                    the order they are in the file. The length of 
+    #                    this array gives the dimension of the hash, especially
+    #                    when it is null.
+    #         When the file is not consistent, an error is returned with
+    #                    an associated message.
+    #         Be aware that some care must be taken when using characters having
+    #               a special meaning in regular expressions... Particularly for the
+    #               argument 'con' there is no mean to introduce '++'!
+    #
+# arguments
+my $hrsub = {fil  =>[undef,"c","Name of the file to be read."],
+             stp  =>["<STOP>","c","lines starting with it indicates that the",
+                                  "following lines must be ignored until",
+                                  "a restart line be found",
+                                  "(remaining part of this line is ignored)."],
+             str  =>["<START>","c","lines starting with it cancel the effect",
+                                   "of a stopping line",
+                                   "(remaining part of this line is ignored)."],
+	     cl1  =>[{dbl=>1,spa=>3,co1=>"#",co2=>"##",nun=>1,sep=>";;"},
+			  "h","The parameters to be transmitted",
+			       "to 'clean8string' when applied to each",
+			       "line of the file (see its documentation).",
+                               "BE AWARE that if the default values are",
+                               "used, you must provide the 6 values."],
+	     con  =>[  "plus","uc","Lines starting with it are concatenated",
+				 "to the previous one. When 'undef' no",
+				 "concatenation is attempted."],
+	     spl  =>[  ";;","uc","Lines are split according to it, allowing",
+				 "to introduce more than one line at once.",
+			       "When 'undef' no split is attempted."],
+	     sep  =>[  " ","c","Separator used to determine the identifier of lines",
+			       "when typ=2."],
+	     cl2 =>[{dbl=>1,spa=>3,co1=>undef,co2=>undef,nun=>0},
+			  "h","Parameters to give",
+			       "to 'clean8string' when applied to each",
+			       "remaining parts of the lines",
+                               "so 'sep'arator argument is not used.",
+                               "Be aware that when default is not used",
+                               "the 5 components must be given even if",
+                               "with default values."],
+	     fio  =>[   "","c","Name of the file to write after pre-processing",
+			       "containing only the meaningful lines. '' means",
+			       "no such output."],
+	     typ  =>[     1,"n","The type of analysis to perform: 0 nothing, [1-2]",
+				"as explained in the general description."],
+	     khh  =>[ {},"h","When typ=2, reference to a hash defining the keys",
+			     "pointing to second level hashes. Its keys give the",
+			     "specific keys to use and its values indicate if",
+			     "an 'order' key must be added. The reserved key '$STD' must",
+				"placed here to introduced lines not starting",
+				"with a specific key. Notice that if it is the",
+				"only key, all lines will be incorporated in",
+				"it!"],
+	     kha  =>[ [],"a","When typ=2, reference to an array defining the keys",
+			     "pointing to arrays. The reserved key '$STD' must",
+				"placed here to introduced lines not starting",
+				"with a specific key. Notice that if it is the",
+				"only key, the result is similar to the one",
+				"obtained for typ=1"]
+	    };
+</pre></p>
+<h2>
+<a name="sub read8structure {"></a>
+32 sub read8structure {
+</h2>
+<p><pre>
+    #
+    # title : read a structure previoulsy stored in a file
+    #
+    # aim : reads a file produced with '&write8structure' where
+    #        a structure has been stored giving back the structure.
+    #
+    # remarks: - no more scalar references,
+    #          - no more numerical values.
+    #
+    # output: a reference to the structure or an error to be checked 
+    #           when something went wrong
+    #         
+    #
+# arguments
+my $hrsub = {fil =>[undef,"c","Name of the file to be read"]
+	    };
+</pre></p>
+<h2>
+<a name="sub replace8string {"></a>
+33 sub replace8string {
+</h2>
+<p><pre>
+    #
+    # title : replaces keywords into a string
+    #
+    # aim: from a string (or a reference to an array of strings)
+    #      returns it after replacement of keywords with
+    #      given values.
+    #      Remark: when giving values to the two tags ('bef' and 'aft')
+    #              don't forget to backslash special characters of
+    #              Perl substitution!
+    #              Special characters are : . * ? + [ ] ( ) { } ^ $ | \
+    #              A good choice could be '<<' and '>>' 
+    #                another one '#_' and '_#'.
+    #
+    # output: a string (or a reference to an array of strings)
+    #
+    #
+# arguments
+my $hrsub = {str =>[undef,"ca","The string (or reference to an array of strings) to modify"],
+	     kwd =>[undef,"h","Reference to the hash giving the replacements to performs.",
+			      "Key of the hash are replaced by the associated value."],
+	     bef =>["","c","tag to add before the value to be replaced."],
+	     aft =>["","c","tag to add before the value to be replaced."]
+	    };
+</pre></p>
+<h2>
+<a name="sub retrouve {"></a>
+34 sub retrouve {
+</h2>
+<p><pre>
+    #
+    # title : find directories or files
+    #
+    # aim: from a starting directory returns either all
+    #      subdirectories or all fill included in its
+    #      ramification.
+    #
+    # output: a reference to an array of strings containing
+    #         the result, unless an error be encontoured in
+    #         that case an error message is returned (to be
+    #         tested with &err9.
+    #
+# arguments
+my $hrsub = {dir =>[".","c","The starting directory"],
+             qoi =>[   1,"n","1 for searching directories,",
+                            "0 for searching files"],
+             frg =>[  "","c","the regular expression to filter",
+                           "what must be included in the result"]
+	    };
+</pre></p>
+<h2>
+<a name="sub spec2html {"></a>
+35 sub spec2html {
+</h2>
+<p><pre>
+    #
+    # title : replace special characters with html (or reduced) coding
+    #
+    # aim: from a string (or a reference to an array of strings)
+    #      returns it after replacement of é, è, ô, ç, ï,...
+    #      in standard ascii html coding or standard ascii 
+    #      characters compatible for file names (as a consequence
+    #      spaces are replaced with underscores.
+    #
+    #      Use is made of subroutine 'replace8string
+    #
+    # output: a string (or a reference to an array of strings)
+    #
+    #
+# arguments
+my $hrsub = {str =>[undef,"ca","The string (or reference to an array of strings) to modify"],
+             htm =>[    1,"n","1: replacement made with html coding",
+                              "2: (and 0 for historical reason), simplification keeping '/'",
+                              "3: simplification replacing '/' with '-'"]
+	    };
+</pre></p>
+<h2>
+<a name="sub split8string {"></a>
+36 sub split8string {
+</h2>
+<p><pre>
+    #
+    # title : splitting a string in different ways
+    #
+    # aim: from a string of characters structured in some
+    #      ways returns an array of individual locutions.
+    #      It is basically as split except that separators
+    #      can be included with framing. Typically analyzing
+    #      strings like 'one two "three or four" five "6 7 8"'.
+    #
+    # output: a reference to the array of substrings
+    #
+    #
+# arguments
+my $hrsub = {str =>[undef,"c","The string to decompose"],
+	     enc =>[ ['[',"]"],"au","When of length two the framing pair of locutions. Notice",
+				 "that the opening and closing can be",
+				 "identical. When 'undef' not used."], 
+	     sep =>[ " ","c","Separator between locutions."],
+	     cle =>[{dble=>1,spac=>3,com1=>undef,com2=>undef,nunu=>1},
+			 "h","Parameters to give",
+			      "to 'clean8string' when applied to each",
+			      "extracted sub-string"],
+	     err =>[    1,"n","In case of error (framing not closed),",
+			      "0: returns a string with error",
+			      "1: prints the error and stops"]
+	    };
+</pre></p>
+<h2>
+<a name="sub text2html {"></a>
+37 sub text2html {
+</h2>
+<p><pre>
+    #
+    # title : transforms a text into an html version
+    #
+    # aim: from a reference to an array of strings
+    #      returns it after introducing some html tags.
+    #      (For convenience in a paragraph context, an empty line 
+    #       is considered as a paragraph separator).
+    #      See also 'spec2html'
+    #
+    # output: a reference to an array of strings
+    #
+    # remarks: (1) when choosing new values for tags be aware that
+    #              the special characters: . * ? + [ ] ( ) { } ^ $ | \
+    #              will cause troubles!
+    #          (2) when some html formatting is not available
+    #              there is no harm in introducing it by hand.
+    #              For instances :
+    #                   <strong> What to remember: </strong>
+    #                   <ol><li>Premier</li><li>Second</li></ol>
+    #
+# arguments
+my $hrsub = {str =>[undef,"ca","The string (or reference to an array of strings) to translate"],
+	     tit =>["Generated with 'uie'","c","Title to give to the generate page."],
+	     b8c =>[1    ,"n","Indicates if beginning and closing tags of the page",
+			      "must be included."],
+	     pse =>["<>" ,"c","Lines starting with it start a new paragraph:",
+			      "close the previous tag and open a new paragraph.",
+                              "Also when a paragraph comprises an empty line,",
+                              "it is interpreted as the start of a new paragraph.",
+                              "Also the default value when no tag is a new paragraph."],
+	     lig =>["<->","c","Lines starting with it start a new paragraph after",
+			      "introduction of an horizontal rule"],
+	     hdo =>[  "<","c","Opening of headings."],
+	     hdc =>[  ">","c","Closing of headings",
+                              "(with defaults lines starting with '<#>'",
+                              " are interpreted as heading # only when",
+                              " # belongs to 1..6!)."],
+	     bul =>["<o>","c","Lines starting with it are item lines"],
+	     nul =>["<#>","c","Lines starting with it are numbered lines"]
+	    };
+</pre></p>
+<h2>
+<a name="sub write8csv {"></a>
+38 sub write8csv {
+</h2>
+<p><pre>
+    #
+    # title : writing a CSV file
+    #
+    # aim: write a csv file from an hash.
+    #            Its keys will be the names of the csv columns,
+    #            Associated values must be references to arrays
+    #            having the same number of components: the values
+    #            for the csv table to write into a file
+    #
+    # output: 1 if everything was fine and error which can be 
+    #           filtred with &check8err.
+    #
+# arguments
+my $hrsub = {str  =>[undef,"h","hash to be written as a CSV file"],
+             csv  =>[undef,"c","Name of the CSV file to write"],
+	     sep  =>[  ";","c","Separator between fields within each line."]
+	    };
+</pre></p>
+<h2>
+<a name="sub write8structure {"></a>
+39 sub write8structure {
+</h2>
+<p><pre>
+    #
+    # title : write a structure in a file for future use
+    #
+    # aim : similar to &print8structure but to produce a
+    #        piece of code, reusable with &read8structure.
+    #
+    # remarks: - references to scalar are transformed to scalars.
+    #          - numerical values are transformed to character strings.
+    #
+    # output:  the cumulated string when everything was right. 
+    #          If the file exists and must not a fatal error is raised.
+    #
+# arguments
+my $hrsub = {str =>[undef,"csahu","The structure to be written"],
+             fil =>[   "","c","Name of the file to be created",
+                              "when '' a display on the screen"],
+             cfi =>[    0,"n","Must the non existence of the file",
+                              "be checked? If not a pre-existing",
+                              "file will be replaced."],
+	     prm =>[20,"n","The maximum depth admitted for recursivity"],
+	     pro =>[0,"n","The depth of the display (used for recursivity)."],
+	     res =>["","c","String for recursive accumulation."]
+	    };
+</pre></p>
+<h2>
+A total of 34 test scripts was detected:
 </h2>
 <p><pre>
 </pre></p>
@@ -620,8 +1972,8 @@ uie_ask8question.pl
 </a>
 </li>
 <li>
-<a href="uie_belongs2.pl">
-uie_belongs2.pl
+<a href="uie_belong9.pl">
+uie_belong9.pl
 </a>
 </li>
 <li>
@@ -630,8 +1982,38 @@ uie_check8ref.pl
 </a>
 </li>
 <li>
-<a href="uie_get8answers.pl">
-uie_get8answers.pl
+<a href="uie_clean8string.pl">
+uie_clean8string.pl
+</a>
+</li>
+<li>
+<a href="uie_compare8set.pl">
+uie_compare8set.pl
+</a>
+</li>
+<li>
+<a href="uie_copy8structure.pl">
+uie_copy8structure.pl
+</a>
+</li>
+<li>
+<a href="uie_dim4csv.pl">
+uie_dim4csv.pl
+</a>
+</li>
+<li>
+<a href="uie_errors.pl">
+uie_errors.pl
+</a>
+</li>
+<li>
+<a href="uie_extract8string.pl">
+uie_extract8string.pl
+</a>
+</li>
+<li>
+<a href="uie_get8answer.pl">
+uie_get8answer.pl
 </a>
 </li>
 <li>
@@ -647,6 +2029,16 @@ uie_juste.pl
 <li>
 <a href="uie_justn.pl">
 uie_justn.pl
+</a>
+</li>
+<li>
+<a href="uie_line4csv.pl">
+uie_line4csv.pl
+</a>
+</li>
+<li>
+<a href="uie_make8eml.pl">
+uie_make8eml.pl
 </a>
 </li>
 <li>
@@ -670,6 +2062,11 @@ uie_pause.pl
 </a>
 </li>
 <li>
+<a href="uie_print8hmat.pl">
+uie_print8hmat.pl
+</a>
+</li>
+<li>
 <a href="uie_print8panneau.pl">
 uie_print8panneau.pl
 </a>
@@ -682,6 +2079,56 @@ uie_print8structure.pl
 <li>
 <a href="uie_read8block.pl">
 uie_read8block.pl
+</a>
+</li>
+<li>
+<a href="uie_read8csv.pl">
+uie_read8csv.pl
+</a>
+</li>
+<li>
+<a href="uie_read8line.pl">
+uie_read8line.pl
+</a>
+</li>
+<li>
+<a href="uie_read8structure.pl">
+uie_read8structure.pl
+</a>
+</li>
+<li>
+<a href="uie_replace8string.pl">
+uie_replace8string.pl
+</a>
+</li>
+<li>
+<a href="uie_retrouve.pl">
+uie_retrouve.pl
+</a>
+</li>
+<li>
+<a href="uie_spec2html.pl">
+uie_spec2html.pl
+</a>
+</li>
+<li>
+<a href="uie_split8string.pl">
+uie_split8string.pl
+</a>
+</li>
+<li>
+<a href="uie_text2html.pl">
+uie_text2html.pl
+</a>
+</li>
+<li>
+<a href="uie_write8csv.pl">
+uie_write8csv.pl
+</a>
+</li>
+<li>
+<a href="uie_write8structure.pl">
+uie_write8structure.pl
 </a>
 </li>
 </ol>

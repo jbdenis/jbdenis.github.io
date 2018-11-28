@@ -1,0 +1,6 @@
+# a very simple shortcut file
+kwd vx plants ;;kwd vc cultivated plants ;;kwd fl flowers
+cat vn natural plants
+cat pv Un élément vertical dans un paysage, comme une tour, un château d'eau, un clocher, une éolienne,...
+kwd qvi Victor Huet
+com -c ne pas tenir compte des catégories communes

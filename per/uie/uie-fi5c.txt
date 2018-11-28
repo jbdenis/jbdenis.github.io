@@ -1,0 +1,13 @@
+ # un fichier simple pour le nouveau type 2
+ a 1 il était une fois;; a 2 un petit chaperon 
+a 3 rouge
+<STOP>
+b 1 dont la 
+<START>
+b 2 grand-mère
+c 1 qui était bien malade ## pauvre femme :+(
+c 2 et c'est pourquoi  sa maman lui a
+c 3 demandé d'aller lui  porter une galette et 
+c 4 un peu    de      beurre...
+<STOP>
+c 5 Si elle tarde trop, il va rancir.

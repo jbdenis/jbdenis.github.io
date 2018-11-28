@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #
 # 16_01_28 16_01_29 16_02_20 16_03_19 16_03_20
-# 16_04_04 16_04_13
+# 16_04_04 16_04_13 17_04_04
 #
 use strict;
 use warnings;
@@ -18,7 +18,7 @@ use uie;
 #
 # une référence
 print &uie::check8ref(ref=>[1..5]),"\n";
-&uie::pause(mess=>"simple référence of an array");
+&uie::pause(mes=>"simple référence of an array");
 #
 # les variables
 my $test=0;

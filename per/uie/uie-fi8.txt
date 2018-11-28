@@ -1,0 +1,15 @@
+# un fichier simple CVS
+#
+code ; texte
+a1 ; il était une fois
+a2 ; un petit chaperon 
+a3 ; bleu ; rouge 
+b  ; 1 dont la 
+# en plein milieu
+b ; 2 grand-mère
+c1 ; qui était bien malade ## pauvre femme :+(
+c2 ; et c'est pourquoi  sa maman lui a
+c3 ; demandé d'aller lui  porter une galette et 
+c4 ; un peu    de      beurre...
+c5 ; Si elle tarde trop, il va rancir.
+## et voici la fin

@@ -1,0 +1,10 @@
+# pour les hash 
+c a1 maître corbeau 
+c a2 sur un arbre perché
+c a3 tenait un fromage
+r a1 maître renard
+r a2 par l'odeur alléché
+r a3 lui tint
+r a4 à peu près ce langage
+e a1 honteux et confus il jura mais un peu tard qu'on ne l'y prendrait plus
+# fin du fichier

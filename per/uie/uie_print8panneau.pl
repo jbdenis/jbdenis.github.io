@@ -12,27 +12,27 @@ use uie;
 &uie::print8panneau("HELP");
 &uie::pause;
 #
-&uie::print8panneau(rpan=>[],bfra=>undef,tfra=>undef,
-                    tvoi=>0,bvoi=>0);
-&uie::pause(mess=>"D'abord un panneau vide");
+&uie::print8panneau(rpa=>[],bfr=>undef,tfr=>undef,
+                    tvo=>0,bvo=>0);
+&uie::pause(mes=>"D'abord un panneau vide");
 #
 my $line1 = "Juste Pour Voir";
 my $line2 = "UN PANNEAU";
 my $line3 = "de trois lignes";
 my $beaup = [\$line1,\$line2,\$line3];
 for my $jj ('l','c','r') {
-    &uie::print8panneau(rpan=>$beaup,just=>$jj);
+    &uie::print8panneau(rpa=>$beaup,jus=>$jj);
     &uie::pause;
 }
-&uie::print8panneau(rpan=>$beaup,tfra=>"^"x45,tvoi=>3,lfra=>"[ ",rfra=>" ]",bvoi=>2,bfra=>"v"x45,just=>["l","c","r"],tcol=>undef);
+&uie::print8panneau(rpa=>$beaup,tfr=>"^"x45,tvo=>3,lfr=>"[ ",rfr=>" ]",bvo=>2,bfr=>"v"x45,jus=>["l","c","r"],tco=>undef);
 &uie::pause;
-&uie::print8panneau(rpan=>$beaup,tfra=>"^"x45,tvoi=>3,lfra=>"[ ",rfra=>" ]",bvoi=>2,bfra=>"v"x45,just=>["l","c","r"],tcol=>'red');
+&uie::print8panneau(rpa=>$beaup,tfr=>"^"x45,tvo=>3,lfr=>"[ ",rfr=>" ]",bvo=>2,bfr=>"v"x45,jus=>["l","c","r"],tco=>'red');
 &uie::pause;
-&uie::print8panneau(rpan=>$beaup,tfra=>"^"x45,tvoi=>3,lfra=>"[ ",rfra=>" ]",bvoi=>2,bfra=>"v"x45,just=>["l","c","r"],tcol=>['blue','white','red']);
+&uie::print8panneau(rpa=>$beaup,tfr=>"^"x45,tvo=>3,lfr=>"[ ",rfr=>" ]",bvo=>2,bfr=>"v"x45,jus=>["l","c","r"],tco=>['blue','white','red']);
 &uie::pause;
 #
-&uie::print8panneau(rpan=>$beaup,tfra=>"^"x45,tvoi=>3,lfra=>"[ ",rfra=>" ]",bvoi=>2,bfra=>"v"x45,just=>["l","c","r"],fcol=>'on_blue blue');
-&uie::pause(mess=>"Et pour finir, la coloration du seul cadre en gris");
+&uie::print8panneau(rpa=>$beaup,tfr=>"^"x45,tvo=>3,lfr=>"[ ",rfr=>" ]",bvo=>2,bfr=>"v"x45,jus=>["l","c","r"],fco=>'on_blue blue');
+&uie::pause(mes=>"Et pour finir, la coloration du seul cadre en gris");
 #
 print "-"x4,"Fin du test de print8panneau","-"x25,"\n";
 #
