@@ -6,7 +6,7 @@
 # 2015_05_29 2015_05_30 2015_05_31 2015_06_01 2015_06_02
 # 2015_06_03 2015_06_05 2015_06_08 2015_06_10 2015_06_11
 # 2015_06_12 2015_06_18 2015_06_19 2015_06_22 2015_06_07
-# 2015_06_29 2015_06_30 2015_07_03 2015_07_04 2015_07_31
+# 2015_06_29 2015_06_30 2015_07_03 2015_07_04
 #
 # <<<IDEAS TO IMPROVE THE CODE>>>
 #
@@ -263,9 +263,6 @@ $aide{J} = "Further planned improvements
 
  (*) increase the example sets demostrating more possibilities
 
- (*) think about a proper use of column labels in case of
-     preparing input subtables. 
-
  (*) finish the \"t3\" output with the automatic numbering
 
  (*) implement \"parameter (4)\" section
@@ -279,7 +276,7 @@ $aide{J} = "Further planned improvements
 
 $aide{K} = "Error to be corrected
 
- (*) 'inbla' seems not to work
+ (*) ?
 
  ";
 

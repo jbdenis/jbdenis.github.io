@@ -1,0 +1,370 @@
+#!/usr/bin/perl -w
+#
+# 13_03_05 13_03_11 13_03_12 13_03_27 13_04_09
+# 14_01_08 14_01_20 16_06_20 16_06_24 17_02_11
+# 17_02_13 17_02_14 17_02_15 17_02_16 17_02_19
+# 17_02_20 17_02_21 17_02_23 17_02_26 17_02_27
+# 17_03_01 17_03_07 17_12_04 18_09_17
+#
+use Getopt::Std;
+use File::Basename;
+use File::Copy;
+use strict;
+#
+# "norfo" to NORmalize 'FOto' names
+#          making use of the general 'gefi' script
+#
+my $gefi = "gefi";
+my $nom = "fcopie";
+my $it = "(*)"; # first bullet for help
+#
+# getting the time
+my @when = (localtime)[0,1,2,3,4,5];
+my($seco,$minu, $heure, $jour, $mois, $an)=@when;
+$mois = $mois+1; $an = $an+1900;
+if ($seco < 10) { $seco = "0$seco";}
+if ($minu < 10) { $minu = "0$minu";}
+if ($heure < 10) { $heure = "0$heure";}
+if ($jour < 10) { $jour = "0$jour";}
+if ($mois < 10) { $mois = "0$mois";}
+my $date = $an."_".$mois."_".$jour."@"."$heure:$minu:$seco";
+#
+if (not(exists($ARGV[0]))) { print "ABOUT $nom
+
+PRINCIPLES
+
+$it to copy a series of files normalizing the name by:
+      (i)  possibly changing the name by adding
+           some string (default: the day of the last 
+           modification of each initial file at the 
+           beginning as a new component)
+      (ii) possibly changing the case in some way (default:
+           lower casing the complete name).
+     Using the defaults file TOTO.txt is copied as 
+           2017_02_20.toto.txt (if file TOTO.txt was created
+           this day).
+$it the copy can be replaced by a move, or even
+           by any command with arguments
+$it no recursion is possible
+
+OPTIONS (to be included within '-o')
+ J        : just to see what would be the call to $gefi.
+              (no action performed)
+ j        : just to see which modifications will be
+            done, that is a dry run (default: actions
+            are performed). It implies a non silencious
+            run.
+ l        : no action is taken, no information output
+            is issued, no check is performed but a list
+            of concerned files is outputted which can
+            be captured in a text file for future use.
+ a|b|N|A|B: where must be placed the addition into the name
+              a: after the last but one component without dot
+              b: before the first component without dot
+              N: no addition must be done to the file name
+              A: after the last but one component with a dot
+              B: before the first component with a dot(default)
+                 (in case of redundancy, the priority follow
+                  this order)
+ p        : written files are protected with 400 file mode
+            bits (default identical to the original
+            file).
+ s        : operate silenciously: no indication
+            given on the screen (default on the
+            contrary). An exception is the occurrence
+            of an existing file to create, in that case
+            a question is issued.
+ m        : to move the files instead of copy them
+ n        : by default an index file is created/appended,
+            flag 'n' prevents this action.
+
+ADDITION (to be included within '-a')
+
+ -a add : where 'add' can be added into the file name
+    + a string between quotations marks (\\\"foo\\\"),
+    + yy for the year of the present moment,
+    + dd for the day of the present moment,
+    + ss for the moment of the present moment,
+    + YY for the year of the file creation,
+    + DD for the day of the file creation,
+    + SS for the moment of the file creation,
+    + n# for a numbering and associated number of digits
+             (n3 for 001, 002,...).
+
+CASING (to be included within '-c')
+
+  Initial file name is decomposed into 'first part' and 'suffix',
+  Each component of the first part can be lower cased, capitalized,
+                 upper cased or not changed.
+  The same for the suffix.
+  The four possibilities are respectively indicated by 'l'/'c'/'u'/'n'.
+  The casing to be adopted is given by two letters among these 
+             possibilities. So:
+   'll' to lower case the complete name (default),
+   'uu' to upper case the complete name,
+   'lu' to lower case the first part and upper case the suffix,
+   'nn' to let the casing unchanged...
+
+SPECIFIC COMMAND (to be given within '-k')
+
+  When argument(s) are present, quotation marks are necessary,
+       for instance '-k \"convert -geometry 1200\"'.
+  The proposed command gets priority with respect to '-o m'.
+
+SHORTCUTS (to be given within '-s')
+
+ n : (normalize) copy the proposed files by adding the date (day) of their
+                 creation as a first component of the name and lower casing
+                 the complete name into the working directory.
+ c : (copy) copy the proposed files by adding a 'b' after the first part
+ r : (reduce image size) by introduction the command <<-k \"convert -geometry 1200\">>
+
+ Suggestion: try them with option '-o j'
+   
+DIRECTORIES
+ -f fdir  : starting directory (default: working directory)
+ -t tdir  : destination directory (default: working directory)
+
+INDEX FILE
+ -i index-file : the index of copied files is appended to file 'index-file'
+                 (default 'index.txt') when flag 'n' of argument '-o'
+                 is not raised.
+                 ('index-file' can include the directory if necessary,
+                  if not the destination directory will be used ***not so sure to be checked***)
+
+SELECTION (to be included within 'S')
+ -S sname       among the proposed files, only include those
+                with a name greater than (so strictly greater)
+                the string 'sname'.
+
+USE
+
+$nom  \t[-o flags]     \\ # options
+         \t[-a add]       \\ # the string to add to the file names
+         \t[-c casing     \\ # how to case the different components
+         \t[-k command    \\ # a specific command instead of copy or move
+         \t[-f fdir]      \\ # starting directory
+         \t[-t tdir]      \\ # ending directory
+         \t[-i file]      \\ # index file to use
+         \t[-s shortcut]  \\ # using some prepared calls with a shortcut
+         \t[-S sname]     \\ # use a selection by greater than 'sname'
+         \t[-F file]      \\ # text file where are listed possible files
+         \t[files]        \\ # files names, possibly shell globbed
+         \t[globs]        \\ # protected globs for the script
+
+TODO
+  option '-a' doesn't work as expected!
+
+EXAMPLES
+
+$nom -o m *.JPG
+  ( renaming all '*.JPG' files of the present directory.)
+
+$nom -f ori *.JPG 
+  ( the same but for subdirectory 'ori'.)
+
+$nom ori/*.JPG 
+  ( identical to the previous)
+
+$nom -a BELLES -f /media/camera -t ori  \\\"*.JPG\\\" 
+  ( extracting pictures from her camera, 'BELLES' will not be
+    lower cased.)
+
+$nom | less
+
+";} else {
+  # getting the options
+  getopt('oftaicksSF');
+  # checking the shortcuts
+  my $shcu = "";
+  if (defined our $opt_s) {
+    $shcu = $opt_s;
+    if ($shcu !~ /r|c|n/) { 
+      print("THE SHORTCUT you asked for: <",$shcu,"> IS NOT ACCEPTED BY $nom\n");
+      print("  must be '[r|c|n]'\n");
+      die("bad shortcut") ;
+    }
+  }
+  # dealing with the casing
+  my $casing = "ll";
+  if (defined our $opt_c) {
+    $casing = $opt_c;
+    if (length($casing) != 2) {
+      print("THE CASING YOUR PROPOSED: <",$casing,"> IS NOT ACCEPTED BY $nom\n");
+      print("  must be '[l|c|u|n][l|c|u|n]', default 'll'\n");
+      die("bad casing: length != 2") ;
+    } else {
+      my $s1 = substr($casing,0,1);
+      my $s2 = substr($casing,1,1);
+      if ($s1 !~ /l|c|u|n/) {
+        print("THE CASING YOUR PROPOSED: <",$casing,"> IS NOT ACCEPTED BY $nom\n");
+        print("  must be '[l|c|u|n][l|c|u|n]', default 'll'\n");
+        die("bad casing: first character is bad") ;
+      }
+      if ($s2 !~ /l|c|u|n/) {
+        print("THE CASING YOUR PROPOSED: <",$casing,"> IS NOT ACCEPTED BY $nom\n");
+        print("  must be '[l|c|u|n][l|c|u|n]', default 'll'\n");
+        die("bad casing: second character is bad") ;
+      }
+    }
+  }
+  my $modca = "";
+  my $s1 = substr($casing,0,1);
+  my $s2 = substr($casing,1,1);
+  if ($shcu eq "c") { $s1 = "n"; $s2 = "n"}
+  my $combien = 0;
+  if ($s1 ne 'n') { $combien++;}
+  if ($s2 ne 'n') { $combien++;}
+  if ($s1 ne 'n') { 
+    if (defined our $opt_o) {
+      if ($opt_o =~ /N/) {
+        $modca = $modca.$s1."[c1]";
+      } else {
+        $modca = $modca.$s1."[c2]";
+      }
+    } else {
+      $modca = $modca.$s1."[c2]";
+    }
+  }
+  if ($combien == 2) { $modca = $modca.":";}
+  if ($s2 ne 'n') { $modca = $modca.$s2."[c-1]";}
+  # dealing with the flag options
+  my $options = "s"; my $voir = 1; 
+  my $command = ""; my $index = 1;
+  my $display = "s"; my $jvoir = 0;
+  my $wadd = "B";
+  if (defined our $opt_o) {
+    if ($opt_o =~ /a/) { $wadd = "a";}
+    if ($opt_o =~ /b/) { $wadd = "b";}
+    if ($opt_o =~ /N/) { $wadd = "N";}
+    if ($opt_o =~ /A/) { $wadd = "A";}
+    if ($opt_o =~ /B/) { $wadd = "B";}
+    if ($opt_o =~ /p/) { $options = "p$options";}
+    if ($opt_o =~ /s/) { $display =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /j/) { $options = "j$options";}
+    if ($opt_o =~ /J/) { $jvoir = 1;}
+    if ($opt_o =~ /l/) { $display = "l$display"; $voir = 0;}
+    if ($opt_o =~ /m/) {
+      $command = "-c mv";
+      print "Initial Files will be moved, then DELETED: enter 'yes' to proceed: ";
+      my $rep = <STDIN>; chomp $rep;
+      if (lc($rep) ne "yes") {
+        print("The call was aborted\n");
+        exit 1;
+      }
+    }
+    if ($opt_o =~ /n/) { $index = 0;} else { $display = "i$display";}
+  } else {
+    $display = "i$display";
+  }
+  $options = "-o $options";
+  $display = "-d $display";
+  # dealing with the string to add
+  my $add = "DD";
+  if (defined our $opt_a) {
+    $add = $opt_a;
+    if (($add !~ /^ss$/) and
+        ($add !~ /^dd$/) and
+        ($add !~ /^yy$/) and
+        ($add !~ /^SS$/) and
+        ($add !~ /^DD$/) and
+        ($add !~ /^YY$/) and
+        ($add !~ /^n[1-9]$/)) {
+          $add = "\\\"$opt_a\\\"";
+    }
+  }
+  if ($shcu eq "c") { 
+    $add = '\"b\"';
+    $wadd = "a";
+  }
+  # dealing with a specific command
+  if (defined our $opt_k) {
+    $command = "-c \"$opt_k\"";
+  }
+  # dealing with the selection
+  my $selfil ="";
+  if (defined our $opt_S) {
+    $selfil = "-s g[n,$opt_S]";
+  }
+  if ($shcu eq "r") { 
+    $command = "-c \"convert -geometry 1200\"";
+    $add = '\"r\"';
+    $wadd = "a";
+  }
+  # dealing with the starting directory
+  my $fdir = '';
+  if (defined our $opt_f) {
+    $fdir = "-f $opt_f";
+  }
+  # dealing with the ending directory
+  my $tdir = $fdir;
+  if (defined our $opt_t) {
+    $tdir = "-t $opt_t";
+  }
+  # dealing with modification of the name
+  my $modna = "";
+  if ($wadd eq "B")    { $modna = "B[n,$add]";}
+  elsif ($wadd eq "A") { $modna = "A[c-2,$add";}
+  elsif ($wadd eq "b") { $modna = "b[n,$add]";}
+  elsif ($wadd eq "a") { $modna = "a[c-2,$add";}
+  # dealing with the normalizing shortcut
+  if ($shcu eq "n") {
+    $modna = "B[n,DD]";
+    $modca = "l[n]";
+    $tdir = "-t .";
+  }
+  # building the modification component
+  my $modif = "";
+  if (($modna ne "") and ($modca ne "")) {
+    $modif = "-m $modna:$modca";
+  } elsif ($modna ne "") {
+    $modif = "-m $modna";
+  } else {
+    $modif = "-m $modca"; 
+  }
+  # dealing with the index file
+  my $lifi = "index.txt";
+  if (length($tdir) > 3) {
+    my $dedi = substr($tdir,3);
+    #$lifi = $dedi."/index.txt"; modified on 18_09_17
+    $lifi = "index.txt";
+  }
+  if (defined our $opt_i) {
+    $lifi = $opt_i;
+  }
+  my $findex = "";
+  if ($index) {
+    $findex = "-i $lifi";
+  }
+  # dealing with the designated files
+  my @fifi = ();
+  if (defined(our $opt_F)) {
+      open(TUTU,"<",$opt_F) or die("Couldn't open file $opt_F");
+      while (<TUTU>) {
+          chomp;
+          if ($_ !~ /^#/) { @fifi = (@fifi,$_);}
+      }
+      close(TUTU);
+  }
+  # adding the freely designated files
+  @fifi = (@fifi,@ARGV);
+  # eliminating redundancies
+  my %fifi   = map { $_, 1 } @fifi;
+  @fifi = keys %fifi;
+  # getting the files for calling *gefi*
+  my $fifi = join(' ',@fifi);
+  # building the call to gefi
+  my $callgefi = "$gefi $options $display $command ".
+                 "$selfil $findex $fdir $tdir $modif $fifi";
+  # 
+  # calling gefi
+  if ($jvoir) {
+    print "<<$callgefi>>\n";
+  } else {
+    if ($voir) { print "<<$callgefi>>\n";}
+    system($callgefi);
+  }
+} # else of there are arguments
+#
+exit 1;
+

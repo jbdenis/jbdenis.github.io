@@ -8,6 +8,11 @@
 # 13_03_27 13_04_07 13_04_09 13_04_10 14_01_05
 # 14_01_07 14_01_08 14_01_09 13_01_13 14_01_15
 # 14_01_16 14_01_17 14_01_19 14_01_20 14_01_31
+# 17_01_16 17_01_17 17_01_18 17_01_19 17_01_20
+# 17_01_23 17_01_24 17_01_25 17_01_27 17_01_28
+# 17_01_31 17_02_03 17_02_10 17_02_11 17_02_13
+# 17_02_14 17_02_15 17_02_16 17_02_19 17_02_27
+# 17_03_01 17_03_02 17_03_25 17_03_27
 #
 use Devel::StackTrace;
 use Getopt::Std;
@@ -22,10 +27,21 @@ use strict;
 # A general script to be called in specialized
 # uses to throw in the basket, copy modifying the 
 # the name, save stamped versions, clean a directory
-# from ancillary files,...
+# from ancillary files,... and even generate a 
+# set of reduced pictures!
 #
-# The basic idea is a copy or move of a series of files after 
-# modifying the names.
+# The basic idea is to transform file by file a set of
+# files into a parallel set of files. The initial
+# transformations were copy and move but have now
+# be extended to any kind of transformation accessible
+# with a command line where the initial file and the
+# resulting transformed files are the last two arguments
+# of the command.
+#
+# Associated to the transformation a modification of the 
+# name can be performed. Also among the proposed files
+# a selection of some of them can be operated by some
+# positive or negative requirements.
 #
 # launch "gefi | less" to see the detailed possibilities
 #
@@ -34,15 +50,28 @@ use strict;
 ### Some constants 
 my $msep = ":";   # modification separator in argument '-m'
 my $ssep = "%";   # modification separator in argument '-s' and '-S'
-my $nbfl = 4;     # number of file names bt line when displaying them
 my $yy = "yy";    # symbol for the year string (of the moment)
 my $dd = "dd";    # symbol for the day string (of the moment)
 my $ss = "ss";    # symbol for the moment string (of the moment)
 my $YY = "YY";    # symbol for the year string (of the file)
 my $DD = "DD";    # symbol for the day string (of the file)
 my $SS = "SS";    # symbol for the moment string (of the file)
-my $pa = "pa";    # symbol for the path string
 my $rslash = "%"; # symbol for replacing the slash of the path string into a created file
+my $index = "index.txt"; # default name of index files
+#
+### Coding of arguments for the help
+my %code = (h => 0,
+            d => 1,
+            o => 2,
+            f => 3,
+            t => 4,
+            c => 5,
+            i => 6,
+            m => 7,
+            s => 8,
+            S => 9,
+            F => "z");
+my $CODE = join("",sort values(%code));
 #
 my $hd = `echo \$HOME`; chomp $hd; $hd = "$hd/";
                     # home directory
@@ -54,7 +83,6 @@ my $itit = "    *"; # second bullet for help
 my $nt = "(**)";    # noticing bullet
 my $dot = ".";      # component separator
 my $numero = 0;     # initializing the numbering
-my $verif = 0;      # to generate some debugging printings
 #
 my ($seconde,$minute,$heure,$jour,$mois,$an) = (localtime)[0,1,2,3,4,5];
 $seconde = &comple($seconde,2);
@@ -66,16 +94,36 @@ $an      = &comple($an + 1900,2);
 $jour = join "_",($an,$mois,$jour);
 my $moment = $jour."-".join "_",($heure,$minute,$seconde);
 #
-# for testing purpose
-sub question{
-  # as a question and die for a given answer
-  print("$_[0] ((answer '$_[1]' to stop)) : ");
-  my $rep = <STDIN>; chomp $rep;
-  if ($rep eq $_[1]) { exit 33;}
-}
-#
 ###
 ### Some functions
+#
+my $testquestion = 0;
+# to interact with the user
+sub question{
+  # Three optional arguments are possible:
+  #   0: the question to rise
+  #   1: the answer to stop the program
+  #   2: the default answer
+  if (scalar(@_)==0) { $_[0] = '?';}
+  if (scalar(@_)==1) { $_[1] = 'stop';}
+  if (scalar(@_)==2) { $_[2] = '';}
+  # ask a question and die for a given answer
+  print("$_[0] ((answer '$_[1]' to stop; no answer is equivalent to '$_[2]')) : ");
+  my $rep = <STDIN>; chomp $rep;
+  if ($rep eq $_[1]) {
+      print("YOU stopped it!\n");
+      exit 33;
+  }
+  if ($rep eq "") { $rep = $_[2];}
+  return $rep;
+}
+#
+if ($testquestion) {
+  my $repon = &question("'yes' or stop","stop","cinq"); 
+  print("subroutine 'question' returned <$repon>\n");
+  die("is question right?");
+}
+#
 my $testcomple = 0;
 #
 sub comple {
@@ -90,9 +138,11 @@ sub comple {
 }
 #
 if ($testcomple) {
-  my $a;
-  for ($a=1;$a < 120; $a = 12+$a) {
-    print $a," -> ",&comple($a,4),"\n";
+  my ($a,$d);
+  foreach $d (0..4) {
+    for ($a=1;$a < 120; $a = 12+$a) {
+      print $d," : ",&comple($a,$d),"  ($a)\n";
+    }
   }
   die("is comple right?");
 }
@@ -109,9 +159,9 @@ sub quand {
   my $fo = shift @_;
   # possibly expanding the file
   if (!(-e $fi)) {
-    print("1: $fi\n");
+    # print("1: $fi\n");
     $fi = glob $fi;
-    print("2: $fi\n");
+    # print("2: $fi\n");
   }
   # checking the presence of the file
   if (!(-e $fi)) {
@@ -147,16 +197,17 @@ sub quand {
 }
 #
 if ($testquand) {
-  print(&quand("gefi","ye"),"\n");
-  print(&quand("gefi","mo"),"\n");
-  print(&quand("gefi","da"),"\n");
-  print(&quand("gefi","ho"),"\n");
-  print(&quand("gefi","mi"),"\n");
-  print(&quand("gefi","se"),"\n");
-  print(&quand("..","ff"),"\n");
-  print(&quand("/home/jbdenis/utiles/gefi","da"),"\n");
-  print(&quand("~/utiles/gefi","da"),"\n");
-  die("is 'quand' right?");
+    my ($a1,$a2);
+    $a1 = "gefi.pl"; $a2 = "ye"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "gefi.pl"; $a2 = "mo"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "gefi.pl"; $a2 = "da"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "gefi.pl"; $a2 = "ho"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "gefi.pl"; $a2 = "mi"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "gefi.pl"; $a2 = "se"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = ".."; $a2 = "ff"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "/home/jbdenis/utiles/gefi"; $a2 = "da"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    $a1 = "~/utiles/gefi"; $a2 = "da"; print("<$a1><$a2>",&quand($a1,$a2),"\n");
+    die("is 'quand' right?");
 }
 #
 my $testsortie = 0;
@@ -166,7 +217,7 @@ sub sortie {
   # 0: the path
   # 1: the file name
   # 2: what to return
-  #    - a string between ": this string
+  #    - a string between "": this string
   #    - $yy: the present year
   #    - $dd: ...
   #    - $YY: the year of the file
@@ -232,9 +283,12 @@ sub sortie {
   return $res;
 }
 if ($testsortie) {
-  my @exemples = ('"toto est bobo"',$yy,$dd,$ss,'n3','n4');
-  foreach (@exemples) {
-    my @uu = ("./","fouf",$_);
+  my @examples = ('"toto est bobo"',
+                  $yy,$dd,$ss,
+                  $YY,$DD,$SS,
+                  'n3','n4');
+  foreach (@examples) {
+    my @uu = ("./","gefi.pl",$_);
     #print("<< ",join("|",@uu)," >>\n");
     print $_," -> ",&sortie(@uu),"\n";
   }
@@ -246,7 +300,7 @@ my $testdecort = 0;
 sub decort {
   # arguments modif
   # from a single string returns an array
-  # decomposing the modif/selec function.
+  # decomposing the modif/selec functions.
   # 
   # returns an array comprising
   # First the name then the different arguments
@@ -261,11 +315,11 @@ sub decort {
 }
 #
 if ($testdecort) {
-  my @a = ("a[3]","BB[E,45,6]");
+  my @a = ("ZZ","a[3]","BB[E,45,6]","e[1,2,3,4,5,6,7,8,9]");
   foreach (@a) {
     print $_," -> ",join("-",&decort($_)),"\n";
   }
-  die("is decort right?");
+  die("is &decort right?");
 }
 #
 my $testpartie = 0;
@@ -409,7 +463,7 @@ sub gmodif {
   # Arguments are 
   # 0: the file with the complete path
   # 1: the operator for transformation
-  #    exemples are 'l[c-2]', 'B[n,YY]',
+  #    examples are 'l[c-2]', 'B[n,YY]',
   #                 'r[n,1,5,$dd]',...
   my $chemin = dirname($_[0])."/";
   my $fichie = basename($_[0]);
@@ -435,6 +489,11 @@ sub gmodif {
   # upper case
   if ($modifi eq "u") {
     $res = uc($stri);
+    $afaire = 0;
+  }
+  # capitalize
+  if ($modifi eq "c") {
+    $res = ucfirst(lc($stri));
     $afaire = 0;
   }
   # adding a string before
@@ -511,7 +570,8 @@ sub gmodif {
 if ($testgmodif) {
   my $nbex = 0;
   my $cha = "Tombe.la.Neige";
-  my @a = ("l[n]","u[n]","b[n,\"vu\"]","B[n,\"vu\"]",
+  my @a = ("c[c2]",
+           "l[n]","u[n]","b[n,\"vu\"]","B[n,\"vu\"]",
            "a[n,$yy]","A[n,$dd]","b[n,$ss]","B[n,n5]",
            "r[n,1,1,$yy]","r[n,1,5,$dd]","r[n,10,15,$ss]",
            "r[n,3,45,n2]","r[n,1,0,\"avoir\"]",
@@ -531,7 +591,7 @@ if ($testgmodif) {
     }
   }
   #
-  $cha = "./gefi";
+  $cha = "./gefi.pl";
   @a = ("B[n,$ss]","B[n,$YY]","B[n,$DD]","B[n,$SS]",
            "a[n,$ss]","a[n,$YY]","a[n,$DD]","a[n,$SS]"
           );
@@ -543,7 +603,7 @@ if ($testgmodif) {
     }
   }
   #
-  die("test of gefi is finished");
+  die("test of &gmodif is finished");
 }
 #
 my $testretrouve = 0;
@@ -552,15 +612,17 @@ sub retrouve {
   # gets either all directories or all files from one
   # starting directory. The first argument indicates that
   # files (==0) or directories (!=0) must be returned.
-  # The second is the starting directory to explore.
+  # The second is the starting directory to explore
+  # when absent, the working directory is used.
   #
   # getting the arguments
   my $type = shift @_;
   my $dir  = shift @_;
-  if (!(defined $dir)) { print "oui\n"; $dir = "./";}
+  if (!(defined $dir)) { $dir = "./";}
   # removing the possible trailing /
   if ($dir =~ /\/$/) { $dir = substr($dir,0,-1);}
-  # globbing if necessary
+  # globbing if necessary, then the found first
+  # directory will be used
   if (!(-d $dir)) {
     my @didir = glob($dir);
     $dir = $didir[0];
@@ -569,6 +631,7 @@ sub retrouve {
   return "<<<<$dir>>>> is not a directory!\n" unless -d $dir;
 
   my @fichiers; my @repertoires;
+  # following code was borrowed from somebody else
   if (opendir my $dh, $dir)
   {
     # Capture entries first, so we don't descend with an
@@ -607,15 +670,20 @@ sub retrouve {
       }
     return @repertoires;
   }
+  #
 }
 #
 if ($testretrouve) {
-  my $didi = "..";
-  print "      files=", $_, "\n" for &retrouve ((0,$didi));
+  my $didi = "../gerer.14_01_20";
   print "directories=", $_, "\n" for &retrouve ((1,$didi));
+  question("is retrouve right?");
+  print "      files=", $_, "\n" for &retrouve ((0,$didi));
+  question("is retrouve right?");
   print "directories=", $_, "\n" for &retrouve ((1,"~/a"));
+  question("is retrouve right?");
   print "directories=", $_, "\n" for &retrouve ((1,"~/a/"));
-  die("is retrouve right?");
+  question("is retrouve right?");
+  die("test of &retrouve is finished");
 }
 #
 my $testretiens = 0;
@@ -624,7 +692,7 @@ sub retiens {
   # checks if the string $_[0] complies
   # with the requirements $_[1]
   # 
-  # returns 1 if yes 0 if no
+  # returns 1 if yes, 0 if no
   #
   # getting the arguments
   my $stri = shift @_; my $filt = shift @_;
@@ -642,6 +710,14 @@ sub retiens {
     if ($stri =~ /$argus[1]/) { $res = 0;} else { $res = 1;}
     $fait = 1;
   }
+  if ($nom eq "g") {
+    if ($stri gt $argus[1]) { $res = 1;} else { $res = 0;}
+    $fait = 1;
+  }
+  if ($nom eq "l") {
+    if ($stri lt $argus[1]) { $res = 1;} else { $res = 0;}
+    $fait = 1;
+  }
   # checking everything was fine
   if (!$fait) { die("'/$stri/$filt/' was not dealt by &retiens!");}
   # returning
@@ -654,10 +730,13 @@ if ($testretiens) {
            "x[n,txt\$]","x[n,^txt]","x[n,txt]","x[n,^[.+]txt]",
            "i[c3,txt\$]","i[c1,^txt]","i[c2,txt]","i[c-1,^[.+]txt]",
            "x[c-1,txt\$]","x[c2,^txt]","x[c-2,txt]","x[c3,^[.+]txt]",
+           "g[n,mes]","l[n,mes]","g[c2,face]","l[c-2,face]",
           );
   foreach (@a) {
     print "TEST(retiens) $cha & $_ -> ",&retiens($cha,$_),"\n";
   }
+  &question("is &retiens fine?");
+  #
   $cha = "2013.titi.toto";
   @a = ("x[c1,\\d{4}\$]","i[c1,\\d{4}\$]",
         "x[c1,\\d\\d\\d\\d\$]","i[c1,\\d\\d\\d\\d\$]",
@@ -667,14 +746,15 @@ if ($testretiens) {
   foreach (@a) {
     print "TEST(retiens) $cha & $_ -> ",&retiens($cha,$_),"\n";
   }
-  die("is retiens right?");
+  die("test for &retiens is finished");
 }
 #
 my $testretenu = 0;
 #
 sub retenu {
   # checks if the string $_[0] complies
-  # with the different requirements $_[1], $_[2],...
+  # with the different requirements 
+  # defined in $_[1].
   # 
   # returns 1 if yes 0 if no
   #
@@ -697,37 +777,74 @@ if ($testretenu) {
   foreach (@a) {
     print "TEST(retenu) $cha & $_ -> ",&retenu($cha,$_),"\n";
   }
-  die("is retenu right?");
+  die("Test for &retenu is finished");
 }
 #
 ##
+my %docum = ();
 ###
-if (not(exists($ARGV[0]))) { print "about $nom
+$docum{h} =
+"In Line HELP of $nom:
+    When called without argument this introduction about the
+    '-h', help argument, is displayed. But more possibilities 
+    are available through a string of characters comprising:
+$it 'h'  for this small recapitulation
+$it 'H'  for the complete help
+$it 'p'  for a short introduction
+$it 'P'  for details about the principles
+$it 'a'  to get a list of possible arguments
+$it 'A'  to get details about all arguments
+$it 'k'  to get the list of alterable internal constants
+$it 'g'  for some words about the use of the tricky globbing
+$it 'f'  for planned future improvements
+$it 'u'  for the general use of $nom
+$it 'e'  for basic examples
+$it 'E'  for more examples
+$it '.x' to get details only about argument 'x'
+$nt When 'h' or 'H' is proposed, other possibilities are
+         cancelled.
+";
+#
+$docum{p} =
+"PRINCIPLES of $nom:
 
-PRINCIPLES
-
-$it The MAIN IDEA is to copy or move file(s) after modifying the name(s)
+$it The FIRST IDEA is to copy or move file(s) after modifying the name(s)
     [never delete them but this can happen by overriding an existing file
-     when no checking].
+     when no checking is asked for]. In a second step more possibilities
+     have been added allowing the transformation of the initial file into
+     a newly created file which can take a modified name; also the possibility
+     has been given to extract information from the focused initial files
+     like grepping them, or getting the dimensions of picture files,...
 $it But instead of performing any action, there is always the possibility
-    to see what it would be.
+    to see what it would be [flag 'j' of argument '-o'].
 $it Globbing is used to indicate a set of files. Be aware that the globbing
     can be done either at the shell level or by Perl itself. See the 
     globbing section below for some details.
-$it Recursion from a unique directory is possible but with some restrictions
-    about the globbing capabilities (see the globbing section below for details).
+$it Selection among the proposed files is possible [argument '-s'].
+$it Recursion from a unique directory is possible; in that case, selection
+    among the crossed directories is also possible [argument '-S'].
 $it Successive modifications can be proposed at the level of the complete name or
     for precised components of the file names. A component is a part of the
     name separated from the other components with '$dot'.
-$it The destination directory can be the directory where are the copied/moved
-    files, or otherwise a unique (precised) directory.
-$it Successive selections can be operated from the possible files either by 
-    requiring or preventing a simple pattern.
-$it Successive selections can be operated for the browsed directories either by 
-    requiring or preventing a Perl pattern.
+$it The destination directory can be the directory where are the 
+    copied/moved/transformed files, or otherwise a unique (precised) directory.
+$it Some prepared calls of $nom are available:
+      )sauver( to make a backward copy of some files
+      )jeter( to throw into the trash some files, for instance
+              those created with )sauver(
+      )padb( to replace undesiderable character in name files
+             particularly spaces but not only.
+      )fcopie( to copy series of files with a normalized name, or slightly
+               modifying the name befor a modification, but also reducing
+               the image sizes or any one line command transformation.
+    See them for details.
+";
+#
+$docum{P} =
+"MORE DETAILS about $nom
 
-MORE DETAILS
-
+$it Names of files and directories are decomposed into components separated
+    with '$dot'.
 $it Components are designated by their numbers (in the initial name). The 
     numbering is positive when starting from the first component, negative
     when starting from the last component. So in 'my${dot}work${dot}txt', the component
@@ -741,7 +858,7 @@ $itit removing a number of characters at the end
 $itit lower casing it
 $itit upper casing it
 $itit ...
-$it The following character string can be used to modify/create components
+$it Some codes can be used to modify/create components
 $itit duplication of an existing component
 $itit introducing a constant string of characters
 $itit adding a sequential numbering
@@ -749,24 +866,30 @@ $itit introducing the present date with the three following possibilities
       - yyyy                coded '$yy'
       - yyyy_mm_dd          coded '$dd'
       - yyyy_mm_dd-hh_mm_ss coded '$ss'
-$itit introducing the file date with the same three possibilities
+$itit introducing the file date of creation with the same three possibilities
       upper cases instead, for instance
       - yyyy                coded '$YY' and so on.
-$it The copied or moved files can be write-protected 
+$it The copied/moved/transformed files can be write-protected 
 $it Successive modifications can be asked in a single run,
-    sequentially executed. In particular, this
-    means, when adding/removing components, that the numbering
-    of components is modified.
+    sequentially executed. Notice that this means, when 
+    adding/removing components, modifications of the 
+    component numbering.
 $it The proposed files by globbing can be further filtred (denoted by selection)
 $itit retaining only those following a given pattern
 $itit excluding those following a given pattern
-$it The same for the browsed directories excluding those until the starting directory.
-
-GLOBBING
+$itit retaining those greater (and/or less) than a given name
+$it The same selection can be applied to browsed directories 
+    when recursion is asked for.
+$it $nom can miss directories whose names comprise blanks (' '),
+    better to avoid them.
+";
+#
+$docum{g} =
+"GLOBBING with $nom
 
  Globbing is a convenient way to shortly designate a set of files but
-    it can be tricky and when one is not sure, the advice is to 
-    j flag the options 'o', *j*ust to see how it will be interpreted.
+    it can be tricky so when one is not sure, the advice is to 
+    'j' flag the argument '-o', *j*ust to see how it will be interpreted.
  A well known type of expression is '*.txt' to designate all files ending
     with '.txt'; but a lot of flexibility is possible, for instance the pattern 
     'picture[1-3]??.[jJ][pP][gG]' designates all files beginning by 
@@ -807,38 +930,111 @@ GLOBBING
     combinations. However it is possible to introduce different paths 
     as in the following example:
          <gefi -o jm -m l[n] ~/toto/*~ ~/tutu/*~>
+";
+#
+$docum{a} =
+"ARGUMENTS 
+ -h for help
+ -d for display
+ -o for options
+ -f for intitial directory (from)
+ -t for destination directory (to)
+ -c for command to execute
+ -i for indicating the name of the index file
+ -m for modification of the name file
+ -s for selection among the files to deal with
+ -S for selection among the directories to deal with
+ -F for file where the files to deal with are listed
+$nt To get details about argument 'x', just call
+             $nom -h .x
+";
+#
+$docum{$code{h}} =
+"HELP (to be included with '-h')
+    to provide some information about the way
+    $nom works. When activited prevents every
+    other action.
 
-OPTIONS (to be included within '-o'
-
- p   : write/move files with protection 400 file mode
-       bits (default identical to the original
-       file).
- c   : existing files are detected (checked) and
-       not replaced, the run is stopped
-       with an error message (default: replaced
-       without warning.)
- a   : when displaying the move/copy action on the screen
-       path are indicated (default no).
- v   : verbose (not considered if 's' or 'S' are present).
- s   : operates almost silenciously: only the
-       copied/moved files are given on the screen
-       (default everything). If both 's' and 'S' 
-       are present, 'S' is kept.
- S   : operates completly silenciously: no indication
-       given on the screen (default everything or 's'
-       but overriden by 'j', 'l' and 'L').
- j   : just to see which modifications will be
+ h : to get the way to use the help.
+ H : to get all pages of the help including
+     the one for 'h'.
+ . : see the output with 'h' to get
+     the other possibilities.
+$nt The differente items of help can be
+    stopped when the flag 'h' of '-d' is
+    introduced.
+";
+#
+$docum{$code{d}} =
+"DISPLAY (to be included with '-d')
+    to define the outputs produced by $nom during the processing
+ 
+ V|S|v|s : To indicate which standard display is to be used
+       (only one of the three options is taken and when
+       more than one flag is present, priority is given to the greatest
+       one in this order: i.e. 'Ss' is equivalent to 's'). Here are
+       the three options.
+         'V' verbose display,
+         'S' completly silenciously: no indication is
+             given on the screen (except the possible outputs
+             of the command),
+         'v' informative, like 's' plus some synthetical complements,
+         's' almost silenciously: only the initial/transformed files
+             are given on the screen (default).
+ L|l : Whatever be the other flags of display, just a list
+       of the concerned files is outputted (with their path)
+       and no action is performed. This list can be
+       captured in a text file for future use. These two
+       flags constraint the flag 'j' of '-o' to be activated.
+       'l' is for the initial files, 'L' for the transformed
+       files; when both are present, 'l' gets the priority
+       (default no).
+ i   : To indicate that the index file within each outputted 
+       directory must be completed. The name of the file can be
+       precised with the '-i' argument. When not already existing
+       such a file is created. The completion is only done
+       when the action is performed (if flag 'j' of argument '-o'
+       is raised, nothing happen; to see what could be done,
+       use the previous 'L|l' flag. 
+       The index file is completed with the name of the 
+       transformed file, so when flag '1' of argument '-o' is
+       raised, no completion is done; the same when the file
+       already pre-exists because it is already supposed to be
+       registrated in the index file.
+       (default no indexation)
+ h   : When help is required, this flag asks for an interruption
+       after the display of each help item; just a carriage
+       return makes the display continuing.
+ m   : Missing initial files are also displayed with mention
+       when flags 'v' or 's' are raised (default no).
+ a   : When displaying the initial/transformed files on the screen
+       paths are indicated (default no).
+ d   : To activate some intermadiate printing, introduced
+       for debugging purpose and starting with 'D:#:D' where
+       '#' identifies the printing within the script.
+";
+#
+$docum{$code{o}} =
+"OPTIONS (to be included within '-o')
+ 
+ 1   : No tranformation is planned so only the initial file
+       name is given to the command to be executed.
+ S|P|R|Q : To indicate what to do when pre-existing transformed files
+       are detected (only one of the four options is taken and when
+       more than flag is present, priority is given to the greatest
+       one in this order: i.e. 'SRQ' is equivalent to 'Q'). Here are
+       the four excluding options.
+         'S' to stop the run with an error message,
+         'P' to preserve the existing files, not creating a new one,
+         'R' to replace the existing files with a new one,
+         'Q' To interactively question the user what to do (default).
+ j   : Just to see which modifications would be
        done, that is a dry run (default: actions
        are performed). It implies a non silencious run.
- l   : no action is taken, no information output
-       is issued, no check is performed but a list
-       of concerned files is outputted (with the path) which
-       can be captured in a text file for future use.
- L   : same as flag 'l' but modified names
-       are issued. If both 'l' and 'L' are present
-       it is interpreted as 'l'.
- m   : operated files must be moved (default copied)
- r   : the complete tree from the starting directory
+ p   : Write transformed files with protection 400 file mode
+       bits (default identical to the original
+       file).
+ r   : The complete tree from the starting directory
        (given with '-f') must be scanned (default no
        recursivity). ((Be aware that for recursion the
        globbing have to be made by Perl not by the shell
@@ -848,18 +1044,74 @@ OPTIONS (to be included within '-o'
        to check that a globbing was already performed
        at the shell level. See the globbing explanation
        above.))
+";
+#
+$docum{$code{f}} =
+"STARTING DIRECTORY (argument -f)
 
-DIRECTORIES
+ -f fdir  : starting directory (default: working directory).
+            That is the directory where the initial files
+            to be processed have to be found, and in case
+            of recursion sub-directories have to be browsed.
+            It is always added to each proposed file except
+            when the proposed file is defined with an absolute
+            path, that is starting with '/' (or '~'), conversely
+            (possible) relative paths are added to the 
+            starting directory.
 
- -f fdir  : starting directory (default: working directory)
+            In case of recursion, see also the flag 'r' of '-o',
+            as well as the '-S' argument.
+
+";
+#
+$docum{$code{t}} =
+"DESTINATION DIRECTORY (argument -t)
+
  -t tdir  : unique designated destination directory, even in case
-            of recursion (default the director[y|ies] where
-            the processed files are).
+            of recursion.
+            default: the director[y|ies] where the initial files are,
+                     this can imply different directories in case
+                     of recursion.
+";
+#
+$docum{$code{c}} =
+"COMMAND
+ 
+ -c \"command\"
 
- See also the '-o r' options for recursion
-      and the '-S x' and '-S i' for selection.
+  The default command is \"cp\", examples of other possibilities are:
+$itit \"mv\"
+$itit \"convert -geometry 1200\"
+  and when the flag '1' of '-o' is activated
+$itit \"ls -l\"
+$itit \"chmod 444\"
+$itit \"grep toto\"   
+";
+#
+$docum{$code{i}} =
+"INDEX FILE NAME
 
-MODIFICATIONS (to be included within '-m' separated with '$msep')
+ -i my_index.txt
+
+  The value of this argument is used only
+    when flag 'i' of argument '-d'
+    is raised. It gives the common name to give
+    to the index files to be created or completed
+    (when they exist).
+  When the value is just 'r' the name is deduced
+    from its of the destination directory adding 
+    to it the extension '.txt', a way to get 
+    different names in case of recursivity since 
+    every index file is always associated to 
+    its own directory. However absolute paths
+    are preserved.
+  When the argument '-i' is not used, the default
+    name is '$index'.
+";
+#
+$docum{$code{m}} =
+"MODIFICATIONS [of the file name] 
+    (to be included within '-m' separated with '$msep')
 $nt (modification means modification of the name, not of the file)
 
 Below 'i' (designating 'the item') means
@@ -870,27 +1122,29 @@ Below 'i' (designating 'the item') means
        error is issued.
 
 Below 'o' means a string which can be 
-$it a string between quotations  marks (\"foo\"),
-$it the year of the moment   ($yy),
-$it the day of the moment    ($dd), 
-$it the moment of the moment ($ss),
-$it the year of the file     ($YY),
-$it the day of the file      ($DD), 
-$it the moment of the file   ($SS),
+$it a string between protected quotations marks (\\\"foo\\\"),
+$it the year of the present moment   ($yy),
+$it the day of the present moment    ($dd), 
+$it the moment of the present moment ($ss),
+$it the year of the file creation    ($YY),
+$it the day of the file creation     ($DD), 
+$it the moment of the file creation  ($SS),
 $it the numbering and associated number of digits
       (n3 for 001, 002,...),
-$it the path ($pa) with slashes replace by '$rslash'
-    to be implemented
 $nt regular expressions are not possible.
 $nt FOR THE MOMENT, ($YY,$DD,$SS) CAN BE USED ONLY
-    AS FIRST MODIFICATION (then a unique time).
+    AS FIRST MODIFICATION (then only once) because
+    afterwards the creation date cannot be easily
+    retrieved, the name of the file being modified.
+$nt When there is no modification, file names are not
+    modified but can be copied or moved or transformed
+    as well.
 
-When there is no modification, files are not modified but
-  can be copied or moved as well. Here are the different
-  implemented modifications:
+ Here are the different implemented modifications:
 
  l[i]         : lowercase the item
  u[i]         : uppercase the item
+ c[i]         : capitalize the item
  s[i,iss,o]   : subsititute the initial substring 'iss' with o
  S[i,iss,o]   : substitute every substring 'iss' with o
  W[i,o]       : substitute every space with o (but globbing can 
@@ -908,128 +1162,110 @@ When there is no modification, files are not modified but
  A[i,o]       : add o after, separated with a $dot
  d[i]         : duplicate the item
  D[i]         : duplicate the item, introducing a separating $dot
-
-
-FILE SELECTIONS (to be included within '-s' separated with '$ssep')
+";
+#
+$docum{$code{s}} =
+"FILE SELECTIONS (to be included within '-s' separated with '$ssep')
 
 The selections are made in a close way to the modifications but
-below 'p' designates a pattern to be Perl-interpreted.
+below 'p' designates a pattern to be Perl-interpreted. At the moment
+some complicated perl-expression doesn't work so it is advised to
+check with the flag '-o j' before processing.
+
 Possibilities are:
 
  x[i,p] to exclude every file having the pattern 'p' on the item 'i',
  i[i,p] to only include the files having the pattern 'p' on the item 'i'. 
- 
+ g[i,c] to only include the files having the item 'i' greater than the chain 'c'.
+ l[i,c] to only include the files having the item 'i' less than the chain 'c'.
 
-DIRECTORY SELECTIONS (to be included within '-S' separated with '$ssep')
+";
+#
+$docum{$code{S}} =
+"DIRECTORY SELECTIONS (To be included within '-S' separated
+                      with '$ssep'. It only applies when recursion ('-o r') is 
+                      asked for.)
 
-In exactly the same way:
+In exactly the same way (so with identical restrictions):
 
- x[i,p] to exclude every directory having the pattern 'p' on the item 'i',
- i[i,p] to only accept the directories having the pattern 'p' on the item 'i'. 
+ x[i,p] to exclude every directory...
+ i[i,p] to only accept the directories...
+ g[i,p] to only accept the directories...
+ l[i,p] to only accept the directories...
 
 Selections onto directories are only activated for directories
 present after the starting directory. 
+";
+#
+$docum{$code{F}} =
+"PROPOSED FILE NAMES
 
-CONSTANTS
-Some constants, within the script $nom, can be easily modified by
+ Focused initial files can, simultaneously, be specified
+ in several ways:
+
+$it With a simple list given as last arguments of the call,
+    most often obtained with a shell globbing.
+$it With a pattern to be globbed by $nom itself
+    but escaping is necessary, maybe depending on the
+    number of successive script calls.
+$it With the content of a text file provided to argument '-F'
+    where file names are given.
+
+ The initial directory provided by '-f' argument is taken
+into account except when the file name starts with '/' 
+indicating an absolute path.
+";
+#
+$docum{k} =
+"INTERNAL CONSTANTS of $nom
+
+Some constants, within the script, can be easily modified by
 the user:
+
 '\$msep'     (presently '$msep') the modification separator
 '\$ssep'     (presently '$ssep') the selection separator
-'\$nbfl'     (presently $nbfl) number of file names displayed by line
 '\$yy'       (presently '$yy') symbol for the present year string
 '\$dd'       (presently '$dd') symbol for the present day string
 '\$ss'       (presently '$ss') symbol for the present moment string
 '\$YY'       (presently '$YY') symbol for the file year string
 '\$DD'       (presently '$DD') symbol for the file day string
 '\$SS'       (presently '$SS') symbol for the file moment string
-'\$pa'       (presently '$pa') symbol for the path string
 '\$rslash'   (presently '$rslash') symbol for replacing the slash of the
                                    path string into the resulting names.
-
-TO DO
-$it allow the use of $YY,... as many time as wanted and not only 
+'\$index'    (presently '$index') default name for the index files
+";
+#
+$docum{f} =
+"TO DO
+$it Allow the use of $YY,... as many time as wanted and not only 
     as first modification (just a supplementary argument to add
     in &gmodif to attain &quand with the initial name of the file.
-$it make the copy (creation if necessary) of directories possible
-    Probably better to make another script dedicated to the copy of
-    directory branches.
-$it think how to exclude the exploration of the files directly belonging
+$it Think how to exclude the exploration of the files directly belonging
     to the starting directory in case of recursivity
-$it add a C option for check:error and make c option for check:warning
-$it add more selection criteria on the possible files (size, date,...)
-$it make '\$dot' a modifiable constant for other uses (see sub &partie)
-$it implement the '\$rslash' functionality: allow the trace of the
+$it Add more selection criteria on the possible files (size, date,...)
+$it Make '\$dot' a modifiable constant for other uses (see sub &partie)
+$it Implement the '\$rslash' functionality: allow the trace of the
     original directories be kept in the name of the copied/moved files
-$it make the preservation of the date the default.
-$it add a possibility to accept or not the move/copy of each file,
-    with the possibility to accept/refuse the remaining files 
-    ([o|O|y|Y],[n|N],[a|A|t|T],[r|R|s|S]).
-$it the same for directories when they will copied/created as well.
-$it add a '-h' (for help) argument giving the possibility to display
+$it Add a '-h' (for help) argument giving the possibility to display
     only one of the main sections. When empty, the list of section is
     given.
-$it escape non found directories with a warning when doing recursion
-    (for instance directories with blanks stop $nom).
+$it Escape non found directories with a warning when doing recursion
+    (for instance directories with blanks stop $nom or worse are ignored).
+";
+#
+$docum{u} =
+"USE
 
-USE
-
-$nom [-o flags] [-f fdir] [-t tdir] [-m modifs] [-s fselecs] [-S dselecs] files
-
-EXAMPLES
-
-<<< discarding some files >>>
-
-$nom -o m -t ~/corbeille -m B[n,$ss] *~
-  ( move all files from the working directory with names terminated with '~'
-    into the directory '~/corbeille' after adding them as first component
-    the moment.)
-
-$nom -o m -t ~/corbeille -m B[n,$ss]".$msep."l[n] ~/a/*~
-  ( move all files from the '~/a/' directory with names terminated with '~'
-    into the directory '~/corbeille' after adding them as first component
-    the moment and lower casing them.)
-
-$nom -o m -t ~/corbeille -m B[n,$yy] -s i[c1,ge]%x[c1,GE] *~
-  ( move from the working directory all files {(i) with names is terminated
-    with '~', (ii) having 'ge' in the first component and (iii) not
-    having 'GE' in the first component} into the directory '~/corbeille'
-    after adding them as first component the year.)
-
-$nom -o jm -t ~/corbeille -s i[c1,^\\\\d{4}_\\\\d{2}_\\\\d{2}\$] *
-  ( simulates the moving from the working directory of the files 
-    having 'yyyy_mm_dd' as first component where every letter 'y, 'm'
-    and 'd' is any digit.)
-
-<<< copying file after modifying their names >>>
-
-$nom -t tra -m l[n]${msep}b[n,$yy] ori/P*JPG 
-  ( copy all files 'ori/P*JPG' into 'tra' but adding the year before
-    and lowercasing the name.)
-
-<<< renaming files >>>
-
-$nom -o m -t ori -m B[n,\\\"good\\\"] ori/P*JPG 
-  ( rename all files 'ori/P*JPG' adding 'good.' before each)
-
-<<< looking for some files >>>
-
-$nom -o jr -t ~/pro \"*~\"
-  ( just listing all files whose name ends with '~' in every directory
-    of the branch '~/pro'. Notice the quotation mark for Perl to glob
-    in each directory )
-
-<<< replacing annoying spaces into file names >>>
-
-$nom -o m -m W[n,\\\"_\\\"] \"*\\ *\"
-  ( replacing spaces with an underscore in file names of the 
-    working directory; notice the use of the escaping character. )
-
-$nom -o m -m S[n,\" \",\\\"_\\\"] \"*\\ *\"
-  ( - idem - )
-
-$nom -o m -m W[n,\\\"_\\\"] *
-  ( This doesn't work because [i] all files are considered, not only these with a space;
-    [ii] names with spaces are considered as two (or more) file names! )
+$nom [-o flags]   \\ # miscellaneous options 
+     [-d flags]   \\ # options for outputs 
+     [-f fdir]    \\ # initial ('from') directory 
+     [-t tdir]    \\ # destination ('to') directory 
+     [-c command] \\ # option to be executed 
+     [-m modifs]  \\ # modifications to give to the transformed files
+     [-s fselecs] \\ # selection among the proposed files
+     [-S dselecs] \\ # selection among the browsed directories if any
+     [-F fn.txt]  \\ # file containing names of files to be transformed
+     [file_names] \\ # names of files to be transformed
 
 <<< see also the following scripts calling $nom >>>
 
@@ -1038,282 +1274,545 @@ $nom -o m -m W[n,\\\"_\\\"] *
  sauver  : to make precautionnary savings with the date
  nettoyer: to clean the saved files by sauver
  norfo   : to normalize the picture names with the date file
+ preduis : to reduce in size a series of pictures
+ pcopie  : to copy a series of original pictures to be edited
+";
+#
+$docum{e} =
+"BASIC EXAMPLES
 
-<<< displaying the online help >>>
+<<< copying some files in another directory
 
-$nom | less
-  ( to see the inline help )
+$nom -f ~/a -t ~/a/b \"*.txt\"
+  ( copies all txt files from directory '~/a'
+    into directory '~/a/b'.)
 
-";}
-else {
-  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-  # GETTING THE INPUTS
-  getopt('oftsmS'); 
-  # filling with the default flag options
-  my $fprotect = 0; my $fcheck = 0; my $fmove = 0;
-  my $nsil = 2; my $justsee = 0; my $recurs = 0;
-  my $iprotect = ""; my $liste = 0;
-  my $showpath = 0;  my $sfmove = "C";
-  if (defined our $opt_o) {
-    if ($opt_o =~ /p/) { $fprotect   = 1; $iprotect = "(protected)";}
-    if ($opt_o =~ /c/) { $fcheck     = 1;}
-    if ($opt_o =~ /r/) { $recurs     = 1;}
-    if ($opt_o =~ /m/) { $fmove      = 1; $sfmove = "M";}
-    if ($opt_o =~ /a/) { $showpath   = 1;}
-    if ($opt_o =~ /v/) { $nsil       = 3;}
-    if ($opt_o =~ /s/) { $nsil       = 1;}
-    if ($opt_o =~ /S/) { $nsil       = 0;}
-    if ($opt_o =~ /j/) { $justsee    = 1; $sfmove = lc($sfmove); if ($nsil == 0) {$nsil = 1;}}
-    if ($opt_o =~ /L/) { $liste      = 2; $nsil = 0; $justsee = 0;}
-    if ($opt_o =~ /l/) { $liste      = 1; $nsil = 0; $justsee = 0;}
-    if ($nsil > 1) { print "  option o: ",$opt_o,"\n";}
+$nom -f ~/a -t ~/a/b -m B[n,\"old.\"]:u[c-1] \"*.txt\"
+  ( the same as previous examples but the names of the
+    copied files are modified by the addition of 'old.'
+    before and '.txt' of the end is replaced with
+    '.TXT'.)
+
+
+<<< changing the name of files >>>
+
+$nom -c mv -m B[n,\"my.\"] *.JPG
+  ( every file of the working directory
+    ending with '.JPG' is renamed by adding
+   'my.' before.)
+
+$nom -c mv -m l[c-1] *.JPG
+  ( every file of the working directory ending 
+    with '.JPG' gets its name lowercased.)
+
+";
+#
+$docum{E} =
+"ELABORATE EXAMPLES
+
+<<< moving files while modifying their names >>>
+
+$nom -c mv -t ~/corbeille -m B[n,$ss] *~
+  ( move all files from the working directory with names terminated with '~'
+    into the directory '~/corbeille' after adding them as first component
+    the moment.)
+
+$nom -c mv -t ~/corbeille -m B[n,$ss]".$msep."l[n] ~/a/*~
+  ( move all files from the '~/a/' directory with names terminated with '~'
+    into the directory '~/corbeille' after adding them as first component
+    the moment and lower casing them.)
+
+$nom -o j -t ~/corbeille -c mv -s i[c1,^\\\\d{4}_\\\\d{2}_\\\\d{2}\$] *
+  ( simulates the moving from the working directory of the files 
+    having 'yyyy_mm_dd' as first component where every letter 'y, 'm'
+    and 'd' is any digit.)
+
+<<< copying file after modifying their names >>>
+
+$nom -t ~/corbeille -m B[n,$yy] -s i[c1,ge]%x[c1,GE] *~
+  ( copy from the working directory all files {(i) with names terminated
+    with '~', (ii) having 'ge' in the first component and (iii) not
+    having 'GE' in the first component} into the directory '~/corbeille'
+    after adding them as first component the year.)
+
+$nom -t tra -m l[n]${msep}b[n,$YY] ori/P*JPG 
+  ( copy all files 'ori/P*JPG' into directory 'tra' but modifying their
+    name by adding the year of their creation (without $dot) before
+    and lowercasing it.)
+
+<<< renaming files >>>
+
+$nom -t ori -c mv -m B[n,\\\"good\\\"] ori/P*JPG 
+  ( rename all files 'ori/P*JPG' adding 'good.' before each)
+
+<<< looking for some files >>>
+
+$nom -o jr -f ~/pro \"*~\"
+  ( just listing all files whose name ends with '~' in every directory
+    of the branch '~/pro'. Notice the quotation mark for Perl to glob
+    in each directory )
+
+<<< replacing annoying spaces into file names >>>
+
+$nom -c mv -m W[n,\\\"_\\\"] \"*\\ *\"
+  ( replacing spaces with an underscore in file names of the 
+    working directory; notice the use of the escaping character. )
+
+$nom -c mv -m S[n,\" \",\\\"_\\\"] \"*\\ *\"
+  ( - idem - )
+
+$nom -c mv -d m -m W[n,\\\"_\\\"] *
+  ( This doesn't work because [i] all files are considered, not only these with a space;
+    [ii] names with spaces are considered as two (or more) file names! 
+    The introduction of '-d m' displays them if any)
+
+$nom -o 1 -d S -c \"ls -l\" -s i[n,~\$\\\|\\\.bak\$] *
+  ( list with characteristics all files of the working directory ending 
+    either by '~' or '.bak'. Notice the use of '|' in the regular expression
+    of the pattern )
+";
+#
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+# Getting the inputs
+my $help;
+if (not(exists($ARGV[0]))) { 
+  $help = "h";
+} else {
+  getopt('hdoftcimsSF'); 
+  if (defined our $opt_h) {
+    $help = $opt_h;
+    if ($help =~ /H/) {
+	$help = 'hpPaAgfueE';
+    } elsif ( $help =~ /h/) {
+        $help = 'h';
+    }
+    if ($help =~ /P/) {
+        $help =~ s/P/pP/;
+    }
+    if ($help =~ /A/) {
+        $help =~ s/A/a$CODE/;
+    }
+    if (length($help) == 2) {
+	if ($help =~ /^\./) {
+            $help = $code{substr($help,1,1)};
+            if (!defined($help)) {
+                print("What you asked is not an argument!\n");
+                $help = 'h';
+            }
+        }
+    }
   }
-  # getting the two directories
-  if (defined our $opt_f) {
-    $fdir = $opt_f;
-    # in case "~" was used
-    $fdir =~ s/^~/$hd/;
-    # making an absolute path
-    $fdir = File::Spec->rel2abs($fdir);
-  }
-  if (!($fdir =~ /\/$/)) { $fdir = $fdir."/";}
-  if ($nsil > 1) { print "  starting directory: ",$fdir,"\n";}
-  opendir(TOTO,$fdir) or die("/6/ $fdir is not a directory");
-  #
-  if (defined our $opt_t) {
-    $tdir = $opt_t;
-    # in case "~" was used
-    $tdir =~ s/^~/$hd/;
-    # making an absolute path
-    $tdir = File::Spec->rel2abs($tdir);
-    if (!($tdir =~ /\/$/)) { $tdir = $tdir."/";}
-    if ($nsil > 1) { print "  destination directory: ",$tdir,"\n";}
-    opendir(TOTO,$tdir) or die("/7/ $tdir is not a directory");
+}
+### DOING THE JOB
+# filling the display options
+my $debug = 0; my $showpath = 0; my $liste = 0; 
+my $nsil = 1; my $missing = 0; my $shlp = 0;
+my $mind = 0;
+if (defined our $opt_d) {
+  if ($opt_d =~ /a/) { $showpath   = 1;}
+  if ($opt_d =~ /V/) { $nsil       = 3;}
+  if ($opt_d =~ /S/) { $nsil       = 0;}
+  if ($opt_d =~ /v/) { $nsil       = 2;}
+  if ($opt_d =~ /s/) { $nsil       = 1;}
+  if ($opt_d =~ /d/) { $debug      = 1;}
+  if ($opt_d =~ /L/) { $liste      = 2; $nsil = 0;}
+  if ($opt_d =~ /l/) { $liste      = 1; $nsil = 0;}
+  if ($opt_d =~ /m/) { $missing    = 1;}
+  if ($opt_d =~ /h/) { $shlp       = 1;}
+  if ($opt_d =~ /i/) { $mind       = 1;}
+  if ($nsil > 1) { print "  Display (d): ",$opt_d,"\n";}
+}
+# helping if asked for
+if (defined $help) {
+    my $fh = 0;
+    foreach my $hh ('h','p','P','a',
+                    0..9,'z',
+                    'k','g','f','u','e','E') {
+        if ($help =~ /$hh/) {
+            $fh = 1;
+            print($docum{$hh});
+            print("\n");
+            if ($shlp) {
+                &question();
+            }
+        }
+    }
+    if (not($fh)) {
+        print "< $help > is not available as help option!\n\n";
+        print($docum{h},"\n");
+    }
+    #
+    exit 1;
+}
+# filling with the flags of options
+my $unique = 0;
+my $fprotect = 0; my $fcheck = 3; my $fmove = 0;
+my $justsee = 0; my $recurs = 0;
+my $iprotect = ""; 
+my $sfmove = "C";
+if (defined our $opt_o) {
+  if ($opt_o =~ /1/) { $unique     = 1;}
+  if ($opt_o =~ /p/) { $fprotect   = 1; $iprotect = "(protected)";}
+  if ($opt_o =~ /S/) { $fcheck     = 0;}
+  if ($opt_o =~ /P/) { $fcheck     = 1;}
+  if ($opt_o =~ /R/) { $fcheck     = 2;}
+  if ($opt_o =~ /Q/) { $fcheck     = 3;}
+  if ($opt_o =~ /r/) { $recurs     = 1;}
+  if ($opt_o =~ /m/) { $fmove      = 1; $sfmove = "M";}
+  if ($opt_o =~ /j/) { $justsee    = 1; $sfmove = lc($sfmove);}
+  if ($liste) { $justsee = 0; $fcheck = 2;}
+  if ($nsil > 1) { print "  Options (o): ",$opt_o,"\n";}
+}
+# getting the two directories
+if (defined our $opt_f) {
+  $fdir = $opt_f;
+  # in case "~" was used
+  $fdir =~ s/^~/$hd/;
+  # making an absolute path
+  $fdir = File::Spec->rel2abs($fdir);
+}
+if (!($fdir =~ /\/$/)) { $fdir = $fdir."/";}
+if ($nsil > 1) { print "  Starting Directory (f): ",$fdir,"\n";}
+opendir(TOTO,$fdir) or die("/6/ $fdir is not a directory");
+#
+if (defined our $opt_t) {
+  $tdir = $opt_t;
+  # in case "~" was used
+  $tdir =~ s/^~/$hd/;
+  # making an absolute path
+  $tdir = File::Spec->rel2abs($tdir);
+  if (!($tdir =~ /\/$/)) { $tdir = $tdir."/";}
+  if ($nsil > 1) { print "  Destination directory (t): ",$tdir,"\n";}
+  opendir(TOTO,$tdir) or die("/7/ $tdir is not a directory");
+} else {
+  $tdir = "~~";
+  if ($nsil > 1) { print "  Destination directory (t): same as file director[y|ies]\n";}
+}
+# getting the command to execute
+my $kom = "cp";
+if (defined our $opt_c) {
+  $kom = $opt_c;
+}
+if ($nsil > 1) { print "  Command to perform (c): $kom\n";}
+# getting the index file
+my $ifile = undef;
+if ($mind) {
+    if (defined our $opt_i) {
+        $ifile = $opt_i;
+    } else {
+        $ifile = $index;
+    }
+}
+# getting the modifications
+my @modifs = ();
+if (defined our $opt_m) {
+  if ($nsil > 1) { print "  Name modification (m): ",$opt_m,"\n";}
+  @modifs = split($msep,$opt_m);
+}
+# getting the file selections
+my $selfil = "";
+if (defined our $opt_s) {
+  if ($nsil > 1) { print "  File Selection (s): ",$opt_s,"\n";}
+  $selfil = $opt_s;
+}
+# getting the directory selections
+my $seldir = "";
+if (defined our $opt_S) {
+  if ($nsil > 1) { print "  Directory Selection (S): ",$opt_S,"\n";}
+  $seldir = $opt_S;
+}
+# getting the files contained into the files
+my @files = ();
+if (defined our $opt_F) {
+  if ($nsil > 1) { print "  File of file names (F): ",$opt_F,"\n";}
+  my $filfil = $opt_F;
+  if (-e $filfil) {
+      open(my $ff,"<",$filfil) or die "Can't open < $filfil: $!"; 
+      while (<$ff>) {
+          if ($_ !~ /^#/) {
+              chomp;
+              @files = (@files,split(";"));
+          } 
+      }
   } else {
-    $tdir = "~~";
-    if ($nsil > 1) { print "  destination directory: current one(s)\n";}
+      print $filfil," was proposed as txt file containing the files to scutinize\n";
+      print "BUT it was not found!\n";
+      die("Look at your '-F' argument calling $nom");
   }
-  # getting the modifications
-  my @modifs = ();
-  if (defined our $opt_m) {
-    if ($nsil > 1) { print "  option m: ",$opt_m,"\n";}
-    @modifs = split($msep,$opt_m);
+}
+# getting the files to deal with
+@files = (@files,@ARGV);
+chomp @files;
+if ($nsil > 0) {
+  print("  ",$#files+1," pattern(s) to deal with for additional files\n");
+}
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+# PROCESSING
+if ($#files+1 > 0) {
+  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+  # PREPARING THE DIRECTORIES TO SCAN
+  my @didi = ("");
+  if ($recurs) {
+    # Here all directories from the starting directory are
+    # retrieved without care of the possible selection
+    # which will be made when dealing each found directory.
+    # NO FURTHER DIRECTORY 
+    foreach (@files) { if ((/[\/]+/)and(!/^\//)) {
+      print "$_ pattern contains '/' not being an absolute path while recursivity was asked for!\n";
+      die ">>> Not allowed by $nom <<<\n";
+    }}
+    # FINDING THE BRANCHES FROM RECURSIVITY
+    @didi = &retrouve(1,$fdir);
+    # REMOVING THE STARTING DIRECTORY TO BE CONSISTENT WHEN NO RECURSIVITY
+    my $lsd = length($fdir);
+    for my $cdidi (@didi) {
+      $cdidi = substr($cdidi,$lsd);
+      $cdidi ="./" unless ($cdidi ne "");
+    }
   }
-  # getting the file selections
-  my $selfil = "";
-  if (defined our $opt_s) {
-    if ($nsil > 1) { print "  option s: ",$opt_s,"\n";}
-    $selfil = $opt_s;
+  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+  # BROWING
+  my $nbr = 0; my $nbrn = 0; my $nbrr = 0; my $nbrp = 0;
+  if ($debug) { 
+    print("D:0:D = -<3(",join("(3)",@didi),")3>-$fdir\n");
   }
-  # getting the directory selections
-  my $seldir = "";
-  if (defined our $opt_S) {
-    if ($nsil > 1) { print "  option S: ",$opt_S,"\n";}
-    $seldir = $opt_S;
+  # to get absolute paths only for one directory
+  my $nudi = 0;
+  for my $mdi (@didi) {
+    $nudi++;
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+    # JUST FOLLOWING THE PATTERNS
+    for my $pat (sort @files) {
+    if ((($pat !~ /^~/) and ($pat !~ /^\//)) or ($nudi == 1)) {
+      # just to be sure working on local variables
+      my ($fixdir,$vardir,$modele) = ($fdir,$mdi,$pat);
+      if ($debug) { print "D:1:D = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
+      # getting rid of this '~'
+      if ( $modele =~ /^~/) {
+        $modele =~ s/^~\//$hd/;
+        $vardir = "";
+        $fixdir = "";
+      }
+      if ($debug) { print "D:2:D = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
+      # taking into account absolute paths
+      if ( ($modele =~ /^\//) or ($modele =~ /^\~/) ) {
+        $vardir = "";
+        $fixdir = "";
+      }
+      if ($debug) { print "D:3:D = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
+      # redistributing path and file
+      my $loca = $vardir.$modele;
+      $vardir = dirname($loca)."/";
+      $modele = basename($loca);
+      if ($debug) { print "D:4:D = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
+      ## good to notice that 
+      # $fixdir the fixed part must be "^/*/$"
+      #    starting and ending with '/'
+      # $vardir the variable part must be "^[^/]*/$"
+      #    ending with '/' but not starting with '/'
+      # $model pattern for the file "([^/]*)"
+      #    not comprising any '/'
+      if ($vardir eq "./") { $vardir = "";}
+      if ($debug) { print "D:5:D = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
+      # SELECTING ON THE DIRECTORY
+      # just checking the variable part of the directory
+      my @vardir = split("/",$vardir);
+      my $oui = 1;
+      for (@vardir) {
+        if (!(/^$/)) {
+          my $alors = &retenu($_,$seldir);
+          if (!($alors)) { $oui = 0;}
+        }
+      }
+      if ($oui) {
+        # THE DIRECTORY WAS ACCEPTED
+        my $copat = $fixdir.$vardir.$modele;
+        my @icopat = glob $copat;
+        if ($nsil > 2) {
+          my @vv = fileparse($copat);
+          print "<*> Directory/Pattern: ",$vv[1],
+                " <-|-> ",$pat,"\n";
+        }
+        if ($debug) { 
+          print("D:6:D = -<[",join("(+)",@icopat),"]>-\n");
+        }
+        for my $fifi (@icopat) {
+          if ($debug) {
+            print "D:7:D = pattern to be considered $fifi\n";
+          }
+          # SELECTING ON THE FILE
+          my $frname = basename($fifi);
+          # eliminating local directories
+          if (!($frname =~ /^\./)) {
+            my $yes = &retenu($frname,$selfil);
+            if ($yes) {
+              $nbr++;
+              # checking the existence
+              if (-e $fifi) {
+                #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+                # LOOPING ON THE SUCCESSIVE NAME MODIFICATIONS
+                my $toname = $frname;
+                foreach my $tr (@modifs) {
+                  $toname = &gmodif(dirname($fifi)."/".$toname,$tr);
+                }
+                #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+                # PREPARING THE ACTION
+                my $vtdir = $tdir;
+                if ($tdir eq "\~\~") { $vtdir = dirname($fifi)."/";}
+                my $output = $vtdir.$toname;
+                if ($debug) { print "D:8:D = \$toname = $toname <> \$output = $output\n";}
+                my $descri;
+                if ($nsil) {
+                    my ($fici,$fict);
+                    if ($showpath) {
+                      $fici = $fifi; $fict = $output;
+                    } else {
+                      $fici = $frname; $fict = $toname;
+                    }
+                    $descri = &comple($nbr,3).": ".$fici;
+                    if (!($unique)) { $descri = $descri." ->->-> ".$fict." $iprotect ";}
+                }
+                #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+                # CHECKING THE EXISTENCE
+                my $fexist = 0; my $fprsv = 0;
+                if (-e $output) { $fexist = 1;}
+                if (($fexist)and (!$unique)) {
+                  if ($fcheck == 0) {
+                      # stop
+                      print "<<< $output DOES EXIST! >>>\n";
+                      die("  --- the 'fatal error' option is activated ---  ");
+                  } elsif ($fcheck == 3) {
+                      # question
+                      print "<<< $output DOES EXIST! >>>\n";
+                      print "What to do? (S)top,\n";
+                      print "            (P)reserve this and other existing files,\n";
+                      print "            (p)reserve this file,\n";
+                      print "            (R)replace this and other existing files,\n";
+                      print "            (r)replace this file,\n";
+                      my $answer = &question("Answer [S|P|p|R|r]","stop","R");
+                      if ($answer !~ /^[SPpRr]$/) {
+                          print "$answer IS NOT AN ACCEPTABLE ANSWER!\n";
+                          print "NEXT TIME 'R' will be applied\n";
+                          $answer = &question("Answer [S|P|p|R|r]","stop","R");
+                          if ($answer !~ /^[SPpRr]$/) { $answer = "R";}
+                      }
+                      if ($answer eq "S") {
+                          die("You preferred to stop");
+                      } elsif ($answer eq "p") {
+                          $fprsv = 1;
+                      } elsif ($answer eq "P") {
+                          $fprsv = 1; $fcheck = 1;
+                      } elsif ($answer eq "r") {
+                          #
+                      } elsif ($answer eq "R") {
+                          $fcheck = 2;
+                      } else {
+                          print "<<<$answer>>>\n";
+                          print "erreur in $nom\n";
+                          die("this case is not expected! Sorry.");
+                      }
+                  } elsif ($fcheck == 1) {
+                      # preservation
+                      $fprsv = 1;
+                  }
+                }
+                # counting and action
+                my $wha = "creat";
+                if ($fexist) {
+                    if ($fprsv) { $nbrp++; $wha = "prese";}
+                    else { $nbrr++; $wha = "repla";}
+                }
+                if (not($justsee)) { $wha = uc($wha);}
+                #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+                # PERFORMING THE ACTION
+                my $fait = 0;
+                # if not just to see and no preservation is activated
+                if (not($justsee) and not($fprsv)) {
+                    if ($liste == 0) {
+                      # action
+                      my $koma = $kom." ".$fifi;
+                      if (!($unique)) { $koma = $koma." ".$output;}
+                      if ($debug) { print "D:executed command:D = $koma\n";} 
+                      my $rsy = system($koma);
+                      if ($debug) { print "D:system return:D = $rsy\n";} 
+                      $fait = 1;
+		      # appending the index file if asked and possible
+		      if ((defined $ifile) and (not($unique)) and (not($fexist))) {
+                          my $iifile = $ifile;
+                          if ($ifile eq "r") {
+                              $iifile = dirname($output).".txt";
+                          }
+                          if ( ($iifile !~ /^\//) and ($iifile !~ /^\~/) ) {
+                            $iifile = dirname($output)."/".$iifile;
+                          }
+			  open(my $lf,">>",$iifile) or die "Can't open >> $iifile: $!"; 
+                          print $lf "$toname \n";
+			  close($lf);
+		      }
+                    } else {
+                      # listing
+                      if ($liste == 1) { print $fifi,"\n";}
+                      else { print $output,"\n";}
+                      $fait = 1;
+                    }
+                  if ($fait) {
+                    # adding protection on the file
+                    if ($fprotect) {
+                      chmod(0400,$output);
+                    }
+                  } else {
+                    if ($nsil) { print "failed!\n";}
+                  }
+                } else { # end of not just to see
+                }
+                #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
+                if ($nsil) {
+		    print "($wha):",$descri,"\n";
+                }
+              } else {
+                # the initial file doesn't exist
+                if ($nsil and $missing) {
+                  print "****: ",&comple($nbr,3),": < ! >   $fifi DOESN'T EXIST \n";
+                  $nbrn++;
+                }
+              }
+              #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
+            }
+          } # end of the selection process
+        }
+      }
+    }}
   }
-  # getting the files to deal with
-  my @files = @ARGV;
-  chomp @files;
-  if ($nsil > 0) {
-    print("  ",$#files+1," pattern(s) to deal with\n");
+  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
+  # PRINTING ADDITIONAL INFORMATIONS
+  if ($nsil > 1) { print "-"x40,"\n";}
+  #
+  if ($nsil > 1) {
+    my $verbe = " were";
+    if ($justsee) { $verbe = " could be";}
+    if ($nbr > 0) {
+        print "$nbr files could be processed\n";
+        if ($nbrn > 0) {
+          print "BUT $nbrn were not found\n";
+        }
+        my $nbf = $nbr-$nbrn;
+        if ($nbf > 0) {
+          print "AND ".$nbf.$verbe;
+          if (!$unique) {
+            print " (",$nbf-$nbrr-$nbrp," created + $nbrr replaced + $nbrp preserved.)";
+          }
+          print "\n";
+        }
+    } else {
+      print "NO FILE HAS BEEN DETECTED!\n";
+    }
+    print "$nom finished properly\n";
   }
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
-  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-  # PROCESSING
-  if ($#files+1 > 0) {
-    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-    # PREPARING THE DIRECTORIES TO SCAN
-    my @didi = ("");
-    if ($recurs) {
-      # NO FURTHER DIRECTORY 
-      foreach (@files) { if (/[\/]+/) {
-        print "$_ pattern contains '/' while recursivity was asked for!\n";
-        die ">>> Not allowed by $nom <<<\n";
-      }}
-      # FINDING THE BRANCHES FROM RECURSIVITY
-      @didi = &retrouve(1,$fdir);
-      print("-<1(",join("(1)",@didi),")1>-\n");
-      # REMOVING THE STARTING DIRECTORY TO BE CONSISTENT WHEN NO RECURSIVITY
-      my $lsd = length($fdir);
-      for my $cdidi (@didi) {
-        $cdidi = substr($cdidi,$lsd);
-        $cdidi ="./" unless ($cdidi ne "");
-      }
-      print("-<2(",join("(2)",@didi),")2>-\n");
-    }
-    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-    # BROWING
-    my $nbr = 0; my $nbrn = 0;
-    if ($verif) { 
-      print("-<3(",join("(3)",@didi),")3>-$fdir\n");
-    }
-    for my $mdi (@didi) {
-      #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-      # JUST FOLLOWING THE PATTERNS
-      for my $pat (@files) {
-        # just to be sure working on local variables
-        my ($fixdir,$vardir,$modele) = ($fdir,$mdi,$pat);
-        if ($verif) { print "1:F = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
-        # getting rid of this '~'
-        if ( $modele =~ /^~/) {
-	  $modele =~ s/^~\//$hd/;
-          $vardir = "";
-          $fixdir = "";
-        }
-        if ($verif) { print "2:F = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
-        # taking into account absolute paths
-        if ( $modele =~ /^\//) {
-          $vardir = "";
-          $fixdir = "";
-        }
-        if ($verif) { print "3:F = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
-        # redistributing path and file
-        my $loca = $vardir.$modele;
-        $vardir = dirname($loca)."/";
-        $modele = basename($loca);
-        if ($verif) { print "4:F = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
-        ## good to notice that 
-        # $fixdir the fixed part must be "^/*/$"
-        #    starting and ending with '/'
-        # $vardir the variable part must be "^[^/]*/$"
-        #    ending with '/' but not starting with '/'
-        # $model pattern for the file "([^/]*)"
-        #    not comprising any '/'
-        if ($vardir eq "./") { $vardir = "";}
-        if ($verif) { print "5:F = (",$fixdir,") V = (",$vardir,") M = (",$modele,")\n";}
-        # SELECTING ON THE DIRECTORY
-        my @vardir = split("/",$vardir);
-        my $oui = 1;
-        for (@vardir) {
-          if (!(/^$/)) {
-            my $alors = &retenu($_,$seldir);
-            if (!($alors)) { $oui = 0;}
-          }
-        }
-        if ($oui) {
-          # THE DIRECTORY WAS ACCEPTED
-          my $copat = $fixdir.$vardir.$modele;
-          my @icopat = glob $copat;
-          if ($nsil > 2) {
-            my @vv = fileparse($copat);
-            print "<*> Directory/Pattern: ",$vv[1],
-                  " <-|-> ",$pat,"\n";
-          }
-          if ($verif) { 
-	    print("-<[",join("(+)",@icopat),"]>-\n");
-	  }
-          for my $fifi (@icopat) {
-	    if ($verif) {
-	      print " pattern to be considered $fifi\n";
-	    }
-            # SELECTING ON THE FILE
-            my $frname = basename($fifi);
-            # eliminating local directories
-            if (!($frname =~ /^\./)) {
-	      my $yes = &retenu($frname,$selfil);
-	      if ($yes) {
-		$nbr++;
-		# checking the existence
-		if (-e $fifi) {
-		  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-		  # LOOPING ON THE SUCCESSIVE NAME MODIFICATIONS
-		  my $toname = $frname;
-		  foreach my $tr (@modifs) {
-		    $toname = &gmodif(dirname($fifi)."/".$toname,$tr);
-		  }
-		  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-		  # PREPARING THE ACTION
-                  my $vtdir = $tdir;
-                  if ($tdir eq "\~\~") { $vtdir = dirname($fifi)."/";}
-		  my $output = $vtdir.$toname;
-		  if ($verif) { print "\$toname = $toname <> \$output = $output\n";}
-		  if ($nsil) {
-		    if ($showpath) {
-		      print &comple($nbr,3),": ",$fifi," ->($sfmove)> ",$output," $iprotect ";
-		    } else {
-		      print &comple($nbr,3),": ",$frname," ->($sfmove)> ",$toname," $iprotect ";
-		    }
-		  }
-		  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-		  # PERFORMING THE ACTION
-		  my $fait = 0;
-		  # if not just to see
-		  if (not($justsee)) {
-		    # checking before replacing an existing file
-		    if ($fcheck) {
-		      if (-e $output) {
-			print "<<< $output DOES EXIST! >>>\n";
-			die("  --- the check option is activated ---  ");
-		      } 
-		    }
-		      if ($liste == 0) {
-			# action
-			if ($fmove) {
-			  $fait = move($fifi,$output);
-			} else {
-			  $fait = copy($fifi,$output);
-			}
-		      } else {
-			# listing
-			if ($liste == 1) { print $fifi,"\n";}
-			else { print $output,"\n";}
-			$fait = 1;
-		      }
-		    if ($fait) {
-		      # adding protection on the file
-		      if ($fprotect) {
-			chmod(0400,$output);
-		      }
-		      if ($nsil) { print "\n";}
-		    } else {
-		      if ($nsil) { print "failed!\n";}
-		    }
-		  } else { # end of not just to see
-		    if ($nsil) { print "\n";}
-		  }
-		  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
-		} else {
-		  # the initial file doesn't exist
-		  print &comple($nbr,3),": < ! >   $fifi DOESN'T EXIST \n";
-		  $nbrn++;
-		}
-		#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
-	      }
-            } # end of the selection process
-          }
-        }
-      }
-    }
-    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<---
-    # PRINTING ADDITIONAL INFORMATIONS
-    if ($nsil > 1) { print "-"x40,"\n";}
-    #
-    if ($nsil > 1) {
-      if ($nbr > 0) {
-        if ($justsee) {
-          print "$nbr files could be processed\n";
-          if ($nbrn > 0) {
-	    print "BUT $nbrn were not found\n";
-          }
-        } else {
-          print "$nbr files could be processed\n";
-          if ($nbrn > 0) {
-	    print "BUT $nbrn were not found\n";
-          }
-          my $nbf = $nbr-$nbrn;
-          if ($nbf > 0) {
-            print "AND ".$nbf." were\n";
-	  }
-        }
-      } else {
-        print "NO FILE HAS BEEN DETECTED!\n";
-      }
-      print "$nom finished properly\n";
-    }
-    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>---
-  } else {
-    die("No file pattern(s) have been provided but there are compulsory for '$nom'!");
-  }
-} # else of there are arguments
+} else {
+  # no files provided
+  if ($nsil) { print("No file pattern(s) have been provided to '$nom'!");}
+}
 #
 exit 1;

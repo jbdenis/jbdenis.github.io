@@ -1,9 +1,11 @@
 #!/usr/bin/perl -w
 #
 # 16_03_26 16_03_29 16_03_30 16_05_05 16_05_26
-# 16_05_30 16_05_31 16_06_01 16_06_02
+# 16_05_30 16_05_31 16_06_01 16_06_02 17_04_06
+# 17_11_14 18_01_28 18_01_29 18_01_30 18_02_04
+# 18_03_10 18_11_28
 #
-use lib "/home/jbdenis/liana/info/perl/uie";
+use lib "/home/jbdenis/o/info/perl/uie";
 use strict;
 use Getopt::Std;
 use File::Basename;
@@ -83,7 +85,7 @@ sub starting{
         if (defined($auth)) {
             $res[$num++] = "  <meta name=\"authors\" content=\"".$auth."\">";
         }
-        $res[$num++] = "  <meta name=\"creation\" content=\" ".&uie::now." \">";
+        $res[$num++] = "  <meta name=\"creation\" content=\" ".&uie::now()." \">";
         $res[$num++] = "  <meta http-equiv=\"charset\" content=\"".$enco."\">";
         $res[$num++] = "  <title>".$titl."</title>";
         $res[$num++] = "</head>";
@@ -163,7 +165,7 @@ sub block{
         $res[$num++] = " ";
         # the block itself
         foreach (@$bloc) {
-            $res[$num++] = @$_[0];
+            $res[$num++] = $_;
         }
     } else {
         # the title
@@ -176,7 +178,7 @@ sub block{
         # the block itself
         $res[$num++] = "<p><pre>";
         foreach (@$bloc) {
-            $res[$num++] = @$_[0];
+            $res[$num++] = $_;
         }
         $res[$num++] = "</pre></p>";
     }
@@ -188,9 +190,158 @@ sub block{
 ##########################################
 #
 ##<<
-sub liste{
+sub listes{
     #
-    # title : include a list
+    # title : include a list for subroutines
+    #
+    # aim : construct a list of item, numbered or not.
+    #
+    # output: an array, an element a line
+    #
+    # arguments
+    my $hrsub = {befo =>[[],"a","A paragraph to introduce before, a component a line"],
+                 list =>[undef,"a","the list to include, a component an item"],
+                 rlis =>[[],"a","references for each component of the list"],
+                 afte =>[[],"a","A paragraph to introduce after, a component a line"],
+                 tlis =>["u","c","Type of the list: 'u' for unordered and 'o' for ordered"],
+                 type =>["h","c","either 't' for text or 'h' for html"]
+                };
+##>>
+    my $argu   = &uie::argu("block",$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $befo = $argu->{befo};
+    my $list = $argu->{list};
+    my $rlis = $argu->{rlis};
+    my $afte = $argu->{afte};
+    my $tlis = $argu->{tlis};
+    my $type = $argu->{type};
+    my @res = (); my $num = 0;
+    # decomposing according the keywords
+    my $misc = "z...";
+    my @nsub = (); my $kkww = {$misc=>[]};
+    my $kkk = -1;
+    foreach (@$list) {
+        $kkk++;
+        my @mots = split(" ",$_);
+        my $nom = $mots[1];
+        push @nsub,$nom;
+        my @kw = split(/\d/,$nom);
+        if ((scalar(@kw) == 1) and ($nom !~ /\d$/)) {
+            # a name with a unique component
+            push @{$kkww->{$misc}},$kkk;
+	} else {
+            # a name with several components
+            # redundant components must be eliminated first
+            my %compo = ();
+            foreach (@kw) { $compo{$_} = " ";}
+            @kw = keys %compo;
+            foreach my $moi (@kw) {
+                if (defined($kkww->{$moi})) {
+                    push @{$kkww->{$moi}},$kkk;
+                } else {
+                    $kkww->{$moi} = [$kkk];
+                }
+            }
+        }
+    }
+    my @nkwd = sort keys %$kkww;
+    #
+    if ($type eq "t") {
+        ## text format
+        # before
+        if ((scalar @$befo) > 0) {
+            foreach (@$befo) {
+                $res[$num++] = $_;
+            }
+        }
+        # the list structured by keyword
+        my $numkwd = 0;
+        foreach my $ite (sort keys %$kkww) {
+            $numkwd++;
+            my $item = $ite;
+            if ($tlis =~ /o/) { $item = "$numkwd  ".$item;}
+            $item = (" "x5).$item;
+            $res[$num++] = $item;
+            foreach my $nnss (@{$kkww->{$ite}}) {
+                my $ll = $list->[$nnss];
+                if ($tlis =~ /o/) { $ll = ($nnss+1)."  ".$ll;}
+                $ll = (" "x10).$ll;
+		$res[$num++] = $ll;
+            }
+        }
+        # after
+        if ((scalar @$afte) > 0) {
+            foreach (@$afte) {
+                $res[$num++] = $_;
+            }
+        }
+    } else {
+        ## html format
+        # before
+        if ((scalar @$befo) > 0) {
+            $res[$num++] = "<p>";
+            foreach (@$befo) {
+                $res[$num++] = $_;
+            }
+            $res[$num++] = "</p>";
+        }
+        # table structured by keyword
+        $res[$num++] = '<table border="3">';
+        $res[$num++] = '  <tbody>';
+        foreach my $ite (sort keys %$kkww) {
+            $res[$num++] = '    <tr>';
+            $res[$num++] = '    </tr>';
+            $res[$num++] = '      <td><strong>'.$ite.'</strong></td>';
+            foreach my $nnss (@{$kkww->{$ite}}) {
+                $res[$num++] = '      <td>';
+                if (defined($rlis->[$nnss])) {
+                    $res[$num++] = "<a href=\"".$rlis->[$nnss]."\">";
+                }
+                my $ll = $list->[$nnss];
+		$res[$num++] = $nsub[$nnss];
+                if (defined($rlis->[$nnss])) {
+                    $res[$num++] = "</a>";
+                }
+                $res[$num++] = '      </td>';
+            }
+        }
+        $res[$num++] = '  </tbody>';
+        $res[$num++] = '</table>';
+        # the simple list
+        my $ltag = "ul";
+        if ($tlis =~ /o/) { $ltag = "ol";}
+        $res[$num++] = "<$ltag>";
+        for (my $ni=0; $ni < scalar(@$list); $ni++)  {
+            $res[$num++] = "<li>";
+            if (scalar(@$rlis)>0) {
+                $res[$num++] = "<a href=\"".$rlis->[$ni]."\">";
+            }
+            $res[$num++] = $list->[$ni];
+            if (scalar(@$rlis)>0) {
+                $res[$num++] = "</a>";
+            }
+            $res[$num++] = "</li>";
+        }
+        $res[$num++] = "</$ltag>";
+        # after
+        if ((scalar @$afte) > 0) {
+            $res[$num++] = "<p>";
+            foreach (@$afte) {
+                $res[$num++] = $_;
+            }
+            $res[$num++] = "</p>";
+        }
+    }
+    # returning
+    @res;
+}
+#
+##########################################
+#
+##<<
+sub listet{
+    #
+    # title : include a list for test scripts
     #
     # aim : construct a list of item, numbered or not.
     #
@@ -358,61 +509,84 @@ if ((scalar @ARGV) == 0) {
       die("'$file' seems not a text file!");
   }
   #
-  # starting
+  # starting 
   my @ente = &starting(titl=>$file,type=>$outp,auth=>undef);
   foreach (@ente) { print $_,"\n";}
   # extracting the global presentation
   my $pres = &uie::read8block(com=>undef,sep=>undef,fil=>$file,
                               bbl=>"###<<<",ebl=>"###>>>");
   my @gpre = &block(bloc=>$pres,titl=>"General Presentation of $file",type=>$outp);
-  foreach (@gpre) { print $_,"\n";}
   # extracting the documentation for each subroutine
   my $docu = &uie::read8block(com=>undef,sep=>undef,fil=>$file);
   # ordering the different subroutines by means of a hash
   my %subr = (); my $subr = undef; my %titles = ();
-  foreach my $ligne (@$docu) {
-      my $lig = join(" <+> ",@$ligne);
+  foreach my $lig (@$docu) {
       if ($lig =~ /^sub /) {
+          # a new subroutine
           $subr = $lig;
           $subr{$subr} = [];
       } else {
+          # completing the current subroutine
           if (defined($subr)) {
-              push @{$subr{$subr}},[$lig];
-              foreach my $titi (@$ligne) {
-                  if ($titi =~ /^$defi/) {
-                      my $tutu = substr($titi,length($defi)+1);
-                      $titles{$subr} = $tutu;
-                  }
+              push @{$subr{$subr}},$lig;
+              if ($lig =~ /^$defi/) {
+                  my $tutu = substr($lig,length($defi)+1);
+                  $titles{$subr} = $tutu;
 	      }
 	  }
       }
   }
   # displaying the list of subroutines
-  my $before = ["&nbsp;","&nbsp;","A total of ".scalar(keys(%subr))." subroutines was detected:","&nbsp;"];
+  my $before = ["&nbsp;",
+                "&nbsp;","A total of ".scalar(keys(%subr))." subroutines was detected:",
+                "&nbsp;"];
+  if ($outp eq "t") {
+      $before = [" "," ","A total of ".scalar(keys(%subr))." subroutines was detected:"," "];
+  }
   my $lissub = []; my $refsub = [];
-  foreach my $ss (sort keys %subr) {
-      my $elem = &uie::juste(chain=>$ss,long=>30,just=>"l");
+  my @nsub = sort keys %subr;
+  foreach my $ss (@nsub) {
+      my $elem = &uie::juste(cha=>$ss,lon=>30,jus=>"l");
       if (defined($titles{$ss})) {
           $elem = $elem."(".$titles{$ss}.")";
       }
       push @$lissub,$elem;
       push @$refsub,"#".$ss;
   }
-  my @lili = &liste(befo=>$before,list=>$lissub,
+  my @lili = &listes(befo=>$before,list=>$lissub,
                     rlis=>$refsub,
                     tlis=>"o",type=>$outp);
+  # some hazardous title
+  my @titi = &block(bloc=>[],titl=>"MODULE $raci",type=>$outp);
+  foreach (@titi) { print $_,"\n";}
+  # linking to the module
+  if ($outp eq "h") {
+      print "<par>\n";
+      print "To get the content of the module <a href=\"".$file."\">".$file."</a>\n";
+      print "</par>\n";
+  }
+  # first the list of subroutine introducing the keywords
+  my $kkk = -1;
   foreach (@lili) { print $_,"\n";}
+  # the the general representation
+  foreach (@gpre) { print $_,"\n";}
   # displaying the subroutine documentations
   my $nb = 0;
   foreach my $ss (sort keys %subr) {
       $nb++;
+########################################
+# beginning of the intermediate printing
+#
 #      print "\n","="x50,"\n";
-#      print &uie::juste(chain=>$nb,long=>3,just=>"r"),
+#      print &uie::juste(cha=>$nb,lon=>3,jus=>"r"),
 #            "\t",$ss,"\n";
 #      print "="x50,"\n";&&
 #      foreach my $ll (@{$subr{$ss}}) {
 #          print $ll,"\n";
 #      }
+#
+# end of the intermediate printing
+########################################
       my @susu = &block(bloc=>$subr{$ss},atit=>$ss,
                         titl=>$nb." ".$ss,type=>$outp);
       foreach (@susu) { print $_,"\n";}
@@ -422,7 +596,7 @@ if ((scalar @ARGV) == 0) {
   my $ttes = "A total of ".scalar(@tests)." test scripts was detected:";
   my @ttes = &block(titl=>$ttes,bloc=>[],type=>$outp);
   foreach (@ttes) { print $_,"\n";}
-  my @tete = &liste(list=>\@tests,tlis=>"o",
+  my @tete = &listet(list=>\@tests,tlis=>"o",
                     rlis=>\@tests,type=>$outp);
   foreach (@tete) { print $_,"\n";}
   my @fini = &closing(type=>$outp);

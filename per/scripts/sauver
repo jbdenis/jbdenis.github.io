@@ -1,12 +1,13 @@
 #!/usr/bin/perl -w
 #
 # 13_03_05 13_03_12 13_03_13 13_03_21 13_03_25
-# 13_03_27 13_04_09 14_01_02 14_01_20
+# 13_03_27 13_04_09 14_01_02 14_01_20 17_02_13
+# 17_02_19
 #
 use Getopt::Std;
 use File::Basename;
 use File::Copy;
-#use strict;
+use strict;
 #
 # "sauver" duplicate some files with a stamp, for
 #          instance before making hazardous changes.
@@ -16,7 +17,7 @@ my $nom = "sauver";
 my $it = "(*)"; # first bullet for help
 my $dot = "."; # component separator
 #
-if (not(exists($ARGV[0]))) { print "about $nom
+if (not(exists($ARGV[0]))) { print "ABOUT $nom
 
 PRINCIPLES
 
@@ -36,30 +37,33 @@ $it resulting files of previous savings are replaced but
 
 
 OPTIONS (to be included within '-o')
- p   : copied files are protected files with the 400 file
-       mode bits (default identical to the original
-       file).
- s   : operates silenciously: no indication
-       given on the screen (default on the
-       contrary).
- j   : just to see which modifications will be
-       done, that is a dry run (default: actions
-       are performed). It implies a non silencious
-       run.
- l   : no action is taken, no information output
-       is issued, no check is performed but a list
-       of concerned files is outputted (which can
-       be captured in a text file for future use).
- d   : a 'day' stamp (default 'moment' stamp)
- i   : the stamp must be placed just before the 
-       last component of the file (default before
-       the first component)
- a   : the stamp must be placed at the end of the name
-       (default, before the first or last component)
- u   : the stamp must not be tied with a '$dot'.
+ p     : copied files are protected files with the 400 file
+         mode bits (default identical to the original
+         file).
+ s     : operates silenciously: no indication
+         given on the screen (default on the
+         contrary).
+ J   : just to what would be the call to $gefi.
+         (no action performed)
+ j     : just to see which modifications will be
+         done, that is a dry run (default: actions
+         are performed). It implies a non silencious
+         run.
+ l     : no action is taken, no information output
+         is issued, no check is performed but a list
+         of concerned files is outputted (which can
+         be captured in a text file for future use).
+ d     : a 'day' stamp (default 'moment' stamp)
+ a|i|b : the stamp must be placed:
+           a: at the end of the name
+           i: just before the last component of the name
+           b: before the first component of the name
+         (priority: a<i<b; default is b)
+ u     : the stamp must not be tied with a '$dot'.
 
 STAMP
  -s stamp : any stamp instead of common day or moment.
+            (gets the priority over '-o d')
 
 DIRECTORIES
  -f fdir  : starting directory (default: working directory)
@@ -67,13 +71,13 @@ DIRECTORIES
 
 TO RECAPITULATE the saved format
 
- the stamp is fixed by the user (-s) or is the moment (default) 
-           or is the day (-o d)
+ the stamp is the moment (default) or is the day ('-o d') or
+           is fixed by the user with the value of '-s'.
+           
 
- The position of the stamp is before (default) or after (-o a) 
-           the name, or just before the last component (-o i).
-
-TO DO
+ The position of the stamp is before (default) or just before
+                           the last component (-o i) or after
+                           the name (-o a). 
 
 USE
 
@@ -92,7 +96,7 @@ $nom -o pid tra/*.JPG
 
 $nom -o au -s old -f ~/a \"*.pl\"   
   ( save the files ending with '.pl' of the '~/a' directory adding
-    them 'old' at the end. )
+    them 'old' at the end (without dot). )
 
 $nom | less
   ( inline help )
@@ -102,23 +106,16 @@ $nom | less
   # dealing the flag options
   my $options = "s";
   my $modif0 = "B"; my $modif1 = "n"; my $modif2 = "ss";
-  my $voir = 1; my $fait = 1; 
+  my $voir = 1; my $fait = 1; my $vresu = 1;
+  my $jvoir = 0;
   my $antip = "c1"; my $antim = "\\\\d{4}_\\\\d{2}_\\\\d{2}_\\\\d{2}_\\\\d{2}_\\\\d{2}";
-  my $antimb = "^"; my $antima = "\$";
+  my $antimb = "^"; my $antima = "\$"; my $display = "s";
   if (defined our $opt_o) {
     if ($opt_o =~ /p/) { $options = "p$options";}
-    if ($opt_o =~ /s/) { $options =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /s/) { $display =~ s/s/S/; $voir = 0; $vresu = 0}
     if ($opt_o =~ /j/) { $options = "j$options"; $fait = 0;}
-    if ($opt_o =~ /l/) { $options = "l$options"; $fait = 0;}
-    if ($opt_o =~ /i/) {
-      $modif1 = "c-1";
-      $antip = "c-2"; 
-      if ($opt_o =~ /u/) { $antip = "c-1";}
-    }
-    if ($opt_o =~ /a/) {
-      $modif1 = "c-1"; $antip = "c-1";
-      $modif0 = "A";
-    }
+    if ($opt_o =~ /J/) { $jvoir = 1;}
+    if ($opt_o =~ /l/) { $display = "l$display"; $fait = 0; $voir = 0; $vresu = 1}
     if ($opt_o =~ /u/) {
       $modif0 = lc($modif0);
       $antima = "";
@@ -127,12 +124,28 @@ $nom | less
         $antima = "\$";
       }
     }
+    # position
+    if ($opt_o =~ /a/) {
+      $modif1 = "c-1"; $antip = "c-1";
+      $modif0 = "A";
+    }
+    if ($opt_o =~ /i/) {
+      $modif1 = "c-1";
+      $antip = "c-2"; 
+      if ($opt_o =~ /u/) { $antip = "c-1";}
+    }
+    if ($opt_o =~ /b/) {
+      $modif1 = "n"; $antip = "c1";
+      $modif0 = "B";
+    }
+    # day stamp
     if ($opt_o =~ /d/) {
       $modif2 = "dd";
       $antim = "\\\\d{4}_\\\\d{2}_\\\\d{2}";
     }
   }
   $options = "-o $options";
+  $display = "-d $display";
   # dealing with the stamp
   if (defined our $opt_s) {
     $modif2 = "\\\"$opt_s\\\"";
@@ -148,7 +161,7 @@ $nom | less
     $fdir = "-f $opt_f";
   }
   # dealing with the ending directory
-  $tdir = "";
+  my $tdir = "";
   if (defined our $opt_t) {
     $tdir = "-t $opt_t";
   }
@@ -156,16 +169,22 @@ $nom | less
   my $fifi = join(' ',@ARGV);
   if ($fifi eq "") { $fifi = "*";}
   # building the call to gefi
-  my $callgefi = "$gefi $options $fdir $tdir $modif $selec $fifi";
+  my $callgefi = "$gefi $options $display $fdir $tdir $modif $selec $fifi";
   # 
-  # running gefi
-  if ($voir) { print "<<$callgefi>>\n";}
-  my @resu = `$callgefi`;
-  print @resu;
-  if ($voir) {
-    print $nom," finished\n";
+  # calling gefi
+  if ($jvoir) {
+    print "<<$callgefi>>\n";
+  } else {
+    if ($voir) { print "<<$callgefi>>\n";}
+    my @resu = `$callgefi`;
+    if ($vresu) {
+      print @resu;
+    }
+    if ($voir) {
+      print $nom," finished\n";
+    }
   }
-} # else of there are arguments
+} # else of there are no argument
 #
 exit 1;
 

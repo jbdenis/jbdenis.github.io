@@ -1,129 +1,230 @@
 #!/usr/bin/perl -w
 #
-# 13_03_04 13_03_05 13_03_12 13_04_09 14_01_20
+# 13_03_04 13_03_05 13_03_12 13_03_13 13_03_27
+# 13_04_09 14_01_02 14_01_04 14_01_05 14_01_20
+# 15_09_10 17_02_11 17_02_12 17_02_13 17_02_16
+# 17_02_19 17_11_30 18_10_19
 #
 use Getopt::Std;
 use File::Basename;
 use File::Copy;
-#use strict;
+use strict;
 #
-# "jeter" to throw files into the basket trash
-#          making use of the general 'gefi' script
+# "jeter" removes some standard back files
+#         and more if you want.
+#         It includes now the possibilities
+#         of disappeared "nettoyer".
 #
 my $gefi = "gefi";
 my $nom = "jeter";
 my $it = "(*)"; # first bullet for help
-my $basket = "~/corbeille/";
+my @motifs = ("~\$","\\\.bak\$","\\\.aux\$");
+my $sback = "-s i[n,".join("\\\|",@motifs)."]";
+my $basket = "~/tt/corbeille/";
+my $sauver = "";
 #
-if (not(exists($ARGV[0]))) { print "about $nom
+if (not(exists($ARGV[0]))) { print "ABOUT $nom
 
 PRINCIPLES
-
-$it to move a series of files into the trash directory
-    ($basket) or any precised directory.
-$it before to be moved the files are prefixed with the 
-    present time
-$it recursion is possible (but not the default)
-$it globbing allowed but quoting is necessary for recursion
-
+$it To move a series of files into the trash directory
+    ($basket) or into any precised directory.
+$it Before to be moved the files are prefixed with the 
+    present time.
+$it The files to be moved can be defined through a pattern
+$it Standard patterns are proposed, especially
+    for files created with script *sauver*.
+$it Recursion is possible but is not the default behaviour.
+$it Globbing allowed but quoting is necessary for
+    recursion (see some examples below).
 
 OPTIONS (to be included within '-o')
- p   : written protected files with 400 file mode
-       bits (default identical to the original
-       file).
- s   : operates silenciously: no indication
-       given on the screen (default on the
-       contrary).
+ J   : just to what would be the call to $gefi.
+         (no action performed)
  j   : just to see which modifications will be
-       done, that is a dry run (default: actions
+       done, that is a dry run (default: moves
        are performed). It implies a non silencious
        run.
- l   : no action is taken, no information output
-       is issued, no check is performed but a list
-       of concerned files is outputted which can
-       be captured in a text file for future use.
- r   : all the branches from the starting directory
-       are scanned (default no recursivity).
-       ((Be aware that for recursion the globbing
-       have to be made by Perl not by the shell
-       so you must quote your expression to 
-       prevent the shell globbing before passing
-       the arguments to Perl. See examples below.))
+ l   : no move, no information output, no check is
+       performed but a list of concerned files is
+       outputted which can be captured in a text
+       file for future use.
+ p   : moved files must be protected with 400 profile
+       (default: identical to the original file).
+ s   : operates silenciously: no indication given on
+       the screen (default: on the contrary).
+ r   : recursion from the starting directory 
+       (default: no)
+
+PATTERN (to be included within -p)
+ <default>: no selection of the proposed files is
+            made, all of them are moved.
+ <0>      : files following one of the patterns: 
+            "
+            .join(' | ',@motifs)." are moved.
+ <xyz>    : one of the 12 (= 2x3x2) combinations given
+            by 
+   x: {m} for moment: yyyy_mm_dd-hh_mm_ss
+      {d} for day: yyyy_mm_dd
+   y  {b} for before the name
+      {i} for before the last component
+      {a} for after the name
+   z  {u} directly attached
+      {d} attached with a dot
+  But there are some shortcuts: 
+ <->  equivalent to {mbd} the default action of *sauver*
+ <+>  equivalent to {did} my standard precautionary saving
+        (more could be easily added with a local 
+         modification of the script)
+ <pattern>: (and only one) the pattern will be applied at
+            the complete name level; for selection on 
+            components, use *gefi* directly.
+
 
 DIRECTORIES
  -f fdir  : starting directory (default: working directory)
- -t tdir  : destination directory (default '$basket')
+ -t tdir  : destination directory (default: $basket);
 
-TO DO
+POSSIBLE FILES
+  A set of possible file can be given in different,
+possibly simultaneous, ways:
+$it with argument: '-F file.txt' where 'file.txt' refers
+    to a file comprising file name each line (# comment
+    lines are accepted).
+$it a series of file names separated with spaces,
+    possibly obtained by a globbing at the shell level.
+$it a glob to be made by the perl script, then doubly
+    protected (see examples below).
+$it when no possible files are proposed, all files
+    from the starting directory are considered but
+    if no pattern is provided by the user, then the '0'
+    is imposed.
 
 USE
 
-$nom [-o flags] [-f fdir] [-t tdir] files
+$nom [-o flags]     \\ # options
+      [-p pattern]   \\ # required pattern to be moved
+      [-f fdir]      \\ # starting directory
+      [-t tdir]      \\ # ending directory
+      [-F file]      \\ # text file where are listed possible files
+      [files]        \\ # files names, possibly shell globbed
+      [globs]        \\ # protected globs for the script (necessary for recursion)
+
 
 EXAMPLES
 
-$nom  *~
-  ( move all files from the working directory with names terminated with \"~\"
-    into the directory \"$basket\" after adding them as first component
-    the moment.)
+$nom -p 0 *
+  ( move all standard patterns of the working directory into the $basket )
 
-$nom -o rp -f .. \\\"*.JPG\\\" 
-  ( move all files ending with \".JPG\" stored in all directories from \"..\"
-    into the basket directory after prefixing them with the moment.
-    Protected quoting marks are necessary because there is recursion.)
+$nom -o r -f tra -p .bak\$ \\\"*\\\"
+  ( moves all files ending with '.bak' into $basket, recursively
+    from 'tra'. NOTICE (i) that escaping the quotation marks is
+    required; (ii) that the wild card '*old' is not valid since
+    regular expressions must be Perl style. )
 
-$nom -o l  *.txt 
-  ( list all txt file of the working directory.)
+$nom -p + *
+  ( throw all files of the working directory having the pattern associated
+    to the action of *sauver* with option \"-o di\". For example the file 
+    'tutu.2014_01_05.toto'. ) 
 
-$nom \"\\\"*\\ *\\\"\"
-  ( throw in the standard basket directory every files having a space
-    in their name. BE AWARE THAT THIS IS VERY TRICKY AND YOU EASILY
-    CAN THROW ALL YOUR FILES WITH SUCH A TEMPTATIVE!!! Much safer
-    to use an indirect way (for instance with the suffix); or
-    check before with the j/l options. See also 'padb' script.)
+$nom -o j -p to *
+  ( simulates the cleaning of all files from the working directory ending
+    with 'to'. )
 
-$nom | less
-   ( inline help.)
+$nom -o j -p to 
+  ( identical to the previous but the globbing is made by Perl not
+    by the shell. )
 
+$nom | less    
+  ( inline help )
 ";} else {
   # getting the options
-  getopt('oft'); 
+  getopt('otfpF'); 
   # dealing the flag options
-  my $options = "ms"; my $voir = 1; my $fait = 1;
+  my $options = "R"; 
+  my $display = "s"; my $command = "-c mv";
+  my $modif1 = "n"; my $modif2 = "ss";
+  my $voir = 2; my $fait = 1; my $jvoir = 0;
   if (defined our $opt_o) {
     if ($opt_o =~ /p/) { $options = "p$options";}
-    if ($opt_o =~ /s/) { $options =~ s/s/S/; $voir = 0;}
+    if ($opt_o =~ /s/) { $display =~ s/s/S/; $voir = 0;}
     if ($opt_o =~ /j/) { $options = "j$options"; $fait = 0;}
-    if ($opt_o =~ /l/) { $options = "l$options"; $fait = 0;}
+    if ($opt_o =~ /J/) { $jvoir = 1;}
+    if ($opt_o =~ /l/) { $display = "l$display"; $fait = 0; $voir = 1;}
     if ($opt_o =~ /r/) { $options = "r$options";}
   }
   $options = "-o $options";
+  $display = "-d $display";
+  # building the modifications
+  my $modif = "-m B[".$modif1.",".$modif2."]";
   # dealing with the starting directory
   my $fdir = '';
   if (defined our $opt_f) {
     $fdir = "-f $opt_f";
   }
   # dealing with the ending directory
-  my $tdir = $basket;
+  my $tdir = "-t $basket";
   if (defined our $opt_t) {
-    $tdir = $opt_t;
+    $tdir = "-t $opt_t";
   }
-  $tdir = "-t $tdir";
-  # dealing with modification directory
-  my $modif = "-m B[n,ss]";
-  # dealing with the designated files
-  my $fifi = join(' ',@ARGV);
+  # building the selections through the pattern  
+  my $selec = "";
+  if (defined our $opt_p) {
+      $selec = $opt_p;
+      if ($selec eq "-") { $selec = "mbd";}
+      if ($selec eq "+") { $selec = "did";}
+      if ($opt_p eq "0") {
+          $selec = $sback;
+      } elsif (length($selec) == 3) {
+          # decoding the three characters
+          my $s1 = substr($selec,0,1);
+          my $s2 = substr($selec,1,1);
+          my $s3 = substr($selec,2,1);
+          # using them to modify the argument for *gefi*
+          my $fse = 0; my $ssll = $selec; my $joint = "";
+          if ($s1 eq "m") { $ssll = "\\\\d{4}_\\\\d{2}_\\\\d{2}-\\\\d{2}_\\\\d{2}_\\\\d{2}"; $fse++;}
+          if ($s1 eq "d") { $ssll = "\\\\d{4}_\\\\d{2}_\\\\d{2}"; $fse++;}
+          if ($s3 eq "d") { $joint = ".";}
+          if ($s2 eq "b") { $ssll = "-s i[n,^".$ssll."]"; $fse++;}
+          if ($s2 eq "i") { $ssll = "-s i[c-2,^".$ssll."\$]"; $fse++;}
+          if ($s2 eq "a") { $ssll = "-s i[n,".$ssll."\$]"; $fse++;}
+          if ($fse == 2) { $selec = $ssll;
+          } else { $selec = "-s i[n,".$selec."]";}
+      } else { $selec = "-s i[n,".$selec."]";}
+  }
+  my @fifi = ();
+  if (defined(our $opt_F)) {
+      open(TUTU,"<",$opt_F) or die("Couldn't open file $opt_F");
+      while (<TUTU>) {
+          chomp;
+          if ($_ !~ /^#/) { @fifi = (@fifi,$_);}
+      }
+      close(TUTU);
+  }
+  # adding the freely designated files
+  @fifi = (@fifi,@ARGV);
+  # eliminating redundancies
+  my %fifi   = map { $_, 1 } @fifi;
+  @fifi = keys %fifi;
+  # getting the files for calling *gefi*
+  my $fifi = join(' ',@fifi);
+  if ($fifi eq "") {
+    if (!defined(our $opt_p)) {
+      $fifi = "\"*\"";
+      $selec = $sback;
+    }
+  }
   # building the call to gefi
-  my $callgefi = "$gefi $options $fdir $tdir $modif $fifi";
+  my $callgefi = "$gefi $options $display $command $fdir $tdir $modif $selec $fifi";
   # 
-  # running gefi
-  if ($voir) { print "<<$callgefi>>\n";}
-  my @resu = `$callgefi`;
-  print @resu;
-  if ($voir) {
-    print $nom," finished\n";
+  # calling gefi
+  if ($jvoir) {
+    print "<<$callgefi>>\n";
+  } else {
+    if ($voir > 1) { print "<<$callgefi>>\n";}
+    my @resu = `$callgefi`;
+    if ($voir) { print @resu;}
   }
-} # else of there are arguments
+} # else of there are no argument
 #
 exit 1;
 
