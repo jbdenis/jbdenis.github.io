@@ -1,7 +1,8 @@
-\select@language {french}
-\contentsline {section}{\numberline {1}Tout au D\IeC {\'e}but}{1}
-\contentsline {subsection}{\numberline {1.1}Mais c'\IeC {\'e}tait loin d'\IeC {\^e}tre fini}{2}
-\contentsline {section}{\numberline {2}Il fallait aller encore plus loin}{2}
-\contentsline {section}{\numberline {3}Jamais on n'en voyait la fin}{2}
-\contentsline {subsection}{\numberline {3.1}Encore un mirage}{2}
-\contentsline {section}{\numberline {4}C'est la fin des haricots}{2}
+\babel@toc {french}{}
+\contentsline {section}{\numberline {1}gestion des dimensions}{2}
+\contentsline {section}{\numberline {2}Tout au D\IeC {\'e}but}{3}
+\contentsline {subsection}{\numberline {2.1}Mais c'\IeC {\'e}tait loin d'\IeC {\^e}tre fini}{3}
+\contentsline {section}{\numberline {3}Il fallait aller encore plus loin}{4}
+\contentsline {section}{\numberline {4}Jamais on n'en voyait la fin}{5}
+\contentsline {subsection}{\numberline {4.1}Encore un mirage}{5}
+\contentsline {section}{\numberline {5}C'est la fin des haricots}{6}

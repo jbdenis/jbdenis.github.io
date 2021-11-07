@@ -1,18 +1,22 @@
 #!/usr/bin/perl -w
 #
 # 17_11_20 18_03_07 18_03_12 18_03_27 18_03_28
+# 19_04_06
 #
 use strict;
 use warnings;
-use phoges; 
 #
 use lib "/home/jbdenis/o/info/perl/phoges";
+use phoges; 
+#
 my (@cha);
 #
 my $ch1 = [
         "<(0)> ESSAI POUR VOIR",
+        "<(1)> essai d'erreur",
+        "<(1)> ESSAI D'ERREUR",
         "((Quelques courses sont nécessaires // ne pas oublier la carte)) <[ HH=53]> [|2018|]",
-        "(( )) [|   |] <[]> [[ moi, toi ,nous]]",
+        "(( )) <[]> [[ moi, toi ,nous]]",
         "((The same, except for this comment )) [|   |] <[]> [[ moi, toi ,nous]]",
         "[[]]",
         "<(1)> Guyancourt",
@@ -33,7 +37,7 @@ my $ch1 = [
         "<(1)> Brocante à Cry",
         "((Enfin à la maison))"
        ];
-my $kopi = &phoges::new7pi(wha=>"col");
+my $kopi = &phoges::new7pi(wha=>"COL");
 #
 foreach my $chai ($ch1) {
   @cha = @$chai;

@@ -1,0 +1,2 @@
+# directory list to test pg.ineif
+aju/ori

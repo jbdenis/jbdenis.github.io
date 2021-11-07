@@ -1,0 +1,6 @@
+kwd c collectes
+kwd d distributions
+cat g groupes
+pla p portraits
+kwd r repas conviviaux
+kwd z divers

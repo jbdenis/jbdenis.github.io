@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 #
-# 18_03_20 18_03_28
+# 18_03_20 18_03_28 19_04_02
 #
 use strict;
 use warnings;
-use phoges; 
 #
 use lib "/home/jbdenis/o/info/perl/phoges";
-my (@cha);
+use phoges; 
+#
 #
 my @ch1 = (
         "<(0)> ESSAI POUR VOIR",
@@ -36,33 +36,20 @@ my @ch1 = (
        );
 my $kopi;
 my $ligne; my $last = &phoges::new7pi(wha=>"ind");
-for my $whi ("icf","dif") {
-   $kopi = &phoges::new7pi(wha=>"col");
+   $kopi = &phoges::new7pi(wha=>"COL");
    foreach my $chai (@ch1) {
       print "\n",$chai,"\n\n";
       my $new = &uie::check8err(obj=>&phoges::analyze8line(lin=>$chai));
-      if ($new->{y} eq "ind") {
-          # an image
-          my $ima = &uie::check8err(obj=>&phoges::col7pi2ind7pi(cpi=>$kopi,ipi=>$new,lpi=>$last,whi=>$whi));
-          $ligne = &uie::check8err(obj=>&phoges::pi2line(xpi=>$ima));
-          # displaying the result
-          print ">>>$ligne<<<\n";
+      unless ($new->{y} eq "col") {
+          my $lig = &uie::check8err(obj=>&phoges::pi2line(xpi=>$new));
+	  print "-"x5,$lig,"-"x5,"\n";
       } else {
-          # an additional pi (add or cir)
-          if ($new->{y} eq "cir") {
-              $ligne = &uie::check8err(obj=>&phoges::pi2line(xpi=>$new));
-              # displaying the result
-              print ")))$ligne(((\n";
-          }
-          $kopi = &uie::check8err(obj=>&phoges::update8col7pi(cop=>$kopi,sup=>$new));
-          #&uie::la(str=>$kopi->{c},mes=>"Circumstance Hierarchy");
-          $ligne = &uie::check8err(obj=>&phoges::pi2line(xpi=>$kopi));
-          # displaying the result
-          unless ($whi eq "icf") { print ">>>$ligne<<<\n";}
+          print "+"x5," Normally 'col' pi is not possible but an exception can be raised","+"x5,"\n";
+          my $lig = &uie::check8err(obj=>&phoges::pi2line(xpi=>$new,xco=>1));
+	  print "-"x5,$lig,"-"x5,"\n";
       }
-      &uie::la(str=>$whi,mes=>"On continue ?");
+      &uie::la(str=>"",mes=>"On continue ?");
    }
-}
 #
 #
 #

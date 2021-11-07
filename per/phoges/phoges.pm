@@ -25,7 +25,21 @@
 # 18_04_07 18_04_08 18_04_09 18_04_11 18_04_12
 # 18_09_17 18_09_30 18_10_01 18_10_02 18_10_04
 # 18_10_05 18_10_09 18_10_11 18_10_13 18_10_14
+# 18_12_03 18_12_29 18_12_31 19_01_04 19_01_05
+# 19_01_06 19_01_07 19_01_08 19_01_09 19_01_10
+# 19_01_23 19_01_24 19_01_25 19_02_01 19_02_04
+# 19_02_12 19_02_15 19_03_02 19_03_07 19_03_08
+# 19_03_10 19_03_12 19_03_15 19_03_16 19_03_26
+# 19_03_27 19_03_29 19_03_31 19_04_01 19_04_02
+# 19_04_03 19_04_04 19_04_06 19_04_07 19_04_09
+# 19_04_18 19_04_27 19_04_30 19_06_20 19_10_03
+# 19_10_04 19_10_06 19_10_07 19_10_08 19_10_10
+# 19_10_11 19_10_13 19_10_16 19_10_22 19_12_02
+# 20_01_05 20_02_26 20_03_28 20_03_29 21_07_04
 #
+#
+print ("\n  IL FAUT UTILISER 'fit8image' et 'image9' DE PHOMAN ET NON DE PHOGES !\n\n");
+#&uie::la(str=>"STOP",mes=>"Cette version est fautive par une mauvaise modification de la reconnaissance des fichiers 'jpg' et autre ! phoges.2020_02_25.pm est une version qui marche... faire la comparaison avec lui !!!");
 ## components of annotation
 our $lino;
 our $pi7check = 1; # must the pi checks be made?
@@ -41,13 +55,13 @@ use strict;
 use warnings;
 #
 use Scalar::Util qw(looks_like_number);
-use lib "/home/jbdenis/o/info/perl/uie";
+use File::Basename;
+use File::Copy;
+use lib "/home/jbdenis/u/perl";
 use uie;
-use lib "/home/jbdenis/o/info/perl/jours";
 use jours;
-use lib "/home/jbdenis/o/info/perl/lhattmel";
+use Image::Size;
 use lhattmel;
-use Scalar::Util qw(looks_like_number);
 #
 ###<<<
 #
@@ -72,9 +86,9 @@ use Scalar::Util qw(looks_like_number);
 #    - a set of paragraphs for the comment, possibly empty.
 # 
 # The storage of this information is done through four important
-# structures : individual pi's, collective pi's, circumstance pi's
-# and additional pi's. Empty ones can be created with &new7pi (where
-# they are implicitly descrived and their validity checked with
+# structures : individual pi.s, collective pi.s, circumstance pi.s
+# and additional pi.s. Empty ones can be created with &new7pi (where
+# they are implicitly described and their validity checked with
 # check8pi.
 #
 # A set of pictures ('sepi') is coded with a hash whose keys
@@ -87,8 +101,8 @@ use Scalar::Util qw(looks_like_number);
 #   [4] refers to an array of the comment paragraphs.
 #
 # IT IS STRONGLY SUGGESTED TO READ THE DOCUMENT
-# <annotation-photo.pdf> WHERE THE GENERAL
-# APPROACH WHICH IS USED IS DESCRIBED.
+# 'annotation-photo.pdf' WHERE THE GENERAL
+# APPROACH IS PRESENTED.
 #
 ###>>>
 #############################################
@@ -96,11 +110,15 @@ use Scalar::Util qw(looks_like_number);
 # Some general constants
 #############################################
 # 
+## list of suffixes
+our %sufix = ("e"=>"-eif.txt","d"=>"-dif.txt",
+              "i"=>"-icf.txt","l"=>".tex",
+              "p"=>".pdf","h"=>".html");
 ## list of pi codes
 our @pco = ("n","t","p","q","g","k","c","m","h","d");
-## definition of names for the pi's of image caption at a collective level
+## definition of names for the pi.s of image caption at a collective level
 our %ipi = (n=>"N=",t=>"Quand: ",p=>"Où: ","q"=>"Qui: ",k=>"Clé(s): ",g=>"Catégorie(s): ",
-            'm'=>"Commentaires: ",h=>"Technik: ");
+            'm'=>"Commentaires: ",o=>"Origine:",h=>"Technik: ");
 ## definition of indicators for keywords, people, place and categories
 our %idrf = (k=>"kwd",g=>"cat",p=>"pla",q=>"qui");
 ## indicators for annotation files
@@ -111,68 +129,82 @@ our %sepa = ("m"=>"//",c=>"//",p=>"//",
              "d"=>"/");
 ## separators for paragraphs within comments and so on when building the captions
 our %sepb = ("m"=>"//",p=>"//",
-             k=>",",g=>",","q"=>",");
+             k=>",",g=>",","q"=>", ");
 ## framing for caption components
 our %cfra = (
-             "n"=>["(",") "],   # name
-             "t"=>["<","> "],   # date
-             "p"=>[" [","] "],  # place
-             "q"=>[" [","] "],  # who
-             "g"=>["[[","]] "], # category
-             "k"=>["[[","]] "], # keyword
-             "m"=>["/","/ "]    # comment
+    "n"=>["(",") "],   # name
+    "m"=>["((",")) "], # comment
+    "p"=>[" [","] "],  # place
+    "q"=>[" [","] "],  # who
+    "k"=>["[[","]] "], # keyword
+    "g"=>["[[","]] "], # category
+    "t"=>["<","> "],   # date
+    "o"=>[" [","] "]   # origin
             );
-## profile of images
-our %prim = (jpg=>'[j|J][p|P][g|G]$',
-             png=>'[p|P][n|N][g|G]$');
+## profile of image.item
+our %prim = (jpg=>'oui',
+             png=>'oui',
+             ogg=>'oui');
 ## framing tags in eif files
 our %fram = (
-             "t"=>["[|","|]"],
-             "p"=>["(|","|)"],
-             "q"=>["[[","]]"],
-             "g"=>["<<",">>"],
-             "k"=>["{{","}}"],
              "C"=>["<(",")>"],
              "c"=>["<|","|>"],
              "m"=>["((","))"],
-             "h"=>["<[","]>"],
-             "d"=>["{|","|}"]
+             "p"=>["(|","|)"],
+             "q"=>["[[","]]"],
+             "k"=>["{{","}}"],
+             "g"=>["<<",">>"],
+             "t"=>["[|","|]"],
+             "o"=>["[(",")]"],
+             "d"=>["{|","|}"],
+             "h"=>["<[","]>"]
             );
-## default parameters for lhattmel::start call see its documentation for details
+## default parameters for lhattmel::start call: see its documentation for details
 our %pls = (cod=>"utf8",tit=>"",aut=>"",dat=>1,
                           toc=>1,npa=>1,two=>0,lma=>"15mm",
                           rma=>"15mm",tma=>"15mm",bma=>"15mm",
-                          lgu=>"french",par=>[]
-	     );
+                          lgu=>"french",par=>[],fig=>"Ph."
+             );
 ## default parameters for some interpretation of the latex elaboration
-our %plt = (nus=>1,red=>1);
+our %plt = (nus=>1,  # must the sections be numbered
+            red=>1,  # reduction factor for image sizes
+            pbn=>1   # until which section level a page break must be introduced?
+           );
 ## tag to introduce an additional paragraph
 our $parin = "(*)";
-## command at individual level to be introduced as category/keyword.
-our $kom = "--";
+## value for missing time pi
+#our $yemi = "0000";
+our $yemi = "quand?";
+##########################
+## definition of the escaping commands
+## command at individual level to be introduced as category.
+our $kom = "--"; # opening and ending tags to distinguish this special category
 ##   allow (i) to prevent collective [pi]s at individual level
 # for instance
-#     '--k--' means not to introduce collective keywords and categories
-#     '--kp--' the same escaping plus the possible collective place
+#     '--kg--' means not to introduce collective keywords and categories
+#     '--kgp--' the same escaping plus the possible collective place
 # coding are
 #     'c' -> circumstance
-#     't' -> time
+#     'm' -> comment
 #     'p' -> place
 #     'q' -> people (qui in French)
-#     'k' -> keyword and category
-#     'm' -> comment
+#     'k' -> keyword 
+#     'g' -> category
+#     't' -> time
+#     'o' -> origin
+#     'd' -> directory
 #     'h' -> technical parameters
-# also 'A' -> 'ctpqkmh'
-#      'K' -> 'k'
+# also 'A' -> 'cmpqkgtodhmh'
+#      'K' -> 'kg'
 #      'C' -> 'cm'
-# then 'KC' -> 'kcm'
+# then 'KC' -> 'kgcm'
 #
 ##   allow (ii) to reproduce the annotation of the previous image
 # for instance
-#     --i-- copy the time, place, people, categories, keywords and comments of the previous picture
-#           when NOT PROVIDED in the picture annotation
+#     --I-- copy the m/p/q/k/g/t/o/d/h of the previous picture
+#                EVEN WHEN PROVIDED in the picture annotation
 # These 'identical' commands have priority on the other so
-#     --iI-- will be interpreted as --I--
+#     --mI-- will be interpreted as --I--
 #
 ## indication of a representative picture of the current section
 our $rpi = "xc"; # must be in the category set
@@ -183,10 +215,12 @@ our %tag = (
            # for ...
            );
 # default values for the collective technical parameters
-our $cdefa = {wid=>"",hei=>"",WID=>"",HEI=>"",                
-             nbi=>1,gnl=>1,gnc=>1,cap=>""}; 
+our $cdefa = {wid=>"",hei=>"",WID=>"",HEI=>"",
+              wha=>"",chk=> 1,WHA=>"",CHK=> 1,
+              nbi=>1,gnl=>1,gnc=>1,cap=>""}; 
 # default values for the individual technical parameters
-our $idefa = {wid=>"",hei=>"",rot=>0}; 
+our $idefa = {wid=>"",hei=>"",rot=> 0,
+              wha=>"",chk=> 1,vsp=>2}; 
 #
 ## selection criteria
 my %sety1 = (I=>"Included",X=>"eXcluded");
@@ -203,7 +237,8 @@ my %sety3 = (c=>"Circumstances",
              B=>"All except time period and circumstance");
 #
 # tags for lines to be introduced in transformed files
-my %telquel = (l=>"<LATEX>",h=>"<HTML>");
+my %telquel = (l=>"<LATEX>",h=>"<HTML>",c=>"cat");
+my $incfile = "<FILE>";
 #
 # global variables
 my $oldat; my $identi = 0;
@@ -239,7 +274,6 @@ sub get8date {
               5=>"05",6=>"06",7=>"07",8=>"08",
               9=>"09",a=>"10",b=>"11",c=>"12"
                );
-    my $yemi = "0000";
     # initialization
     my $res;
     # computation
@@ -267,71 +301,176 @@ sub get8date {
 #############################################
 #
 ##<<
+sub image9 { 
+    #
+    # title : return some characteristics of an image
+    #
+    # aim : first the size, to be futher extended
+    # 
+    # output : when 'out' eq 'tout':
+    #          a reference to a hash having, among others:
+    #            suf => 0|1 if reckonized suffix (belongs to %prim)
+    #            exi => 0|1 if 
+    #            siz => [wid,hei,type] numbers of pixels of the image if it is plus the detected type
+    #            ori =>  1|8|3|6 corresponding to a needed rotation of 0|90|180|270 degrees
+    #          if not the asked component
+    #
+    #   Identify from ImageMagick is invoked only when the orientation is asked for
+    #            or when a complete scan of the image characteristics (default 'out')
+    #            is required.
+    #
+    # arguments
+    my $hrsub = {ifi  =>[undef,  "c","Image File Name"],
+                 out  =>[   "",  "c","'e' for existence of the file",
+                                     "'s' for image suffix",
+                                     "'S' for a reference to an array of size but undef if not an image",
+                                     "'o' for the orientation",
+                                     "'tout' to get everything within a hash"]
+                };
+##>>
+    my $nsub = (caller(0))[3];
+    my $argu   = &uie::argu($nsub,$hrsub,@_);
+    my $ifi = $argu->{ifi};
+    my $out = $argu->{out};
+    # initialization
+    my $res = {};
+    # is it reckonized?
+    my $rek = 0;
+    if (&uie::file9(fil=>$ifi,typ=>\%prim)->[1] eq "oui") {
+        $rek = 1;
+    }
+    if ($rek) {
+        $res->{suf} = 1;
+    } else {
+        $res->{suf} = 0;
+    }
+    if ($out eq "s") { return $res->{suf};}
+    # does it exist?
+    $res->{exi} = 1;
+    unless (-e $ifi) {
+        $res->{exi} = 0;
+    }
+    if ($out eq "e") { return $res->{exi};}
+    # getting characteristics
+    if (($res->{suf}) & ($res->{exi})) {
+        if ($out eq "o") {
+            ## with ImageMagick identify command
+            # standard
+            my $resu = `identify $ifi`;
+            my @resu = split(/ /,$resu);
+            $res->{nam} = $resu[0];
+            $res->{typ} = $resu[1];
+            my $sisi = $resu[2];
+            my @sisi = split("x",$sisi);
+            $res->{siz} = \@sisi;
+            # plus orientation
+            $resu = `identify -format '%[EXIF:Orientation]' $ifi`;
+            $res->{ori} = $resu;
+        } else {
+            ## using imgsize from Image::Size
+            my @sisi = imgsize($ifi);
+            $res->{siz} = \@sisi;
+        }
+    }
+    # returning
+    if ($out eq "S") { return $res->{siz};}
+    if ($out eq "o") { return $res->{ori};}
+    $res;
+}
+#############################################
+#
+##<<
 sub check8pi {
     #
-    # title : check the validity of an collective pi series
+    # title : check the validity of a pi series
     #
     # aim : to ease the programming task. Can be avoid with
-    #      the global variable pi7check.
+    #      the global variable $pi7check.
     # 
     #  Have a look to the code to know what are the components of
-    #      of the different types of pi's. These are given by
+    #      of the different types of pi.s. These are given by
     #      '$xpi->{y} which is compulsory and can take the
     #      following six values: 
-    #        'ind' pi of a precise image (individual)
-    #        'col' pi for a set of images (collective)
+    #        'ind' pi of a precise image (individual)    
+    #              where c-pi are forbidden, nevertheless
+    #              they must exist but void.
+    #        'IND' pi of a precised image (individual in ICF)
+    #              where c-pi are compulsory
+    #        'col' for a collective definition of pi from a line
+    #        'COL' for the current state of collective pi through
+    #              the exploration of EIF/DIF comprising the
+    #              complete record of the hierarchy
     #        'cir' circumstances
-    #        'add' for additional pi
     #        'ext' for external paragraph
     #        'spe' for specific lines external to phoges
     #
-    #   - All components must be present except for 
-    #         the 'add' and 'spe' types
     #   - Array components must be [] when empty
     #   - String components must be "" when empty
     #
     # output : 1 when right if not an error
     #
     # arguments
-    my $hrsub = {xpi  =>[undef,  "h","The series of pi's to check"]
+    my $hrsub = {xpi  =>[undef,  "h","The series of pi.s to check"],
+                 whi  =>[   "",  "c","The expected type of pi; default is any type"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
     my $argu   = &uie::argu($nsub,$hrsub,@_);
     if ($argu == 1) { return 1;}
     my $xpi = $argu->{xpi};
+    my $whi = $argu->{whi};
     # no check?
-    if (not($pi7check)) { return 1;}
-    # proceeding according to the type
-    my $res = "";
+    unless ($pi7check) { return 1;}
+    # checking the type
     unless (defined($xpi->{y})) {
         my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
                                 erm=>["The proposed 'xpi' doesn't have 'y' as a key to indicate its type"]);
         return $rrr;
     }
-    #
-    if ($xpi->{y} eq "ind") {
-        # INDIVIDUAL PI'S
-        # checking the name
-        if (not(defined($xpi->{n}))) {
-            $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                 erm=>["key <n> is missing in xpi argument indicated as individual pi's"]);
-        } elsif (ref($xpi->{n}) ne "") {
-            $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                 erm=>["key <n> is a reference not simple chain for an individual pi's"]);
+    unless ($xpi->{y} =~ /^(ind)|(IND)|(col)|(COL)|(cir)|(spe)|(ext)$/) {
+        my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
+                                erm=>["type <$xpi->{y}> is not known as indicating any pi.s"]);
+        return $rrr;
+    }
+    # checking the asked pi-type
+    unless ($whi eq "") {
+        if ($xpi->{y} ne $whi) {
+            my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
+                                    erm=>["The proposed 'xpi' is a '$xpi->{y}' type! Not '$whi' as asked."]);
+            return $rrr;
         }
+        
+    }
+    # proceeding according to the type using the common parts
+    #
+    my $res = "";
+    if ($xpi->{y} =~ /^(ind)|(IND)|(col)|(COL)$/) {
+        ## checking the common pi.s
         # checking single components
-        foreach my $compo ("t","d") {
+        foreach my $compo ("t","o","d") { if (($xpi->{y} eq "col") and (defined($xpi->{$compo})) ) {
             if (not(defined($xpi->{$compo}))) {
                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
                                      erm=>["key <$compo> is missing in xpi argument"]);
             } elsif (ref($xpi->{$compo}) ne "") {
                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is a reference not simple chain"]);
+                                     erm=>["key <$compo> is a reference not a simple chain"]);
             }
-        }
+	}}
+        # checking hash components
+        foreach my $compo ("h") { if (($xpi->{y} eq "col") and (defined($xpi->{$compo})) ) {
+            if (not(defined($xpi->{$compo}))) {
+                $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                     erm=>["key <$compo> is missing in xpi argument"]);
+            } elsif (ref($xpi->{$compo}) ne "HASH") {
+                $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                     erm=>["key <$compo> is not a reference to a hash"]);
+            }
+        }}
+    }
+    #
+    if ($xpi->{y} =~ /^(ind)|(IND)|(col)$/) {
         # checking array components
-        foreach my $compo ("p","q","k","g","c","m") {
+        foreach my $compo ("c","m","p","q","k","g") { if (($xpi->{y} eq "col") and (defined($xpi->{$compo})) ) {
             if (not(defined($xpi->{$compo}))) {
                  $res = &uie::add8err(err=>$res,nsu=>$nsub,
                                      erm=>["key <$compo> is missing in xpi argument"]);
@@ -349,84 +488,95 @@ sub check8pi {
                     }
                 }
             }
+        }}
+    }
+    #
+    if ($xpi->{y} =~ /^(ind)$/) {
+        # the array component must be void
+        if (scalar(@{$xpi->{c}})) {
+             $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                            erm=>["For 'ind' pi series, the c-pi must be void. Here it is not: '$xpi->{c}->[0]'"]);
         }
-        # checking hash components
-        foreach my $compo ("h") {
+    }
+    #
+    if ($xpi->{y} =~ /^(IND)$/) {
+        # the array component must not be void
+        unless (scalar(@{$xpi->{c}})) {
+             $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                            erm=>["For 'IND' pi series, the c-pi must NOT be void. Here it is!"]);
+        }
+    }
+    #
+    if ($xpi->{y} =~ /^(COL)$/) {
+        # checking array components
+        foreach my $compo ("c","m","p","q","k","g") {
             if (not(defined($xpi->{$compo}))) {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
                                      erm=>["key <$compo> is missing in xpi argument"]);
-            } elsif (ref($xpi->{$compo}) ne "HASH") {
+            } elsif (ref($xpi->{$compo}) ne "ARRAY") {
                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is not a reference to a hash"]);
+                                     erm=>["key <$compo> is not a reference to an array"]);
+            } else {
+                foreach my $arr (@{$xpi->{$compo}}) {
+                    if (!defined($arr)) {
+                        $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                             erm=>["One of the component of xpi<$compo> is not defined"]);
+                    } elsif (ref($arr) ne "ARRAY") {
+                         $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                        erm=>["One of the component of xpi<$compo> is not a reference to an array"]);
+                    }
+                }
             }
         }
-    } elsif ($xpi->{y} eq "col") {
-        # COLLECTIVE PI'S
-        # checking there no name
+        # checking the content of the c-hierarchy
+        my $numcom = 0;
+        for my $titre (@{$xpi->{"c"}}) {
+            $numcom++;
+            if (ref($titre) ne "ARRAY") {
+                &uie::la(str=>$titre);
+                $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                     erm=>["COL pi series: key <c> has not got an array reference! (displayed above)"]);
+            } else {
+            my $lencou = scalar(@$titre);
+                if ($lencou != 1) {
+                    $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                         erm=>["COL pi series: key <c> has got more than ONE title in component $numcom: $titre->[0] and $titre->[1]..."]);
+                }
+            }
+        }
+        # checking the length of pi.s associated to the hierarchy
+        my $collen = scalar(@{$xpi->{"c"}});
+        foreach my $compo ("m","p","q","k","g") {
+            my $colcou = scalar(@{$xpi->{$compo}});
+            if ($colcou != $collen) {
+                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                      erm=>["key <$compo> is not consistent with the hierarchy of circumstances: $colcou instead of $collen"]);
+            }
+        }
+    }
+    #
+    if ($xpi->{y} =~ /^(ind)|(IND)$/) {
+        # checking specfic components of individual series
+        unless (defined($xpi->{n})) {
+            $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                 erm=>["key <n> is missing in xpi argument indicated as individual pi.s"]);
+        } elsif (ref($xpi->{n}) ne "") {
+            $res = &uie::add8err(err=>$res,nsu=>$nsub,
+                                 erm=>["key <n> is a reference not simple chain for an individual pi.s"]);
+        }
+    }
+    #
+    if ($xpi->{y} =~ /^(col)|(COL)$/) {
+        # checking specfic components of collective series
         if (defined($xpi->{n})) {
             $res = &uie::add8err(err=>$res,nsu=>$nsub,
                                  erm=>["key <n> is present in xpi argument",
                                        "not accepted for a collective pi series (collective)"]);
         }
-        # checking single components
-        foreach my $compo ("t","d") {
-            if (not(defined($xpi->{$compo}))) {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is missing in xpi argument (collective)"]);
-            } elsif (ref($xpi->{$compo}) ne "") {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is a reference not simple chain (collective)"]);
-            }
-        }
-        # checking the {c} component
-        my $nbco;
-        if (defined($xpi->{c})) {
-            $nbco = scalar(@{$xpi->{c}});
-            foreach my $ci (@{$xpi->{c}}) {
-                if (ref($ci) ne "") {
-                    $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                         erm=>["a component of key <c> is a reference (".ref($ci).") must be a string (collective)"]);
-                }
-            }
-        } else {
-            $nbco = 1;
-        }
-        # checking array components
-        foreach my $compo ("p","q","k","g","m") {
-            if (not(defined($xpi->{$compo}))) {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is missing in xpi argument (collective)"]);
-            } elsif (ref($xpi->{$compo}) ne "ARRAY") {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is not a reference to an array (collective)"]);
-            } elsif (scalar(@{$xpi->{$compo}}) != $nbco) {
-                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                erm=>["One of the component of xpi<$compo> is not an array of length $nbco",
-                                      "which is the number of circumstance levels"]);
-            } else {
-                foreach my $arr (@{$xpi->{$compo}}) {
-                    if (!defined($arr)) {
-                        $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                             erm=>["One of the component of xpi<$compo> is not defined (collective)"]);
-                    } elsif (ref($arr) ne "ARRAY") {
-                         $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                        erm=>["One of the component of xpi<$compo> is not a reference to an array (collective)"]);
-                    }
-                }
-            }
-        }
-        # checking hash components
-        foreach my $compo ("h") {
-            if (not(defined($xpi->{$compo}))) {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is missing in xpi argument (collective)"]);
-            } elsif (ref($xpi->{$compo}) ne "HASH") {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is not a reference to a hash (collective)"]);
-            }
-        }
-    } elsif ($xpi->{y} eq "cir") {
-        # CIRCUMSTANCE PI'S
+    }
+    ##
+    if ($xpi->{y} eq "cir") {
+        ## CIRCUMSTANCE PI.S
         # checking the number of components
         my $nbco = scalar(keys %$xpi);
         if ($nbco != 3) {
@@ -438,7 +588,7 @@ sub check8pi {
             return $res;
         }
         # checking the two components of use
-        foreach my $compo ("l","c") {
+        foreach my $compo ("l","C") {
             if (not(defined($xpi->{$compo}))) {
                 $res = &uie::add8err(err=>$res,nsu=>$nsub,
                                      erm=>["key <$compo> is missing in xpi argument (circumstance)"]);
@@ -460,52 +610,6 @@ sub check8pi {
                                      erm=>["key <$xpi->{l}> is out of range (circumstance)"]);
             }
         }
-    } elsif ($xpi->{y} eq "add") {
-        # ADDITIONAL PI'S
-        # checking there is no name
-        if (defined($xpi->{n})) {
-            $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                 erm=>["key <n> is present in xpi argument",
-                                       "not accepted for an additional pi series (additional)"]);
-        }
-        # checking there is no circumstance
-        if (defined($xpi->{c})) {
-            $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                 erm=>["key <c> is present in xpi argument",
-                                       "not accepted for an additional pi series (additional)"]);
-        }
-        # checking single components
-        foreach my $compo ("t","d") { if (defined($xpi->{$compo})) {
-            if (ref($xpi->{$compo}) ne "") {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is a reference not simple chain (additional)"]);
-            }
-        }}
-        # checking array components
-        foreach my $compo ("p","q","k","g","m") { if (defined($xpi->{$compo})) {
-            if (ref($xpi->{$compo}) ne "ARRAY") {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is not a reference to an array (additional)"]);
-            } else {
-                foreach my $arr (@{$xpi->{$compo}}) {
-                    if (!defined($arr)) {
-                        $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                             erm=>["One of the component of xpi<$compo> is not defined (additional)"]);
-                    } elsif (ref($arr) ne "") {
-                        &uie::la(str=>$xpi);
-                         $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                        erm=>["One of the component of xpi<$compo> is a reference not simple chain (additional)"]);
-                    }
-                }
-            }
-        }}
-        # checking hash components
-        foreach my $compo ("h") { if (defined($xpi->{$compo})) {
-            if (ref($xpi->{$compo}) ne "HASH") {
-                $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                                     erm=>["key <$compo> is not a reference to a hash (additional)"]);
-            }
-        }}
     } elsif ($xpi->{y} eq "ext") {
         unless (defined($xpi->{p})) {
             $res = &uie::add8err(err=>$res,nsu=>$nsub,
@@ -516,9 +620,6 @@ sub check8pi {
             $res = &uie::add8err(err=>$res,nsu=>$nsub,
                                  erm=>["The content {c} is not present in the specific line"]);
         }
-    } else {
-        $res = &uie::add8err(err=>$res,nsu=>$nsub,
-                             erm=>["type <$xpi->{y}> is not known as indicating any pi's"]);
     }
     # returning
     unless (&uie::err9(obj=>$res)) { $res = 1;}
@@ -534,12 +635,12 @@ sub analyze8line {
     # aim : the line to analyze can be
     #      (0) a specific line to be ignored 
     #          starting with a value of %telquel
-    #      (i) an image line with all possible pi's
-    #          leading to an ind7pi
+    #      (i) an image line with all possible pi.s
+    #          leading to an ind-pi
     #     (ii) a circumstance line, then this is
-    #          its only pi leading to a cir7pi
-    #    (iii) a additional line, proposing pi's
-    #          for futher images leading to a col7pi
+    #          its only pi leading to a cir-pi
+    #    (iii) a collective line, proposing pi.s
+    #          for futher images leading to a col-pi
     #      
     #      Other line types are considered as
     #          an error.
@@ -550,7 +651,7 @@ sub analyze8line {
     #
     # output : 
     #        In case of (0) a pi of type 'spe' is returned 
-    #         with the complete content is key 'c'.
+    #         with the complete content in key 'c'.
     #        If not the associated pi to the line.
     #         Of course, an error message when some
     #         inconsistency in the input is found.
@@ -559,7 +660,16 @@ sub analyze8line {
     #        In case of inconsistency an error is returned.
     #
     # remarks :
-    #           * shortcuts are not transformed
+    #           * shortcuts are not transformed but attibuted to
+    #             pi-type
+    #           * they is no distinction between 'ind'/'IND' or
+    #             'col'/'COL' series so c-pi.s can be included
+    #             and the pi-type attributed in ->{y} will be
+    #             'ind' or 'col' according to the image presence
+    #             at the beginning of the line. The true type
+    #             must be attributed after the call to 'analyze8line'
+    #             and the consistency of the content check at this
+    #             moment.
     #
     # arguments
     my $hrsub = {lin  => [undef,"c","The line to analyze"],
@@ -627,16 +737,16 @@ sub analyze8line {
             my $nle = $1;
             $res = $2;
             $res =~ s/\s+/ /g; $res =~ s/^\s+//; $res =~ s/\s+$//;
-            $res = { "y"=>"cir","l"=>$nle, "c"=>$res };
+            $res = { "y"=>"cir","l"=>$nle, "C"=>$res };
         } else {
             $lin =~ /^(\S+)\s*/;
-            if (&image9(nam=>$1)) {
-                # an image line
+            if (&image9(ifi=>$1,out=>"s")) {
+                # an image/item line
                 $res = &new7pi(wha=>"ind");
                 $lin =~ s/^(\S+)\s*//;
                 $res->{n} = $1;
                 $lino = $lin;
-                foreach my $copo ("p","h","t","q","g","k","c","m","d") {
+                foreach my $copo ("c","m","p","q","k","g","t","o","d","h") {
                     my $rrr = &analyze8line(lin=>$lin,lit=>$copo);
                     if (defined($rrr)) {
                         $res->{$copo} = $rrr;
@@ -660,7 +770,7 @@ sub analyze8line {
                                 }
                                 splice(@free,$ii,1);
                             }
-			}
+                        }
                     }
                     $lino = join(" ",@free);
                 }                
@@ -674,21 +784,14 @@ sub analyze8line {
                     return $rrr;
                 }
             } else {
-                # must be a additional pi line
-                $res = &new7pi(wha=>"add");
+                # must be a collective pi line
+                $res = &new7pi(wha=>"col");
                 $lino = $lin;
-                my $rci = &analyze8line(lin=>$lin,lit=>"c");
-                if (defined($rci)) {
-                    my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
-                                            erm=>["Analyzing $lin",
-                                                  "as a additional line, a {c} component was found!"]);
-                    return $rrr;
-                }
                 #
-                foreach my $copo ("t","p","q","g","k","m","h","d") {
+                foreach my $copo ("c","m","p","q","k","g","t","o","d","h") {
                     my $rrr = &analyze8line(lin=>$lin,lit=>$copo);
                     if (defined($rrr)) {
-                        if ($copo =~ /[pqkgm]/) {
+                        if ($copo =~ /[cmpqkg]/) {
                             @{$res->{$copo}} = @$rrr;
                         } elsif ($copo =~ /[h]/) {
                             %{$res->{$copo}} = %$rrr;
@@ -715,7 +818,7 @@ sub analyze8line {
                                 }
                                 splice(@free,$ii,1);
                             }
-			}
+                        }
                     }
                     $lino = join(" ",@free);
                 }                
@@ -724,20 +827,28 @@ sub analyze8line {
                 # unexpectedly something was left
                 my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
                                         erm=>["Analyzing $lin",
-                                              "as a additional line, something was not interpreted:",
+                                              "as a collective line, something was not interpreted:",
                                               "<<:$lino:>>"]);
                 return $rrr;
                 }
             }
         }
-        my $ver = &check8pi(xpi=>$res);
-        if (&uie::err9(obj=>$ver)) { $res = $ver;}
+        # no check because ind/col can have c-pi.s
+        # (see the remarks in the general comments)
+        #my $ver = &check8pi(xpi=>$res);
+        #if (&uie::err9(obj=>$ver)) { $res = $ver;}
         return $res;
     } else {
+        # checking that the proposed type is valid
+        unless ( $lit =~ /^[mpqkgctodh]$/) {
+            $res = &uie::add8err(err=>"",nsu=>$nsub,
+                                 erm=>["Argument \$lit ($lit) is not valid"]);
+            return $res;
+        }
         # a specific content is looked for
         $res = undef;
         if (not(defined($lino))) { return $res;
-        } elsif ($lit =~ /^[t,d]$/) {
+        } elsif ($lit =~ /^[tod]$/) {
             if ($lino =~ s/\Q$fram{$lit}->[0]\E\s*(.*)\s*\Q$fram{$lit}->[1]\E//) {
                 $res = $1;
             }
@@ -757,7 +868,7 @@ sub analyze8line {
                 if ($1 =~ /^\s*$/) {
                     $res = {}
                 } else {
-                    $res = &analyze8series(lin=>$1,sep=>$sepa{$lit});
+                    $res = &analyze8named7vector(lin=>$1,sep=>$sepa{$lit});
                 }
             }
         } else {
@@ -799,7 +910,7 @@ sub read8st7f {
     # title : reading a stf file
     #
     # aim : read and developp the content of a stf file.
-    #      'stf' means ShortcuT definition File".
+    #      'stf' means ShortcuT Definition File".
     # 
     # output : a reference to a hash having as keys
     #            the values of %phoges::idrf.
@@ -950,7 +1061,7 @@ sub select8image {
     #         or an error in case of any inconsistency.
     #
     # arguments
-    my $hrsub = {ima  =>[undef,  "h","The pi's describing the image"],
+    my $hrsub = {ima  =>[undef,  "h","The pi.s describing the image"],
                  cri  =>[undef,  "h","array of the criteria for selection,",
                                      "simple regulars expression are admissible."]
                 };
@@ -969,7 +1080,7 @@ sub select8image {
         $res = &uie::conca8err(er1=>$res,er2=>$ch1);
         return $res;
     }
-    if ($ima->{y} ne "ind") {
+    unless ($ima->{y} =~ /^(ind)|(IND)$/) {
         $res = &uie::add8err(err=>"",nsu=>$nsub,
                                 erm=>["Proposed image ('ima') is not an image since its type is '$ima->{y}'."]);
         return $res;
@@ -1036,8 +1147,8 @@ sub select8image {
                                               "(Selection Type = $typ of length = $longueur)"]);
                 return $sss;
             }
-            my $ctp = &jours::cano8tipe(tip=>$cri->{$typ}->[0]);
-            my $itp = &jours::cano8tipe(tip=>$ima->{t});
+            my $ctp = &jours::huma2cano(tip=>$cri->{$typ}->[0]);
+            my $itp = &jours::huma2cano(tip=>$ima->{t});
             my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
                                     erm=>["description of the time criterion is not valid",
                                           "ctp = <$cri->{$typ}->[0]>",
@@ -1064,17 +1175,17 @@ sub select8image {
 ##<<
 sub update8col7pi {
     #
-    # title : update the collective pi's
+    # title : update the collective pi.s
     #
-    # aim : an ancillary functions to update the current collective pi's.
+    # aim : an ancillary functions to update the current collective pi.s.
     # 
     # output : the updated collective pi
     #         or an error when something was not
     #         acceptable
     #
     # arguments
-    my $hrsub = {cop  =>[undef,  "h","The colpi to be updated"],
-                 sup  =>[undef,  "h","The additional addpi or cirpi to use"]
+    my $hrsub = {cop  =>[undef,  "h","The COL pi series to be updated"],
+                 sup  =>[undef,  "h","The col-pi series or cir-pi to use"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
@@ -1082,7 +1193,7 @@ sub update8col7pi {
     if ($argu == 1) { return 1;}
     my $co0 = $argu->{cop}; my $cop = &uie::copy8structure(str=>$co0);
     my $sup = $argu->{sup}; 
-    # some checking according to '$pi7check'
+    # checking with '$pi7check'
     my $rrr = "";
     my $rrr1 = &check8pi(xpi=>$cop);
     my $rrr2 = &check8pi(xpi=>$sup);
@@ -1097,31 +1208,40 @@ sub update8col7pi {
         $rrr = &uie::conca8err(er1=>$rrr,er2=>$rrr2);
     }
     if ( &uie::err9(obj=>$rrr)) { return $rrr;}
-    if ($cop->{y} ne "col") {
+    # checking the pi types
+    if ($cop->{y} ne "COL") {
         &uie::print8structure(str=>$cop);
         my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
-                                erm=>["'cop' argument is not a collective  pi but $cop->{y}"]);
+                                erm=>["'cop' argument is not a collective  COL-pi but $cop->{y}"]);
         return $rrr;
     }
-    #
+    unless ($sup->{y} =~ /^(col)|(cir)$/) {
+        &uie::print8structure(str=>$sup);
+        my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
+                                erm=>["'sup' argument is not a collective  COL-pi or a cir-pi BUT $sup->{y}"]);
+        return $rrr;
+    }
+    # performing
     my $nbc = scalar(@{$cop->{c}});
     if ( $sup->{y} eq "cir" ) {
         # just the circumstance levels have to be adjusted
         if ( $sup->{l} eq "0") {
-            # defining a title
-            if ($nbc > 1) {
-                &print8pi(xpi=>$cop);
-                my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
-                                        erm=>["Defining a title while some circumstance(s) were already present"]);
-                return $rrr;
+            # defining a title, then initialization
+            unless (&pi9(xpi=>$cop,wha=>"c")>0) {
+                if ($nbc > 1) {
+                    &print8pi(xpi=>$cop);
+                    my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
+                                            erm=>["Defining a title while some circumstance(s) were already present"]);
+                    return $rrr;
+                }
             }
-            $cop->{c}->[0] = $sup->{c};
-            for my $ii ("p","q","k","g","m") { $cop->{$ii}->[0] = [];}
-            for my $ii ("d","t") { $cop->{$ii} = "";}
-            for my $ii ("h") { $cop->{$ii} = {};}
+            $cop = &new7pi(wha=>"COL");
+            $cop->{c} = [[$sup->{C}]];
+            foreach ("m","p","q","k","g") { $cop->{$_} = [[""]];}
         } else {
             # modifying the hierarchy
             if ($sup->{l} > $nbc) {
+                &print8pi(xpi=>$cop);
                 &print8pi(xpi=>$sup);
                 my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
                                         erm=>["Defining a circumstance too high for the present colpi",
@@ -1130,62 +1250,76 @@ sub update8col7pi {
             }
             # initialization
             my $lbc = $sup->{l};
-            my $tit = $sup->{c};
+            my $tit = $sup->{C};
             # proceeding
             if ($nbc == $lbc) {
                 # a new level of circumstances is added
-                push @{$cop->{"c"}},$tit;
+                push @{$cop->{"c"}},[$tit];
                 foreach my $hh (keys %$cop) {
-                    unless ($hh eq "c") {
-                        if ($hh =~ /[pqgkm]/) {
-                            push @{$cop->{$hh}},[];
-                        }
+                    if ($hh =~ /[mpqkg]/) {
+                        push @{$cop->{$hh}},[""];
                     }
                 }
             } elsif ($nbc > $lbc) {
                 # modification of the present hierarchy
-                $cop->{"c"}->[$lbc] = $tit;
+                $cop->{"c"}->[$lbc] = [$tit];
                 splice(@{$cop->{"c"}},$lbc+1);
                 foreach my $hh (keys %$cop) {
-                    if ($hh =~ /[pqgkm]/) {
-                        $cop->{$hh}->[$lbc] = [];splice(@{$cop->{$hh}},$lbc+1);
+                    if ($hh =~ /[mpqkg]/) {
+                        $cop->{$hh}->[$lbc] = [""];
+                        splice(@{$cop->{$hh}},$lbc+1);
                     }
                 }
             }
         }
     } else {
-        # additional information must be incorporated
-        foreach my $wha (keys %$sup) { unless ($wha eq "y") {
-            my $val = $sup->{$wha};
-            # some pi to update
-            if (defined($val)) { 
-                if (ref($val) eq "ARRAY") {
-                    if (scalar(@$val) == 0) { $val = [];}
-                    else {
-                        my $nul = 0;
-                        foreach (@$val) { if ( $_ =~ /^\s*$/) { $nul++;}}
-                        if (scalar(@$val) == $nul) { $val = [];}
+        ## additional information must be incorporated with the help of a col-pi
+        # vectorial pi.s
+        foreach my $wha ("m","p","q","k","g") {
+            if (&pi9(xpi=>$sup,wha=>$wha) >= 0) {
+                # this one must be updated possibly erased
+                $cop->{$wha}->[$nbc-1] = &uie::copy8structure(str=>$sup->{$wha});
+            }
+        }
+        # scalar pi.s
+        foreach my $wha ("t","o","d") {
+            if (&pi9(xpi=>$sup,wha=>$wha) >= 0) {
+                # this one must be updated possibly erased
+                $cop->{$wha} = $sup->{$wha};
+            }
+        }
+        # technical parameters
+        foreach my $wha ("h") {
+            if (&pi9(xpi=>$sup,wha=>$wha) > 0) {
+                # technical parameters must be updated
+                # emptying them except upper cased
+                foreach my $ktp (keys %{$cop->{$wha}}) {
+                    unless ($ktp =~ /^[A-Z]+$/) {
+                        delete $cop->{$wha}->{$ktp};
                     }
-                } elsif (ref($val) eq "HASH") {
-                    if (scalar(keys %$val)==0 ) { $val = {};}
-                } elsif ($val =~ /^\s*$/) {
-                    $val = "";
-                }
-                if ($wha =~ /[pqgkm]/) {
-                    $cop->{$wha}->[$nbc-1] = $val;
-                } elsif ($wha =~ /[dth]/) {
-                    $cop->{$wha} = $val;
+		}
+                # except dimension conditionnaly
+                my $Dsup = (defined($sup->{$wha}->{WID}) or defined($sup->{$wha}->{HEI}));
+                my $Dcop = (defined($cop->{$wha}->{WID}) or defined($cop->{$wha}->{HEI}));
+                if ($Dcop and $Dsup) {
+		    # upper cased dimension must also be deleted
+		    delete $cop->{$wha}->{WID};
+		    delete $cop->{$wha}->{HEI};
+		}
+                # filling them including upper cased
+                foreach my $nn (keys %{$sup->{$wha}}) {
+                    $cop->{$wha}->{$nn} = $sup->{$wha}->{$nn};
                 }
             }
-        }}
+        }
     }
     # final check
     $rrr1 = &check8pi(xpi=>$cop);
     if (&uie::err9(obj=>$rrr1)) {
-        $rrr = &uie::add8err(err=>$rrr,nsu=>$nsub,
+        $cop = &uie::add8err(err=>$rrr1,nsu=>$nsub,
                              erm=>["'cop' produced by $nsub is not a genuine colpi!!!",
                                    "Sorry for that!!!"]);
-        $cop = &uie::conca8err(er1=>$rrr,er2=>$rrr1);
+        #$cop = &uie::conca8err(er1=>$rrr,er2=>$rrr1);
     }
     # returning
     $cop;
@@ -1195,96 +1329,113 @@ sub update8col7pi {
 ##<<
 sub pi2line {
     #
-    # title : generates a line from a series of pi's
+    # title : generates a line from a series of pi.s
     #
-    # aim : an ancillary functions to write
-    #        lines of dif and icf.
-    #      When a collective pi's the following pi's
-    #        are gathered "t","p","q","g","k","m","h","d"
-    #        where last circumstance levels are taken
-    #        for "p","q","g","k","m".
-    #      When an individual pi's are given only non empty
+    # aim : mainly used to write lines when creating dif and icf.
+    #       Of course, non-empty components are included.
+    #       The line is different according to the pi series type
+    #       which can be 'ind', 'COL' or 'cir' for dif,
+    #                    'IND' for icf
+    #       but no care of the file being created at this level.
+    #        for "m","p","q","k","g".
+    #      When an individual pi are given only non empty
     #        components are considered.
     #
-    # remarks: + as 'add' pi's must not be written
-    #            their occurrence produces an error
-    #          + a resulting white line is turned to a comment line
+    # remarks: + in case of COL-pi.s, only the components to the last
+    #            level are considered 
     #
     # output : a single string
-    #         or an error when something was not
-    #         acceptable
+    #          or an error when something is not
+    #            acceptable
     #
     # arguments
-    my $hrsub = {xpi  =>[undef,  "h","The colpis to translate"]
+    my $hrsub = {xpi  =>[undef,  "h","The pi-series to translate"],
+                 xco  =>[    0,  "n","Must a 'col' be accepted?",
+                                     " (exception introduced for 'shrink8dif')"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
     my $argu   = &uie::argu($nsub,$hrsub,@_);
     if ($argu == 1) { return 1;}
     my $xpi = $argu->{xpi};
+    my $xco = $argu->{xco};
     # initialization
     my $res = "";
     # checking
     my $err = &check8pi(xpi=>$xpi);
-    if (&uie::err9(obj=>$err)) { return $err;}
-    my $typ = $xpi->{y};
-    if ($typ eq "add") {
-        my $err = &uie::add8err(err=>"",nsu=>$nsub,
-                                erm=>["This type of pi's ($typ) cannot be transformed into a line"]);
+    if (&uie::err9(obj=>$err)) {
         return $err;
+        $err = &uie::add8err(err=>$err,nsu=>$nsub,
+                                erm=>["The argument 'xpi' is not valid, must be a pi of type ind/COL/cir/IND"]);
+    }
+    my $typ = $xpi->{y};
+    my $xpt = lc($typ);
+    sub tpi { 
+        my ($ty,$pi) = @_;
+	if (($ty eq "col") and ($pi==0)) {return 1;}
+        return ($pi>0);
+    }
+    unless ($typ =~ /^(ind)|(COL)|(cir)|(IND)$/) {
+	unless (($typ =~ /^col$/) and ($xco)) {
+	    my $err = &uie::add8err(err=>"",nsu=>$nsub,
+				    erm=>["This type of pi.s ($typ) cannot be transformed into a line"]);
+	    return $err;
+        }
     }
     # performing
-    if ($typ eq "col") {
-        # collective pi's
-        my $nbc = scalar(@{$xpi->{c}}) - 1;
-        if (scalar(keys %{$xpi->{h}}) > 0) {
-            $res = $res.$fram{h}->[0];
-            my @ru = ();
-            foreach my $ele (keys %{$xpi->{h}}) {
-                push @ru,$ele."=".$xpi->{h}->{$ele};
-            }
-            my $ru = join($sepa{h},@ru);
-            $res = $res.$ru.$fram{h}->[1];
-        }
-        foreach my $pi ("t","d") {
-            if ($xpi->{$pi} !~ /^\s*$/) {
-                $res = $res." ".$fram{$pi}->[0].$xpi->{$pi}.$fram{$pi}->[1];
-            }
-        }
-        foreach my $pi ("p","q","g","k","m") {
-            if (scalar(@{$xpi->{$pi}->[$nbc]})) {
-                $res = $res." ".$fram{$pi}->[0].
-                                join($sepa{$pi},@{$xpi->{$pi}->[$nbc]}).
-                                $fram{$pi}->[1];
-            }
-        }
-    } elsif ($typ eq "cir") {
-        # a circumstance line
-        $res = $res.$fram{C}->[0].$xpi->{l}.$fram{C}->[1]." ".$xpi->{c};
-    } else {
-        # individual pi's
+    if ($typ =~ /^(ind)|(IND)$/) {
+        # introducing the name
         $res = $res.$xpi->{n}." ";
-        if (scalar(keys %{$xpi->{h}}) > 0) {
-            $res = $res.$fram{h}->[0];
-            my @ru = ();
-            foreach my $ele (keys %{$xpi->{h}}) {
-                push @ru,$ele."=".$xpi->{h}->{$ele};
-            }
-            my $ru = join($sepa{h},@ru);
-            $res = $res.$ru.$fram{h}->[1];
-        }
-        foreach my $pi ("t","d") {
-            if ($xpi->{$pi} !~ /^\s*$/) {
+    }
+    #
+    if ($typ =~ /^(ind)|(COL)|(IND)|(col)$/) {
+        # adding the scalar pi.s
+        foreach my $pi ("t","o","d") {
+            if (&tpi($xpt,&pi9(xpi=>$xpi,wha=>$pi))) {
                 $res = $res." ".$fram{$pi}->[0].$xpi->{$pi}.$fram{$pi}->[1];
             }
         }
-        foreach my $pi ("p","q","g","k","m","c") {
-            if (scalar(@{$xpi->{$pi}})) {
+        # adding the named vectorial pi.s
+        foreach my $pi ("h") {
+            if (&tpi($xpt,&pi9(xpi=>$xpi,wha=>$pi))) {
+                $res = $res.$fram{h}->[0];
+                my @ru = ();
+                foreach my $ele (keys %{$xpi->{$pi}}) {
+                    push @ru,$ele."=".$xpi->{$pi}->{$ele};
+                }
+                my $ru = join(" ".$sepa{h}." ",@ru);
+                $res = $res.$ru.$fram{h}->[1];
+            }
+        }
+    }
+    #
+    if ($typ =~ /^(ind)|(IND)|(col)$/) {
+        # adding the vectorial pi.s
+        foreach my $pi ("c","m","p","q","k","g") {
+            if (&tpi($xpt,&pi9(xpi=>$xpi,wha=>$pi))) {
                 $res = $res." ".$fram{$pi}->[0].
-                                join($sepa{$pi},@{$xpi->{$pi}}).
+                                join(" ".$sepa{$pi}." ",@{$xpi->{$pi}}).
                                 $fram{$pi}->[1];
             }
         }
+    }
+    #
+    if ($typ =~ /^(COL)$/) {
+        # last level to introduce
+        my $lale = scalar(@{$xpi->{c}});
+        # adding the vectorial pi.s
+        foreach my $pi ("c","m","p","q","k","g") {
+            if (&tpi($xpt,&pi9(xpi=>$xpi,wha=>$pi))) {
+                $res = $res." ".$fram{$pi}->[0].
+                                join(" ".$sepa{$pi}." ",@{$xpi->{$pi}->[$lale-1]}).
+                                $fram{$pi}->[1];
+            }
+        }
+    }
+    #
+    if ($typ eq "cir") {
+        # a circumstance line
+        $res = $res.$fram{"C"}->[0].$xpi->{l}.$fram{"C"}->[1]." ".$xpi->{C};
     }
     if ($res =~ /^\s*$/) { $res = "#";}
     # returning
@@ -1293,147 +1444,217 @@ sub pi2line {
 #############################################
 #
 ##<<
-sub image9 {
-    #
-    # title : image name?
-    #
-    # aim : check if a string is considered as
-    #      an image name from the format profiles
-    #      defined in '%prim'
-    # 
-    # output : 1 if true, 0 if not
-    #
-    # arguments
-    my $hrsub = {nam  =>[undef,  "c","The name to investigate"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $name = $argu->{nam};
-    my $res = 0;
-    # looking for 
-    foreach (keys %prim) {
-        if ($name =~ /$prim{$_}/) { $res = 1;}
-    }
-    # returning
-    $res;
-}
-#############################################
-#
-##<<
 sub new7pi {
     #
-    # title : return an empty pi or complete a add
+    # title : return a pi series
     #
-    # aim : create a pi which can be:
-    #      - an [ind]ividual pi, describing an image
-    #        (the compulsory name is set to 'NULL.PNG')
-    #      - a [col]lective pi, all information
-    #        gathered outside image descriptions
-    #      - a [cir]cumstance
-    #      - an [add]ition for a collective pi
-    #        (if an already created 'add' is proposed
-    #         as argument, its non existing pi's
-    #         are completed with null values)
+    # aim : create a void|complete pi which can be:
+    #         - an [ind|IND]ividual pi, describing an image
+    #         - a [col|COL]lective pi, all information
+    #           gathered outside image descriptions
+    #         - a [cir]cumstance
     #
-    # output : the empty newly created/completed pi
-    #         (possibly an error)
+    # remarks - compulsory name is set to 'NULL.PNG'
+    #         - compulsory hierarchical structure in COL series
+    #           is set to ["",""] and associated vector pi.s
+    #           to [[],[]]
+    #
+    # output : the empty|complete newly created
+    #          or an error when the input is not accepted.
     #
     # arguments
-    my $hrsub = {wha  =>[undef,  "ch","The type to create 'ind'/'col'/'cir'/'add'",
-                                      "(or the add pi to be completed with void values"]
+    my $hrsub = {wha  =>[undef,  "c","The type to create 'ind | IND | col | COL | cir'"],
+                 fil  =>[    0,  "n","Indicate if the pi series must be filled"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
     my $argu   = &uie::argu($nsub,$hrsub,@_);
     if ($argu == 1) { return 1;}
     my $wha = $argu->{wha};
+    my $fil = $argu->{fil};
     my $res;
-    unless (ref($wha) eq "HASH") {
-        # creation
-        if ($wha eq "ind") {
-            # individual pi's
-            $res   = {
-                "y"=>"ind", # the type
-                n=>"NULL.PNG", # file name
-                t=>"", # time period
-                p=>[], # place
-                "q"=>[], # people series
-                g=>[], # categories
-                k=>[], # keywords
-                c=>[], # circumstances
-                "m"=>[], # comment
-                h=>{}, # technical parameter
-                d=>""  # directory
-            };
-        } elsif ($wha eq "col") {
-            # collective pi's
-            $res   = {
-                "y"=>"col", # the type
-                c=>[], # circumstance stack
-                t=>"", # time period
-                p=>[], # place
-                "q"=>[], # people series
-                g=>[], # categories
-                k=>[], # keywords
-                "m"=>[], # comment
-                h=>{}, # technical parameter
-                d=>""  # directory
-            };
-        } elsif ($wha eq "cir") {
-            # collective pi's
-            $res   = {
-                "y"=>"cir", # the type
-                c=>"", # circumstance value
-                l=>0 # circumstance level
-            };
-        } elsif ($wha eq "add") {
-            # collective pi's
-            $res   = {
-                "y"=>"add" # the type
-                    # other not compulsory possibilities are:
-                    #t=>"", # time period
-                    #p=>[], # place
-                    #"q"=>[], # people series
-                    #g=>[], # categories
-                    #k=>[], # keywords
-                    #"m"=>[], # comment
-                    #h=>{}, # technical parameter
-                    #d=>""  # directory
-            };
-        } else {
-            # collective pi's
-            $res   = &uie::add8err(err=>"",nsu=>$nsub,
-                                   erm=>["The proposed type ($wha) is not accepted."]);
-        }
-    } else {
-        # completing what is supposed to be a add pi
-        my $rrr = &check8pi(xpi=>$wha);
-        if (&uie::err9(obj=>$rrr)) {
-            my $rr2 = &uie::add8err(err=>"",nsu=>$nsub,
-                                 erm=>["Proposed argument is a hash not being a 'pi'"]);
-            return &uie::conca8err(er1=>$rr2,er2=>$rrr);
-        }
-        unless ($wha->{y} eq "add") {
-            my $rr2 = &uie::add8err(err=>"",nsu=>$nsub,
-                                 erm=>["Proposed pi isn't a 'add' one but a $wha->{y}"]);
-            return $rr2;
-        }
-        $res = &uie::copy8structure(str=>$wha);
-        unless (defined($res->{"c"})) { $res->{"c"} = [];} # circumstance stack
-        unless (defined($res->{"t"})) { $res->{"t"} = "";} # time period
-        unless (defined($res->{"p"})) { $res->{"p"} = [];} # place
-        unless (defined($res->{"q"})) { $res->{"q"} = [];} # people series
-        unless (defined($res->{"g"})) { $res->{"g"} = [];} # categories
-        unless (defined($res->{"k"})) { $res->{"k"} = [];} # keywords
-        unless (defined($res->{"m"})) { $res->{"m"} = [];} # comment
-        unless (defined($res->{"h"})) { $res->{"h"} = {};} # technical parameter
-        unless (defined($res->{"d"})) { $res->{"d"} = "";}  # directory
-        
+    #
+    if ($wha !~ /^(ind)|(IND)|(col)|(COL)|(cir)$/) {
+        $res = &uie::add8err(err=>"",nsu=>$nsub,
+                             erm=>["Asked pi series type '$wha' is not accepted.",
+                                   "Must be ind/IND/col/COL/cir"]);
     }
+    #
+    if ($wha =~ /^(col)$/) {
+        #
+        $res   = {"y"=>$wha};
+        if ($fil) {
+            $res->{"m"} = ["A first comment","A final comment"];
+        }
+    }
+    # 
+    if ($wha =~ /^(ind)|(IND)$/) {
+        #
+        $res   = {"y"=>$wha};
+        if ($wha =~ /^(ind)|(IND)$/) { $res->{"n"} ="NULL.PNG"};
+        #
+        for my $cp ("c","m","p","q","k","g") {
+            $res->{$cp} = [];
+        }
+        for my $cp ("t","o","d") {
+            $res->{$cp} = "";
+        }
+        for my $cp ("h") {
+            $res->{$cp} = {};
+        }
+        if ($wha eq "IND") {
+            $res->{c} = ["0","1"];
+        }
+        if ($fil) {
+            $res->{"m"} = ["A first comment","A final comment"];
+            $res->{"p"} = ["LA","downtown"];
+            $res->{"q"} = ["You","He","I"];
+            $res->{"k"} = ["group"];
+            $res->{"t"} = "Midnight";
+            $res->{"o"} = "jbd";
+            $res->{"d"} = "./";
+        }
+    }
+    # 
+    if ($wha =~ /^(COL)$/) {
+        #
+        $res   = {"y"=>$wha};
+        $res->{c} = [["0"],["1"]];
+        #
+        for my $cp ("m","p","q","k","g") {
+            $res->{$cp} = [[""],[""]];
+        }
+        for my $cp ("t","o","d") {
+            $res->{$cp} = "";
+        }
+        for my $cp ("h") {
+            $res->{$cp} = {};
+        }
+        #
+        if ($fil) {
+            $res->{"m"} = [["A first comment","A final comment"],["Nothing to add!"]];
+            $res->{"p"} = [["LA","downtown"],["Paris by night"]];
+            $res->{"q"} = [["You","He","I"],["the baby dog"]];
+            $res->{"k"} = [["group"],["family"]];
+            $res->{"t"} = "Midnight";
+            $res->{"o"} = "jbd";
+            $res->{"d"} = "./";
+        }
+    }
+    #
+    if ($wha eq "cir") {
+        $res   = {"y"=>$wha,C=>"",l=>0};
+        if ($fil) {
+            $res   = {"y"=>$wha,C=>"At Summer Time",l=>1};
+        };
+    }
+    #
     # returning
     $res;
+}
+#############################################
+#
+##<<
+sub pi9 {
+    #
+    # title : test the existence of pi into a pi series
+    #
+    # aim : just for pi series ind/IND/col/COL/cir
+    #         detects if the asked pi is not void
+    #
+    # remarks: not a great subroutine but a good way 
+    #          to define what is considered as void for
+    #          the different pi.s.
+    #          As the aim is not to check the pi series,
+    #          voidness is extended to non existence.
+    #          Take care that the output is not a boolean.
+    #
+    # output : -1 doesn't exist
+    #           0 exists and void
+    #           1 exists and filled
+    #
+    #          in case of inconsistency: a fatal error.
+    #
+    # arguments
+    my $hrsub = {xpi  =>[undef,  "h","The pi series to scan; must be 'ind | IND | col | COL | cir'"],
+                 wha  =>[undef,  "c","The component to look for voidness"]
+                };
+##>>
+    my $nsub = (caller(0))[3];
+    my $argu   = &uie::argu($nsub,$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $xpi = $argu->{xpi};
+    my $wha = $argu->{wha};
+    my $res;
+    # some check
+    unless (&uie::check8ref(ref=>$xpi,typ=>"h")) {
+        &uie::la(str=>$xpi);
+        print "$nsub: asked for scanning a pi series which is not a hash!",
+              " (structure printed above)\n\n";
+        die;
+    }
+    unless (defined($xpi->{y})) {
+        &uie::la(str=>$xpi);
+        print "$nsub: asked for a $wha pi.s series not having key 'y'!\n\n";
+        die;
+    }
+    unless ($xpi->{y} =~ /^(ind)|(IND)|(col)|(COL)|(cir)$/) {
+        print "$nsub: asked for a $wha pi.s series not accepted!\n\n";
+        die ("(only 'ind|IND|col|COL|cir' are)");
+    }
+    #
+    # checking
+    #
+    unless (defined($xpi->{$wha})) { return -1;}
+    else {
+        # cir pi series
+        if ($xpi->{y} =~ /^(cir)$/) {
+            for my $comp ("y","C","l") {
+                if ($comp eq $wha) {
+                    if ($xpi->{$wha} eq "") { return 0;}
+                    else { return 1;}
+                }
+            }
+        }
+        # ind/IND/col/COL pi series
+        if ($xpi->{y} =~ /^(ind)|(IND)|(col)|(COL)$/) {
+            # scalar components
+            for my $comp ("y","n","t","o","d") {
+                if ($comp eq $wha) {
+                    if ($xpi->{$wha} eq "") { return 0;}
+                    else { return 1;}
+                }
+            }
+            # vectorial components
+            for my $comp ("c","m","p","q","k","g") {
+                if ($comp eq $wha) {
+                    unless (defined($xpi->{$wha}->[0])) { return 0; } 
+                    if ($xpi->{y} eq "COL") {
+                        my $rempli = 0;
+                        foreach my $ccomp (@{$xpi->{$wha}}) {
+                            if (defined($ccomp->[0])) { if ($ccomp->[0] ne "") { $rempli++;}}
+                        }
+                        if ($rempli) { return 1;} else { return 0;}
+                    } else {
+                        if ($xpi->{$wha}->[0] eq "") { return 0;} else { return 1;}
+                    }
+                }
+            }
+            # named vectorial components
+            for my $comp ("h") {
+                if ($comp eq $wha) {
+                    if (scalar(keys(%{$xpi->{$wha}}))) { return 1;} else { return 0;}
+                }
+            }
+        }
+    }
+    # the component was not listed
+    &uie::la(str=>$xpi);
+    print "$nsub: asked for scanning a pi type '$wha' which doesn't exist!",
+          " (structure printed above)\n\n";
+    die;
+    # returning
+    1;
 }
 #############################################
 #
@@ -1444,11 +1665,12 @@ sub print8pi {
     #
     # aim : print a small title and the structure itself
     #
-    # output : 1 or an error when the pi is checked [$pi7check].
+    # output : 1 or an error when the pi is valid according to $pi7check.
     #
     # arguments
-    my $hrsub = {xpi  =>[undef,  "h","The pi's to print"],
-                 eve  =>[    0,  "n","Must empty components be displayed for types 'col' and 'ind'?"]
+    my $hrsub = {xpi  =>[undef,  "h","The pi.s to print"],
+                 eve  =>[    0,  "n","Must empty components be displayed for types ind/IND/col/COL?"],
+                 chk  =>[    1,  "n","Must the validity of the 'pi' be checked before printing?"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
@@ -1456,50 +1678,30 @@ sub print8pi {
     if ($argu == 1) { return 1;}
     my $xp0 = $argu->{xpi}; my $xpi = &uie::copy8structure(str=>$xp0);
     my $eve = $argu->{eve};
+    my $chk = $argu->{chk};
     my $res;
     # the check
-    $res = &check8pi(xpi=>$xpi);
-    if (&uie::err9(obj=>$res)) { return $res;}
+    if ($chk) { 
+        $res = &check8pi(xpi=>$xpi);
+        if (&uie::err9(obj=>$res)) {
+            &uie::print8err(err=>$res);
+            print "\n"." "x10,"From $nsub: the 'xpi' was checked unvalid and not printed!\n\n";
+            return $res;
+        }
+    }
     # the title
     my $type = $xpi->{y};
-    my %title = ("ind"=>"INDIVIDUAL","col"=>"COLLECTIVE",
-                 "cir"=>"CIRCUMSTANCE","add"=>"ADDITIONAL",
-                 "ext"=>"EXTERNAL COMMENT");
+    my %title = ("ind"=>"Individual","col"=>"Collective",
+                 "IND"=>"INDIVIDUAL","COL"=>"COLLECTIVE",
+                 "cir"=>"Circumstance","ext"=>"External Comment");
     print "\n\n $title{$type} PI SERIES:\n\n";
     # removing empty structures for 'ind' and 'col' types
     my @moins = ();
-    unless ($eve) { if (($type eq "ind") or ($type eq "col")) {
-        for my $kk (keys %$xpi) {
-            if ($kk =~ /[td]/) {
-                if ($xpi->{$kk} =~ /^\s*$/) {
-                    delete $xpi->{$kk};
-                    push @moins,$kk;
-                }
-            }
-            if ($kk =~ /[pqkgm]/) {
-                my @tableau = @{$xpi->{$kk}}; 
-                if ($type eq "col") {
-                    my $total = 0;
-                    for my $tu (@tableau) {
-                        if (scalar(@$tu) == 0) { $total++;}
-                    }
-                    if ($total == scalar(@tableau)) {
-                        delete $xpi->{$kk};
-                        push @moins,$kk;
-                    }
-                } else {
-                    # ind type
-                    if (scalar(@tableau) == 0) {
-                        delete $xpi->{$kk};
-                        push @moins,$kk;
-                    }
-                }
-            }
-            if ($kk =~ /[h]/) {
-                if (scalar(keys(%{$xpi->{$kk}}))==0) {
-                    delete $xpi->{$kk};
-                    push @moins,$kk;
-                }
+    unless ($eve) { if ($type =~ /^(ind)|(IND)|(col)|(COL)$/) {
+        for my $kk (keys %{$xpi}) { 
+            unless (&pi9(xpi=>$xpi,wha=>$kk) == 1) {
+                delete $xpi->{$kk};
+                push @moins,$kk;
             }
         }
         unless (scalar(@moins) == 0) {
@@ -1514,513 +1716,39 @@ sub print8pi {
 #############################################
 #
 ##<<
-sub str2kwd {
-    #
-    # title : getting the collection of keywords
-    #
-    # aim : ancillary subroutine to gather the set
-    #      of keywords included into a structure
-    #      into a simple array where framing is
-    #      kept only for multiword keywords
-    # notice that set of keywords framing is
-    #      supposed to be already eliminated
-    #      when 'str' is a reference to an array
-    #      but it can be present in a simple
-    #      string of characters.
-    # 
-    # output : the reference to the resulting array
-    #
-    # arguments
-    my $hrsub = {str  =>[undef,  "ca","The structure to investigate",
-                                      "can be a simple character chain"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $stru = $argu->{str};
-    if (ref($stru) ne "ARRAY") {
-        # removing the possible frame
-        $stru =~ s/^\Q$can{kko}\E//;
-        $stru =~ s/\Q$can{kkc}\E$//;
-        # getting the standard structure
-        $stru = [$stru];
-    }
-    my $res = [];
-    # cumulating 
-    foreach my $cha (@$stru) {
-        while ($cha =~ s/\Q$can{ko}\E(.*?)\Q$can{kc}\E//) {
-            my $kkk = &uie::juste(cha=>$1,jus=>"n");
-            if ($kkk =~ / /) {
-                $kkk = $can{ko}.$kkk.$can{kc};
-            }
-            push @$res,$kkk;
-        }
-        push @$res,split(/ /,$cha);
-    }
-    # removing void values
-    my $lres = scalar(@$res);
-    for (reverse(1..$lres)) {
-        if ($$res[$_-1] =~ /^\s*$/) { splice @$res,$_-1,1;}
-    }
-    # removing duplicated values
-    @$res = sort @$res;
-    $lres = scalar(@$res);
-    for (reverse(2..$lres)) {
-        if ($$res[$_-2] eq $$res[$_-1] ) { splice @$res,$_-1,1;}
-    }
-    # returning
-    $res;
-}
-#############################################
-#
-##<<
-sub cat1kwd {
-    #
-    # title : sorting out categories and keywords
-    #
-    # aim : ancillary subroutine of 'read8ic7f'
-    #      to separate categories from keywords
-    #
-    # notice that repetitions are not eliminated
-    # 
-    # output : the reference to an hash with 
-    #         two components: {cat} and {kwd}
-    #         referring to arrays of the categories
-    #         and the keywords.
-    #
-    # arguments
-    my $hrsub = {c1k  =>[undef,  "c","The string to investigate",
-                                      "must be given as a reference",
-                                      "to be modified."],
-                 cat  =>[   [],  "a","Array of the possible categories"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $c1k = $argu->{c1k};
-    my $cat = $argu->{cat};
-    # getting out the framed keywords
-    my @kwd = (); my @cat = ();
-    while ( $c1k =~ s/(\Q$can{ko}\E.*?\Q$can{kc}\E)//) {
-        my $un = $1;
-        $un =~ s/\Q$can{ko}\E//;
-        $un =~ s/\Q$can{kc}\E//;
-        push @kwd,$un;
-    }
-    # from the remaining, distinguish categories and keywords
-    my @reste = split(" ",$c1k);
-    foreach my $toto (@reste) {
-        if (&uie::belong9(sca=>\$toto,arr=>$cat)) {
-            push @cat,$toto;
-        } else {
-            push @kwd,$toto;
-        }
-    }
-    # returning
-    my $res = {cat=>[@cat],kwd=>[@kwd]};
-    $res;
-}
-#############################################
-#
-##<<
-sub get8picture4rio {
-    #
-    # title : selecting pictures
-    #
-    # aim : according different alternative criteria
-    #      a set of picture is extracted from
-    #      a raw index object.
-    #
-    # output : array of the keys of the selected pictures
-    #
-    # arguments
-    my $hrsub = {rip  =>[undef,  "h","The hash from which to get the images",
-                                     "({pic} of a rio)"],
-                 sel  =>[    1, "na","Indicates a possible selection of images",
-                                     "within the rip to explore. When 1 all",
-                                     "images are considered, if not must be",
-                                     "the array of their keys. Non existing labels",
-                                     "are not considered faulty"],
-                 tys  =>[undef,  "c","Type of selection among the following possibilities:",
-                                     " - 'be' between two lines",
-                                     " - 'ck' the presence of at least a category and/or a keyword",
-                                     " - 'ci' checking a set of categories using 'and'",
-                                     " - 'cu' checking a set of categories using 'or'",
-                                     " - 'KI' checking a set of keywords strictly using 'and'",
-                                     " - 'KU' checking a set of keywords strictly using 'or'",
-                                     " - 'ki' checking a set of keywords loosely using 'and'",
-                                     " - 'ku' checking a set of keywords loosely using 'or'",
-                                     " - 'CI' checking a sub-string into comments unsing 'and'",
-                                     " - 'CU' checking a sub-string into comments unsing 'or'"], 
-                 wha  =>[undef,  "a","Reference to an array providing details about the",
-                                     "selection to perform:",
-                                     " - 'be' first and last lines not included",
-                                     "       [0,undef] means all lines",
-                                     " - 'ci','cu' categories to use for the selections",
-                                     " - 'KI','KU' same for keywords strictly /^keyword$/",
-                                     " - 'ki','ku' same for keywords loosely /keyword/",
-                                     " - 'CI','CU' same for comments loosely"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $rip = $argu->{rip};
-    my $sel = $argu->{sel};
-    my $tys = $argu->{tys};
-    my $wha = $argu->{wha};
-    my $res = [];
-    # initializing the set of images to consider
-    my $sele = [];
-    if (ref($sel) ne "ARRAY") {
-        push @$sele,keys(%{$rip});
-    } else {
-        my @clefs = keys(%{$rip});
-        foreach (@$sel) {
-            if (&uie::belong9(sca=>\$_,arr=>\@clefs)) {
-                push @$sele,$_;
-            }
-        }
-    }
-    # gathering the corresponding picture
-    if ($tys =~ /^be$/) {
-        # gathering within lines
-        my $largeur = length((keys %{$rip})[0]);
-        if (not(defined($largeur))) { $largeur = 1;}
-        $$wha[0] = &uie::justn(num=>$$wha[0],dig=>$largeur);
-        if (defined($$wha[1])) {
-            $$wha[1] = &uie::justn(num=>$$wha[1],dig=>$largeur);
-        } else {
-            $$wha[1] = "ZZ";
-        }
-        unless (scalar(@$wha) == 2) { die("$nsub: when tys eq 'b' two values are expected in \@wha");}
-        foreach my $kk (@$sele) {
-            if (($kk gt $$wha[0]) and ($kk lt $$wha[1])) {
-                push @$res,$kk;
-            }
-        }
-    } elsif ($tys =~ /^ck$/) {
-        # gathering for any category or keyword
-        foreach my $kk (@$sele) {
-            my $oui = ((scalar(@{$rip->{$kk}->[2]}) > 0 ) or (scalar(@{$rip->{$kk}->[3]}) > 0 ));
-            if ($oui) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^ci$/) {
-        # gathering for categories in intersection
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'ci' at least a category is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $non = 0;
-            foreach (@$wha) {
-                if (not(&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[2]))) {
-                    $non = 1;
-                }
-                last if ($non);
-            }
-            if (not($non)) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^cu$/) {
-        # gathering for categories in union
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'cu' at least a category is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $oui = 0;
-            foreach (@$wha) {
-                if (&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[2])) {
-                    $oui = 1;
-                }
-                last if ($oui);
-            }
-            if ($oui) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^KI$/) {
-        # gathering for keywords strictly in intersection
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'KI' at least a keyword is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $non = 0;
-            foreach (@$wha) {
-                if (not(&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[3]))) {
-                    $non = 1;
-                }
-                last if ($non);
-            }
-            if (not($non)) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^KU$/) {
-        # gathering for keywords strictly in union
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'KU' at least a keyword is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $oui = 0;
-            foreach (@$wha) {
-                if (&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[3])) {
-                    $oui = 1;
-                }
-                last if ($oui);
-            }
-            if ($oui) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^ki$/) {
-        # gathering for keywords strictly in intersection
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'ki' at least a keyword is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $non = 0;
-            foreach (@$wha) {
-                if (not(&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[3],
-                                       com=>["=~ /","/"],sen=>1))) {
-                    $non = 1;
-                }
-                last if ($non);
-            }
-            if (not($non)) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^ku$/) {
-        # gathering for keywords strictly in union
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'ku' at least a keyword is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $oui = 0;
-            foreach (@$wha) {
-                if (&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[3],
-                                       com=>["=~ /","/"],sen=>1)) {
-                    $oui = 1;
-                }
-                last if ($oui);
-            }
-            if ($oui) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^CI$/) {
-        # gathering for comments loosely in intersection
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'CI' at least a word is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $non = 0;
-            foreach (@$wha) {
-                if (not(&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[4],
-                                       com=>["=~ /","/"],sen=>1))) {
-                    $non = 1;
-                }
-                last if ($non);
-            }
-            if (not($non)) { push @$res,$kk;}
-        }
-    } elsif ($tys =~ /^CU$/) {
-        # gathering for keywords strictly in union
-        unless (scalar(@$wha) > 0) { 
-            &uie::print8structure(str=>$wha);
-            die("$nsub: when tys eq 'CU' at least a word is expected in \@wha");
-        }
-        foreach my $kk (@$sele) {
-            my $oui = 0;
-            foreach (@$wha) {
-                if (&uie::belong9(sca=>\$_,arr=>$rip->{$kk}->[4],
-                                       com=>["=~ /","/"],sen=>1)) {
-                    $oui = 1;
-                }
-                last if ($oui);
-            }
-            if ($oui) { push @$res,$kk;}
-        }
-    } else {
-        print "In $nsub the suggested type of selection (ty) is $tys\n",
-        "This type is not implemented\n";
-        die("  sorry for that!");
-    }
-    # returning
-    @$res = sort @$res;
-    $res;
-}
-#############################################
-#
-##<<
-sub read8ic7f7ax {
-    #
-    # title : ancillary function for 'read8ic7f'
-    #
-    # aim : deal with the nested circumstances
-    # 
-    # output : the new three necessary structures.
-    #          (see the code for details)
-    #
-    # arguments
-    my $hrsub = {nli  =>[undef,  "c","the new level line"],
-                 old  =>[undef,  "h","The three necessary structures"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $nli = $argu->{nli};
-    my $old = $argu->{old};
-    if ((!defined($old->{lci})) or
-        (!defined($old->{nci})) or
-        (!defined($old->{tit}))) {
-        &uie::print8structure(str=>$old);
-        die("$nsub: this is not a convenient \$old argument");
-    }
-    if (ref($old->{tit}) ne "ARRAY") {
-        &uie::print8structure(str=>$old);
-        die("$nsub: \$old->{tit} must a reference to an array");
-    }
-    if ($nli !~ /^\Q$can{nco}\E(.*)\Q$can{ncc}\E(.*)$/) {
-        die("[1] $nsub: something wrong in 'read8ic7f'");
-    }
-    my $erreurs = "";
-    #
-    my $olc = $old->{lci};
-    my $onl = $old->{nci};
-    my $oti = $old->{tit};
-    my $nlc = $1;
-    unless (looks_like_number($1)) {
-        print "\n\n in $nsub ::::::::::::::\n";
-        print " "x30,"line : \"$nli\"\n";
-        print " "x30,"This doesn't fit a line circumstance as identified\n";
-        die "Fit this difficulty...";
-    }
-    my $nnl = 0;
-    my $nti = [@$oti];
-    if ($olc eq "") {
-        # must be the first circumstance
-        if ($1 == 1) {
-            $nnl = 1;
-            $nti->[0] = $2;
-        } else {
-            $erreurs = &uie::add8err(err=>$erreurs,nsu=>$nsub,
-                                    erm=>["The first circumstance must be '1'!",
-                                          $nli]);
-            return($erreurs);
-        }
-    } elsif ($1 eq "") {
-        # no more possible to close a level 
-        $erreurs = &uie::add8err(err=>$erreurs,nsu=>$nsub,
-                                 erm=>["No more possible to close a level without defining a new one!",
-                                       "Just introduce a miscellaneous section with the current level",
-                                       "     Current level is: $olc",
-                                       "     New proposal with $nli"]);
-        return($erreurs);
-    } else {
-        # first find the circumstance levels
-        my @leci = split(/\./,$onl);
-        # build the new one
-        if ((scalar(@leci)+1) < $1) {
-            # skipping is not accepted
-            print("onl : $onl \n");
-            &uie::print8structure(str=>[@leci]);
-            $erreurs = &uie::add8err(err=>$erreurs,nsu=>$nsub,
-                                     erm=>["A circumstance level was skipped!",
-                                           "Current level is: $olc",
-                                           "New proposal: $nli ($1)"]);
-       
-        } elsif ($1 == 1) {
-            # starting a new first level
-            my @tut = split('\.',$onl);
-            $nnl = 1+$tut[0];
-            $nti = [$2];
-        } else {
-            # standard case
-            if (!defined($leci[$1-1])) {
-                $leci[$1-1] = 0;
-            }
-            if (scalar(@leci)>$1) {
-                splice @leci,$1;
-                splice @$nti,$1;
-            }
-            $leci[$1-1] = 1+$leci[$1-1];
-            $nnl = join(".",@leci);
-            $nti->[$1-1] = $2;
-        }
-    }
-    # returning
-    my $res;
-    if (&uie::err9(obj=>$erreurs)) { $res = $erreurs;}
-    else { $res = {lci=>$nlc,nci=>$nnl,tit=>$nti}}
-    $res;
-}
-#############################################
-#
-##<<
 sub read8ic7f {
     #
-    # title : read a raw index file
+    # title : read an icf file to extract some components
+    #         for the collection of pictures
     #
-    # aim : produce a raw index object where all
-    #      information is coded into a structure.
+    # aim : get information about images, a typical
+    #       example is required sizes.
     # 
-    # output : either the built structure
-    #         or an error something went wrong
-    #
-    # The structure is a reference to a hash 
-    # with few components: com,dir,cir,pic.
-    # Each are a reference to another hash
-    # having as keys the numbering of the lines
-    # of the read file; associated values
-    # are references to arrays described
-    # as follow and depending on the type:
-    # for {com} comment lines (starting with '#')
-    # for {dir} relative directories
-    # for {cr} reference to an array containing
-    #        [0] the depth of the circumstance (e.g. 2),
-    #        [1] the hierarquical coding of the levels (e.g. 3.2),
-    #        [2] the strict title (e.g. "labrador")
-    #            When the level is just the close of 
-    #            some level then without any new title
-    #            it is replaced with a number of hyphens.
-    #        [3] reference to an array with the nested (1..depth) titles
-    #                (e.g. '["chien","labrador"]')
-    #        [4] reference to the array of collective comments
-    #        [5] reference to the array of individual comments
-    #            given at the image level.
-    #        [6] reference to the array of
-    #            keys of the representative
-    #            pictures of the section
-    #        [7] reference to the array of
-    #            keys of all the pictures of
-    #            the section
-    #        [8] reference to the array of
-    #            the pictures having at least a category or a keyword
-    # for {pic} reference to an array comprising 5 components:
-    #        [0] the name of the image (e.g. PC12003.JPG),
-    #        [1] the time period of the image,
-    #        [2] a reference to an array of associated categories,
-    #        [3] a reference to an array of associated keywords.
-    #        [4] the string of all associated comments,
-    #
+    # output : a hash whose keys are the picture names
+    #          the values being references to a hash whose
+    #          keys are the asled types and values the
+    #          reference to the type value.
     #
     # arguments
     my $hrsub = {icf  =>[undef,  "c","The name of the raw index file"],
-                 cat  =>[   [],  "a","Array of the category names"]   
+                 typ  =>[  "h",  "c","String of the types to be extracted.",
+                                     "For instance 'tp' to obtain only the time and place pi.",
+                                     'Possible constants are listed in the local @titi']   
                 };
 ##>>
     my $nsub = (caller(0))[3];
     my $argu   = &uie::argu($nsub,$hrsub,@_);
     if ($argu == 1) { return 1;}
     my $icf = $argu->{icf};
-    my $cat = $argu->{cat};
-    my $resi = {com=>{},dir=>{},cir=>{},pic=>{}};
-    my $resc = {};
+    my $typ = $argu->{typ};
+    my $res = {};
+    # constant
+    my @titi = ("t","p","q","k","g","m","h","c","d");
     # reading the file
     unless (open(FIL,"<$icf")) {
-        $resi = &uie::add8err(err=>"",nsu=>$nsub,
+        $res = &uie::add8err(err=>"",nsu=>$nsub,
                              erm=>["1:Not possible to open $icf file!"]);
-        return $resi;
+        return $res;
     } else {
         # just not to get an error message!
         while (<FIL>) {
@@ -2028,8 +1756,8 @@ sub read8ic7f {
         }
     }
     ######
-    ## dealing with the first block
-    my $fibl = &uie::read8block(fil=>$icf,com=>undef,sep=>undef,
+    ## dealing only  with the first block
+    my $fibl = &uie::read8block(fil=>$icf,sep=>undef,
                                 bbl=>"<<<IMA>>>",ebl=>"<<</IMA>>>");
     if (scalar(@$fibl)==0) {
         my $ret = &uie::add8err(err=>"no",nsu=>$nsub,
@@ -2045,384 +1773,37 @@ sub read8ic7f {
     # dealing with each line of the file
     $nul = 0; my $lci = ""; my $erreurs = "";
     my $nci = ""; my $tit = [];
-    foreach (@$fibl) {
-        my $lig = $_;
-        $nul++; my $sul = &uie::justn(num=>$nul,dig=>$nbd);
-        if ($lig =~ /^#(.*)/) {
-            # a comment line
-            $resi->{com}->{$sul} = $1;
-        } elsif ($lig =~ /^\Q$idif{dir}\E(.*)/) { 
-            # a directory line
-            $resi->{dir}->{$sul} = $1;
-        } elsif ($lig =~ /^\Q$can{nco}\E(.*)\Q$can{ncc}\E(.*)$/) {
-            # a circumstance line
-            my $vieux = {lci=>$lci,nci=>$nci,tit=>$tit};
-            my $nouve = &read8ic7f7ax(nli=>$lig,old=>$vieux);
-            if (&uie::err9(obj=>$nouve)) {
-                $erreurs = &uie::conca8err(er1=>$erreurs,er2=>$nouve);
-            } else {
-                $lci = $nouve->{lci};
-                $nci = $nouve->{nci};
-                $tit = $nouve->{tit};
-                $resi->{cr}->{$sul} = [$lci,$nci,@$tit];
-            }
-        } else {
-            my @idec = split(" ",$lig);
-            my $ima = &image9(nam=>$idec[0]);
-            if (!(&uie::err9(obj=>$ima))) {
-                # description of one image
-                # name
-                my $nam = $idec[0];
-                # time period
-                my $dat = undef;
-                if ($lig =~ /\Q$can{to}\E(.*)\Q$can{tc}\E/) {
-                    $dat = $1;
-                }
-                # categories and keywords
-                my $ctg = []; my $kwd = [];
-                if ($lig =~ /\Q$can{kko}\E(.*)\Q$can{kkc}\E/) {
-                    my $de = &cat1kwd(c1k=>$1,cat=>$cat);
-                    $ctg = $de->{cat};
-                    $kwd = $de->{kwd};
-                }
-                # comments
-                my $com = [];
-                if ($lig =~ /\Q$can{coo}\E(.*)\Q$can{coc}\E/) {
-                    my @com = split($sepa{m},$1);
-                    $com = [@com];
-                }
-                # storing
-                $resi->{pic}->{$sul} = [$nam,$dat,$ctg,$kwd,$com];
-            } else {
-                $erreurs = &uie::conca8err(er1=>$erreurs,er2=>$ima);
-                $erreurs = &uie::add8err(err=>$erreurs,nsu=>$nsub,
-                                     erm=>["The following line is not accepted in a 'raw index file'",
-                                           "$lig"]);
-            }
-        }
-    }
-    # getting the numbering of the circumstances
-    my $nuci = []; 
-    #my @nuci = sort keys($resi->{cr});
-    my @nuci = sort keys(%{$resi->{cr}});
-    foreach my $kk (@nuci) {
-        push @$nuci,$resi->{cr}->{$kk}->[1];
-    }
-    ######
-    ## dealing with the second block
-    my $sebl = &uie::read8block(fil=>$icf,com=>undef,sep=>undef,
-                                bbl=>"<<<CIR>>>",ebl=>"<<</CIR>>>");
-    if (scalar(@$sebl)==0) {
-        my $ret = &uie::add8err(err=>"no",nsu=>$nsub,
-                                erm=>["Seems as file $icf doesn't have a 'CIR' block?"]);
-        return $ret;
-    }
-    my $nuse = -1; my $eti = "";
-    foreach my $lig (@$sebl) {
-        # section line
-        if ($lig =~ /^\Q$can{nco}\E(.*)\Q$can{ncc}\E(.*)$/) {
-            # just for the awaiting 
-            my $lilili = &uie::juste(cha=>$lig,lon=>40,jus=>"L");
-            print $lilili;
-            my $titi = ("-"x50);
-            $nuse++; 
-            $eti = $nuci[$nuse];
-            my @inti = @{$resi->{cr}->{$eti}};
-            if ( $1 ne "") { $titi= $inti[scalar(@inti)-1];}
-            my $nouv = [@inti[(0,1)],$titi,
-                        [@inti[2..(scalar(@inti)-1)]],[],[]];
-            $resi->{cr}->{$eti} = $nouv;
-            # about associated images
-            my $sui = undef;
-            if ($nuse < (scalar(@$nuci)-1)) { $sui = $nuci[$nuse+1];}
-            my $nbi = &get8picture4rio(rip=>$resi->{pic},tys=>"be",wha=>[$eti,$sui]);
-            $resi->{cr}->{$eti}->[7] = $nbi; # the images
-            my $car = &get8picture4rio(rip=>$resi->{pic},tys=>"ci",wha=>[$rpi],sel=>$nbi);
-            $resi->{cr}->{$eti}->[6] = $car; # the representative images
-            if (scalar(@$car) == 0) {
-                print "\t  WARNING NO REPRESENTATIVE IMAGE\n";
-            } else {
-                print "\n";
-            }
-            my $nai = &get8picture4rio(rip=>$resi->{pic},tys=>"ck",wha=>[],sel=>$nbi);
-            $resi->{cr}->{$eti}->[8] = $nai; # the annotated images
-        # specific comment
-        } elsif ($lig =~ /\Q$can{coo}\E(.*)\Q$can{coc}\E/) {
-            push @{$resi->{cr}->{$eti}->[5]},$1;
-        # collective comment
-        } else {
-            push @{$resi->{cr}->{$eti}->[4]},$lig;
-        }
-        if ($eti eq "") {
-            $erreurs = &uie::add8err(err=>$erreurs,nsu=>$nsub,
-                                     erm=>["Not exact correspondance into 'icf' $icf",
-                                           "between the two blocks!",
-                                           "Would '&read8ic7f' be faulty or badly used?"]);
-        }
-    }
-    # returning
-    if (&uie::err9(obj=>$erreurs)) { $resi = $erreurs;}
-    $resi;
-}
-#############################################
-#
-##<<
-sub rio2cat1kwd {
-    #
-    # title : list of categories/keywords
-    #
-    # aim : explorates a rio and find out
-    #      all used categories/keywords and their
-    #      scores.
-    # 
-    # output : either an error object if something
-    #         was wrong, or a hash whose keys are
-    #         a generated alphabetical sequence
-    #         such that more referred categories
-    #         appears first;
-    #         associated values are arrays with:
-    #         [0] the name of the category/keyword
-    #         [1] the number of pictures referring it
-    #         [2] reference to the array of
-    #             keys of all the pictures 
-    #             referring it.
-    #
-    #
-    # arguments
-    my $hrsub = {rio  =>[undef,  "h","The raw index object"],
-                 qoi  =>["cat",  "c","'cat' for categories if not keywords"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $rio = $argu->{rio};
-    my $qoi = $argu->{qoi};
-    my $ou = 3;
-    if ($qoi eq "cat") { $ou = 2;}
-    # initialization
-    my $res = {}; my $ctg = {}; my $pct = {};
-    # getting the list and frequences of the categories
-    #foreach my $ima (keys($rio->{pic})) {
-    foreach my $ima (keys(%{$rio->{pic}})) {
-        my $cate = $rio->{pic}->{$ima}->[$ou];
-        foreach (@$cate) {
-            if (defined($ctg->{$_})) {
-                $ctg->{$_}++;
-                push @{$pct->{$_}},$ima
-            } else {
-                $ctg->{$_} = 1;
-                $pct->{$_} = [$ima];
-            }
-        }
-    }
-    # number of necessary digits
-    my $nbd = 1;
-    while (10**$nbd <= scalar(keys %$ctg)) { $nbd++;}
-    # sorting them
-    my @cles = sort { $ctg->{$b} <=> $ctg->{$a} } keys(%$ctg);
-    my $kom = 0;
-    foreach (@cles) {
-        $kom++; my $kkk = &uie::justn(num=>$kom,dig=>$nbd);
-        $res->{$kkk} = [$_,$ctg->{$_},$pct->{$_}];
-    }
-    # returning
-    $res;
-}
-#############################################
-#
-##<<
-sub rio2html {
-    #
-    # title : create an html page from a rio
-    #
-    # aim : writes an html file displaying
-    #      the content of a rio more or less
-    #      precisely according to the argument.
-    # 
-    # output : either 1 or an error object if something
-    #         was wrong
-    #
-    # arguments
-    my $hrsub = {rio  =>[undef,  "h","The raw index object to exploit"],
-                 fil  =>[undef,  "c","Name of the file to create"],
-                 tit  =>[""   ,  "c","Titre de la page"],
-                 opt  =>["nh1c0k0","c","chain indicating which options are retained",
-                                     " 'n' the file to create must not exist",
-                                     "'h0' table of contents",
-                                     "'h1' h0 plus numbers of contents",
-                                     "'h2' h1 plus comments",
-                                     "'h3' h2 plus image names",
-                                     "'c0' list of categories and image numbers",
-                                     "'c1' c0 plus image names",
-                                     "'k0' list of keywords and image numbers",
-                                     "'k1' k0 plus image names"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $rio = $argu->{rio};
-    my $fil = $argu->{fil};
-    my $tit = $argu->{tit};
-    my $opt = $argu->{opt};
-    # initialization
-    my $res = 1; my $txt = [];
-    # openning the output file
-    if ($opt =~ /n/) {
-        if (-e $fil) {
-            $res = &uie::add8err(err=>"",nsu=>$nsub,
-                                 erm=>["File $fil already exists and replacing not accepted!"]);
-            return $res;
-        }
-    }
-    unless (open(HH,">$fil")) {
-        $res = &uie::add8err(err=>"",nsu=>$nsub,
-                             erm=>["Not possible to open $fil file in writing mode!"]);
-        return $res;
-    }
-    # preparing the text array
-    if ( $opt =~ /h[0,1,2,3]/) {
-        push @$txt,"<1> Table of Contents";
-        # some table of contents is asked for
-        #foreach (sort keys($rio->{cr})) {
-        foreach (sort keys(%{$rio->{cr}})) {
-            my $circo = $rio->{cr}->{$_};
-            my $nbim = scalar(@{$circo->[7]});
-            my $nbai = scalar(@{$circo->[8]});
-            push @$txt,"<".(1+$circo->[0])."> ".$circo->[1]." ".$circo->[2];
-            if ($nbim) {
-                my $fim = $rio->{pic}->{${$circo->[7]}[0]}[0];
-                my $lim = $rio->{pic}->{${$circo->[7]}[$nbim-1]}[0];
-                push @$txt,"<> (".$nbai."/".$nbim."): [".$fim," - ",$lim,"]";
-            }
-            if ( $opt =~ /h[1,2,3]/) {
-                push @$txt,"<> This circumstance comprises: ";
-                if ($nbim == 0) {
-                    push @$txt,"<o> No images";
+    my %veri = (); my %dupli = ();
+    foreach my $lig (@$fibl) {
+        # eliminating lines defining a category
+        unless ($lig =~ /^\Q$idrf{"g"}\E/) {
+            my $pil = &uie::check8err(obj=>&analyze8line(lin=>$lig,lit=>""),sig=>"From $nsub");
+            if ($pil->{y} eq "ind") {
+                my $nomi = $pil->{n};
+                if (defined($veri{$nomi})) {
+                    if (defined($dupli{$nomi})) { $dupli{$nomi}++;}
+                    else { $dupli{$nomi} = 2;}
                 } else {
-                    push @$txt,"<o> ".$nbim. " images.";
-                    push @$txt,"<o> ".$nbai. " of them are annotated.";
-                    if (scalar(@{$circo->[6]}) == 0) {
-                        push @$txt,"<o> No one was declared representative";
-                    } else {
-                        push @$txt,"<o> ".scalar(@{$circo->[6]}). " of them are representative.";
-                    }
-                }
-                if (scalar(@{$circo->[4]}) == 0) {
-                    push @$txt,"<o> No collective comment";
-                } else {
-                    push @$txt,"<o> ".scalar(@{$circo->[4]}). " collective comments.";
-                }
-                if (scalar(@{$circo->[5]}) == 0) {
-                    push @$txt,"<o> No individual comment";
-                } else {
-                    push @$txt,"<o> ".scalar(@{$circo->[5]}). " individual comments.";
-                }
-                if ( $opt =~ /h[2,3]/) {
-                    if (scalar(@{$circo->[4]}) > 0) {
-                        push @$txt,"<> Collective comments are:";
-                        foreach (@{$circo->[4]}) {
-                            push @$txt,"<o>".$_;
+                    $veri{$nomi} = 1;
+                    foreach my $tyy (@titi) {
+                        if ($tyy =~ /[\Q$typ\E]/) {
+                            $res->{$nomi}->{$tyy} = $pil->{$tyy};
                         }
                     }
-                    if (scalar(@{$circo->[5]}) > 0) {
-                        push @$txt,"<> Individual comments are:";
-                        push @$txt,"<o> ".join(" // ",@{$circo->[5]});
-                    }
-                }
-                if ( $opt =~ /h3/) {
-                    if (scalar(@{$circo->[6]}) > 0) {
-                        push @$txt,"<> Representative images are:";
-                        my @rim = ();
-                        foreach (@{$circo->[6]}) {
-                            push @rim,$rio->{pic}->{$_}->[0];
-                        }
-                        my $rim = join(" // ",@rim);
-                        push @$txt,"<> ".$rim;
-                    }
-                    if ($nbim > 0) {
-                        push @$txt,"<> Included images are:";
-                        my @rim = ();
-                        foreach (@{$circo->[7]}) {
-                            push @rim,$rio->{pic}->{$_}->[0];
-                        }
-                        my $rim = join(" // ",@rim);
-                        push @$txt,"<> ".$rim;
-                    }
                 }
             }
         }
     }
-    #
-    if ( $opt =~ /c[0,1]/) {
-        # categories are asked for
-        my $kc = &rio2cat1kwd(rio=>$rio,qoi=>"cat");
-        my $nbkc = scalar(keys %$kc);
-        push @$txt,"<1> Categories";
-        if ($nbkc == 0) {
-            push @$txt,"<> No One Category was found";
-        } else {
-            push @$txt,"<> ".$nbkc." categories were found";
-            my $kom = 0;  my $tt;
-            foreach (sort keys %$kc) {
-                $kom++;
-                my $rim;
-                if ( $opt =~ /c1/) {
-                    $tt = "<> ($kom: $kc->{$_}->[1]): <b>$kc->{$_}->[0]</b>";
-                    my @rim = ();
-                    foreach (@{$kc->{$_}->[2]}) {
-                        push @rim,$rio->{pic}->{$_}->[0];
-                    }
-                    $rim = join(" // ",@rim);
-                    $rim = " :: ".$rim;
-                    push @$txt,$tt,$rim;  
-                } else {
-                    if ($kom == 1) { $tt = "<> ";}
-                    $tt = $tt."($kom: $kc->{$_}->[1]): <b>$kc->{$_}->[0]</b>".("&nbsp;"x5);
-                    if ($kom == ($nbkc -1)) { push @$txt,$tt;}
-                }
-            }
-        }
-    }
-    #
-    if ( $opt =~ /k[0,1]/) {
-        # keywords are asked for
-        my $kc = &rio2cat1kwd(rio=>$rio,qoi=>"key");
-        my $nbkc = scalar(keys %$kc);
-        push @$txt,"<1> Keywords";
-        if ($nbkc == 0) {
-            push @$txt,"<> No One Keyword was found";
-        } else {
-            push @$txt,"<> ".$nbkc." keywords were found";
-            my $kom = 0; my $tt;
-            foreach (sort keys %$kc) {
-                $kom++;
-                my $rim;
-                if ( $opt =~ /k1/) {
-                    $tt = "<> ($kom: $kc->{$_}->[1]): <b>$kc->{$_}->[0]</b>";
-                    my @rim = ();
-                    foreach (@{$kc->{$_}->[2]}) {
-                        push @rim,$rio->{pic}->{$_}->[0];
-                    }
-                    $rim = join(" // ",@rim);
-                    $rim = " :: ".$rim;
-                    push @$txt,$tt,$rim;  
-                } else {
-                    if ($kom == 1) { $tt = "<> ";}
-                    $tt = $tt."($kom: $kc->{$_}->[1]): <b>$kc->{$_}->[0]</b>".("&nbsp;"x5);
-                    if ($kom == ($nbkc -1)) { push @$txt,$tt;}
-                }
-            }
-        }
-    }
-    # translating
-    my $htm = &uie::text2html(str=>$txt,tit=>$tit);
-    foreach my $li (@$htm) {
-        print HH $li,"\n";
+    # case of duplicated images
+    my $nbdi = scalar(keys %dupli);
+    if ($nbdi > 0) {
+        &uie::print8structure(str=>\%dupli); print "\n";
+        $res = &uie::add8err(err=>"no",nsu=>$nsub,
+                             erm=>["$nbdi images were found duplicated in the input ICF $icf",
+                                   "Their list was just displayed",
+                                              " This is not valid!"]);
     }
     # returning
-    close(HH);
     $res;
 }
 #############################################
@@ -2444,16 +1825,21 @@ sub di7f2tex1htm {
     #              individual [I]  (as examples):
     #                 - [CI] 'wid=3cm' width of the images,
     #                 - [CI] 'hei=5cm' height of the images
+    #                 - [CI] 'wha=nhw' what to introduce instead of image/item
+    #                 - [CI] 'chk=0'   must the presence of the file be checked
     #                 - [C]  'WID=3cm' width of the images,
     #                 - [C]  'HEI=5cm' height of the images
+    #                 - [C]  'WHA=nhw' what to introduce instead of image/item
+    #                 - [C]  'CHK=0'   must the presence of the file be checked
     #                 - [I]  'rot=-90' the rotation to apply to the image (default 0),
+    #                 - [I]  'vsp= 2' the vertical space to introduce between image and caption,
     #                 - [C]  'nbi=3' number of images to introduce into a grid (default 1),
     #                 - [C]  'gnl=2' number of lines into the grid (default 1),
     #                 - [C]  'gnc=2' number of columns of the grid (default 1)
     #                 - [C]  'cap=common features are...' possible collective caption for a
     #                               a grid of images
     #                    (See below to know how they are used),
-    #          (x) Be aware that some collective pi's can be lost if not associated to 
+    #          (x) Be aware that some collective pi.s can be lost if not associated to 
     #                 a set of images. The aim is to annotate, not to build a text.
     #                 For that, other tools are available, in particular lines starting
     #                 with '(*)'. The loss is made when building the DIF from the EIF.
@@ -2472,7 +1858,7 @@ sub di7f2tex1htm {
     #   * A collective line with explicit technical parameters 'nbi' is supposed to be followed by
     #                 'nbi' image lines. If not a fatal error is raised.
     #   * A new collective TP line resets previous values to the default if not defined
-    #     except 'WID/HEI' which are resetted only by a void collective TP
+    #     except TP 'WID/HEI/WHA/CHK' which are resetted only by a void collective TP
     #   * To retrieve all default values of collective TPs just introduce a void one '<[]>'.
     #   * When 'wid' and 'WID' are defined, 'wid' is used
     #   * When 'hei' and 'HEI' are defined, 'hei' is used
@@ -2485,15 +1871,18 @@ sub di7f2tex1htm {
                                      "When '0' the default value, the name is taken from the dif."],
                  ppa  =>[{},"h","hash allowing to modify a number of default parameters,",
                                 "more precisely:",
-                                " - the argument 'par' of &lhattmel::start, default values in %pls",
+                                " - the argument 'par' of &lhattmel::start, description and default values in %pls",
                                 " - some latex specifications (default in %plt):",
                                 "       . num=>0 for the sections,... not to be numbered (default 1)",
                                 "       . red=>0.5 to get the picture half the size which is specified",
                                 "                  in the technical parameters (default 1)",
+                                "       . pbn=>2 to indicate until which section level a page break must be introduced",
                                 " - framing used when building the picture captions (default in %cfra):",
                                 "     'cfraon' for the 'o'pening of the 'n'ame",
                                 "     'cfracp' for the 'c'losing of the 'p'lace",
                                 "              and so on (see the 'cfra' definition)",
+			        " - 'subdir' as a logical to indicate if subdirectories indicated within",
+			        "            the <dif> input must be used or not",
                                 " - separating components when building the picture captions (default in %sepb):",
                                 "     'sepbn' for the 'n'ame",
                                 "     'sepbp' for the 'p'lace",
@@ -2506,6 +1895,8 @@ sub di7f2tex1htm {
                                       "(Notice that the technical parameters 'h' cannot be included",
                                       " since it is not an array but a hash so the same algorithm",
                                       "cannot be used.)"],
+                 rdi  =>[  ".",  "c","root directory from which images including their private directories",
+                                     "can be found"],
                  typ  =>[  "l",  "c","type of the output : 'l' for latex, 'h' for html"]
                 };
 ##>>
@@ -2516,7 +1907,15 @@ sub di7f2tex1htm {
     my $roo = $argu->{roo};
     my $ppa = $argu->{ppa};
     my $cap = $argu->{cap};
+    my $rdi = $argu->{rdi}; unless ( $rdi =~ /\/$/ ) { $rdi = $rdi."/";}
     my $typ = $argu->{typ};
+    # subdirectories ?
+    my $subdir = 1;
+    if (defined($ppa->{subdir})) {
+	if ($ppa->{subdir}) { $subdir = 1;} else { $subdir = 0;}
+    }
+    # constant
+    my %ptp = (WID=>"wid",HEI=>"hei",WHA=>"wha",CHK=>"chk");
     # initialization
     my $res = 1;
     if ($roo eq "0") {
@@ -2542,6 +1941,7 @@ sub di7f2tex1htm {
         $res = &uie::conca8err(er1=>$res,er2=>$fifi);
         return $res;
     }
+#&uie::la(str=>$fifi,mes=>"fifi 0");
     # looking for the possible title line
     my $titre = "";
     my $nbli = scalar(@$fifi) - 1;
@@ -2600,6 +2000,7 @@ sub di7f2tex1htm {
     if (defined($ppa->{cfraog})) { $cfra{g}[0] = $ppa->{cfraog};}
     if (defined($ppa->{cfraok})) { $cfra{k}[0] = $ppa->{cfraok};}
     if (defined($ppa->{cfraom})) { $cfra{m}[0] = $ppa->{cfraom};}
+    if (defined($ppa->{cfraoo})) { $cfra{o}[0] = $ppa->{cfraoo};}
     #
     if (defined($ppa->{cfracn})) { $cfra{n}[1] = $ppa->{cfracn};}
     if (defined($ppa->{cfract})) { $cfra{t}[1] = $ppa->{cfract};}
@@ -2608,6 +2009,7 @@ sub di7f2tex1htm {
     if (defined($ppa->{cfracg})) { $cfra{g}[1] = $ppa->{cfracg};}
     if (defined($ppa->{cfrack})) { $cfra{k}[1] = $ppa->{cfrack};}
     if (defined($ppa->{cfracm})) { $cfra{m}[1] = $ppa->{cfracm};}
+    if (defined($ppa->{cfraco})) { $cfra{o}[1] = $ppa->{cfraco};}
     # modifying the default separators for the picture captions
     if (defined($ppa->{sepbp})) { $sepb{p} = $ppa->{sepbp};}
     if (defined($ppa->{sepbq})) { $sepb{q} = $ppa->{sepbq};}
@@ -2625,8 +2027,9 @@ sub di7f2tex1htm {
     my $taim = [];
     # dealing the input file line by line
     foreach my $lig (@$fifi) {
-        print "-(<$lig)>-\n";
+        #
         my $lue = &analyze8line(lin=>$lig);
+#print "lig = -(<$lig)>-\n";
         if (&uie::err9(obj=>$lue)) {
             # the line was not consistent
             my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
@@ -2650,10 +2053,18 @@ sub di7f2tex1htm {
                 return $res;
             }
             my $niv = $lue->{l}; unless ($plt{nus}) { $niv = -$niv;}
-            push @$cod,@{&lhattmel::subtit(tit=>$lue->{c},lev=>$niv,typ=>$typ)};
-        } elsif ($lue->{y} eq "add") {
+            my $pabr = {pb=>($plt{pbn}>=abs($niv))};
+            push @$cod,@{&lhattmel::subtit(tit=>$lue->{C},lev=>$niv,
+                                           par=>$pabr,typ=>$typ)};
+        } elsif ($lue->{y} eq "col") {
             # an additional collective line is identified
-            $lue = &uie::check8err(obj=>&new7pi(wha=>$lue));
+            my $clu = &uie::check8err(obj=>&check8pi(xpi=>$lue));
+            if (&uie::err9(obj=>$clu)) {
+                $res = &uie::add8err(err=>$clu,nsu=>$nsub,erm=>
+                                     ["Something went wrong with a 'col' line",
+                                      "<<$lig>>"]);
+                return $res;
+            }
             if ($nbeil > 0) {
                 $res = &uie::add8err(err=>"no",nsu=>$nsub,erm=>
                 ["A IMAGE LINE WAS EXPECTED since nbeil = $nbeil ",
@@ -2667,19 +2078,26 @@ sub di7f2tex1htm {
                 return $res;
             }
             # introducing the possible comments
-            push @$cod,@{&lhattmel::parag(prg=>$lue->{m},typ=>$typ)};
+            if (defined($lue->{m})) {	    
+                push @$cod,@{&lhattmel::parag(prg=>$lue->{m},typ=>$typ)};
+	    }
             # introducing the possible time
             if ( $lue->{t} ) {
                 my $temps = $lue->{t};
-                $temps =~ s/_/-/g; # to prevent the underscore not compatible with latex
+                #$temps =~ s/_/-/g; # to prevent the underscore not compatible with latex
                 push @$cod,@{&lhattmel::parag(prg=>["$ipi{t}: $temps"],typ=>$typ)};
             }
-            # introducing the possible other pi's
-            for my $pi ("p","q","k","g") { if ($cap =~ /\Q$pi\E/) { 
-                if ( scalar(@{$lue->{$pi}}) ) {
-                    my @intro = @{$lue->{$pi}};
-                    $intro[0] = $ipi{$pi}.$intro[0];
-                    push @$cod,@{&lhattmel::parag(prg=>\@intro,typ=>$typ)};
+            # introducing the possible other pi.s
+            #for my $pi ("p","q","k","g") { if ($cap =~ /\Q$pi\E/) { 
+            for my $pi ("p","q","k","g","o") { if ($cap =~ /\Q$pi\E/) {
+		my $luepi = $lue->{$pi};
+                if ((defined($luepi)) and ($luepi ne "")){
+		    if ($pi eq "o") { $luepi = [$luepi];}
+		    if ( scalar(@{$luepi}) ) {
+			my @intro = @{$luepi};
+			$intro[0] = $ipi{$pi}.$intro[0];
+			push @$cod,@{&lhattmel::parag(prg=>\@intro,typ=>$typ)};
+                    }
                 }
             }}
             # deal with the possible technical parameters
@@ -2687,26 +2105,40 @@ sub di7f2tex1htm {
                 ## resetting values
                 # is it a void TP?
                 my $vtp = keys %{$lue->{h}};
-                my @sau = ($hhh->{WID},$hhh->{HEI});
+                #my @sau = ($hhh->{WID},$hhh->{HEI});
+                my %sau = ();
+                foreach (keys %ptp) { $sau{$_} = $hhh->{$_};}
                 $hhh = &uie::copy8structure(str=>$cdefa);
                 if ($vtp) {
-                    $hhh->{WID} = $sau[0];
-                    $hhh->{HEI} = $sau[1];
+                    foreach (keys %ptp) { $hhh->{$_} = $sau{$_};}
+                    #&&$hhh->{WID} = $sau[0];
+                    #&&$hhh->{HEI} = $sau[1];
                 } 
                 # introducing the new values
-		foreach my $kk ("wid","hei","WID","HEI","nbi","gnl","gnc","cap") {
-		    if (defined($lue->{h}->{$kk})) {
-			if ($kk !~ /(hei)|(wid)|(HEI)|(WID)|(cap)/) {
-			    if (looks_like_number($lue->{h}->{$kk})) {
-				if ($kk eq "nbi") { $nbeil = $lue->{h}->{$kk};}
-			    } else {
-				&uie::pause(mes=>"WARNING: \$lue->{h}->{$kk} = $lue->{h}->{$kk} must be a number.");
-			    }
-			}
-			$hhh->{$kk} = $lue->{h}->{$kk};
-		    }
-		}
-	    }
+                #&&foreach my $kk ("wid","hei","WID","HEI","nbi","gnl","gnc","cap") {
+                foreach my $kk ((keys %ptp),(values %ptp),"nbi","gnl","gnc","cap") {
+                    if (defined($lue->{h}->{$kk})) {
+                        if ($kk !~ /(hei)|(HEI)|(wid)|(WID)|(wha)|(WHA)|(cap)/) { # ICI PAS D'USAGE DE %ptp :+(
+                            if (looks_like_number($lue->{h}->{$kk})) {
+                                if ($kk eq "nbi") { $nbeil = $lue->{h}->{$kk};}
+                            } else {
+                                &uie::pause(mes=>"WARNING: \$lue->{h}->{$kk} = $lue->{h}->{$kk} must be a number.");
+                            }
+                        }
+                        $hhh->{$kk} = $lue->{h}->{$kk};
+                    }
+                }
+            }
+            # deal with the possible relative directory
+#&uie::la(str=>$lue->{dir},mes=>"LUE");
+            if (defined($lue->{d})) {
+                $hhh->{dir} = $lue->{d};
+                unless ($hhh->{dir} eq "") {
+                    $hhh->{dir} =~ s/^\///;
+                    unless ($hhh->{dir} =~ /\/$/) { $hhh->{dir} = $hhh->{dir}.'/';}
+                }
+            }
+#&uie::la(str=>$hhh->{dir},mes=>"hhh d apres lue");
         } elsif ($lue->{y} eq "ext") {
             # an additional paragraph is to introduce
             push @$cod,@{&lhattmel::parag(prg=>[$lue->{p}],typ=>$typ)};
@@ -2738,8 +2170,29 @@ sub di7f2tex1htm {
                  "TO BE FIXED\n"]);
                 return $res;
             }
-            push @$cod,$lili;
+            # something to directly introduce
+            if ( $lili =~ /^\s*$incfile/) {
+                # the content of a file must be introduced
+                $lili =~ s/\s*$incfile//;
+                $lili =~ s/^\s*//;
+                $lili =~ s/\s*$//;
+                unless (-e $lili) {
+                    $res = &uie::add8err(err=>"no",nsu=>$nsub,erm=>
+                    ["THE FILE TO INTRODUCE '$lili' WAS NOT FOUND ",
+                     "  here is the line:",
+                     "\n  <$lig>\n"]);
+                    return $res;
+                } else {
+                    open(ICFL,"<$lili") or die("Not able to open $incfile");
+                    while (<ICFL>) { chomp; push @$cod,$_;}
+                    close(ICFL);
+                }               
+            } else {
+                # just the content of this line to introduce
+                push @$cod,$lili;
+            }
         } else {
+#&uie::la(str=>$lue,mes=>"lue à l'origine");
             ## an image line is expected
             unless ($lue->{y} eq "ind") {
                 $res = &uie::add8err(err=>"no",nsu=>$nsub,erm=>
@@ -2767,7 +2220,7 @@ sub di7f2tex1htm {
                 if ($cap =~ /\Q$q\E/) {
                     # this component must be included
                     $ax = "";
-                    if ("nt" =~ /\Q$q\E/) {
+                    if ("nto" =~ /\Q$q\E/) {
                         # it is a scalar component
                         $ax = $lue->{$q};
                     } else {
@@ -2788,7 +2241,7 @@ sub di7f2tex1htm {
                         # adding the frame
                         $ax = $cfra{$q}[0].$ax.$cfra{$q}[1];
                         # to avoid '_' not very compatible with latex
-                        $ax =~ s/_/-/g;
+                        #$ax =~ s/_/-/g;
                     }
                 }
                 $ax;
@@ -2796,15 +2249,22 @@ sub di7f2tex1htm {
             #----------------<END of lege>-------------------------------------
             # loading the individual technical paramaters
             my $hhi = &uie::copy8structure(str=>$idefa);
+#&uie::la(str=>$hhi,mes=>"hhi 1");
             foreach my $tk (keys %$hhi) {
                 if (defined($lue->{h}->{$tk})) {
                     $hhi->{$tk} = $lue->{h}->{$tk};
-	        }
+                }
             }
+#&uie::la(str=>$hhi,mes=>"hhi 2");
             # fitting them with the collective parameters
+            ## width and height which are linked technical parameters
+#&uie::la(str=>$hhh,mes=>"hhh");
             my $didi = (($hhi->{wid} ne "") or ($hhi->{hei} ne ""));
-            unless ($didi) { 
-                # wid/WID hei/HEI are considered
+            unless ($didi) {
+                # as both individual wid and hei are not defined,
+                # they are taken from the collective definition
+                #   upper case when collective lower case is not defined
+                #              else collective lower case
                 for my $dime ("wid","hei") {
                     if ($hhh->{$dime} eq "") {
                         $hhi->{$dime} = $hhh->{uc($dime)};
@@ -2812,9 +2272,17 @@ sub di7f2tex1htm {
                         $hhi->{$dime} = $hhh->{$dime};
                     }
                 }
-	    }
+            }
+            ## other collective parameters
+            for my $dime ("wha","chk") {
+                if ($hhh->{$dime} eq "") {
+                    $hhi->{$dime} = $hhh->{uc($dime)};
+                } else {
+                    $hhi->{$dime} = $hhh->{$dime};
+                }
+            }
             #
-            for my $quoi ('n','t','p','q','k','g','m') {
+            for my $quoi ('n','t','p','q','k','g','m','o') {
                 my $aj = &lege($quoi,$cap,$lue,$typ);
                 if ($aj) { push @caption,$aj;}
             }
@@ -2823,24 +2291,53 @@ sub di7f2tex1htm {
             if ($cap =~ /B/) { $lopt = $lopt."l";}
             if ($cap eq "") { $lopt = $lopt."X";}
             my $nima = {fil=>$lue->{n},cap=>\@caption};
+            if (defined($lue->{d})) {
+                my $diaj = $lue->{d};
+                $diaj =~ s/^\///;
+                unless ($diaj =~ /\/$/) { $diaj = $diaj.'/';}
+                if ($diaj eq "/") { $diaj = "";}
+                $nima->{dir} = $diaj;
+            }
             #----------------<START of redu>-------------------------------------
             sub redu { my $cha = $_[0];
-           	       my ($val) = $cha =~ /(\d+)/; $val = $val * $plt{red};
-           	       my ($uni) = $cha =~ /([a-zA-Z]+)/;
-           	       $val.$uni;
+                       my ($val) = $cha =~ /(\d+)/; $val = $val * $plt{red};
+                       my ($uni) = $cha =~ /([a-zA-Z]+)/;
+                       $val.$uni;
                      }
             #----------------<END of redu>-------------------------------------
             if ($hhi->{wid} ne "") { $nima->{wid} = &redu($hhi->{wid});}
             if ($hhi->{hei} ne "") { $nima->{hei} = &redu($hhi->{hei});}
             if ($hhi->{rot} != 0 ) { $nima->{rot} = $hhi->{rot};}
+            if ($hhi->{wha} ne "") { $nima->{wha} = $hhi->{wha};}
+            $nima->{vsp} = $hhi->{vsp};
             push @$taim,$nima;
             if ($nbeil == 0) {
                 unless ($gilab) {$lopt = $lopt."X";} # removing labels to images in grid
-                push @$cod,@{&lhattmel::picture(ima=>$taim,
-                                                dim=>[$hhh->{gnl},$hhh->{gnc}],
-                                                cca=>[$hhh->{cap}],
-                                                opt=>$lopt."b",
-                                                typ=>$typ)};
+                #
+                # replacing the directory if an individual is indicated
+                # 
+                my $taimb = &uie::copy8structure(str=>$taim);
+                foreach my $iimm (@$taimb) {
+                    my $reper = $rdi;
+		    if ($subdir) {
+			# relative directory must be added
+			if ($iimm->{dir}) {
+			    # the individual directory must be used
+			    $reper = $reper.$iimm->{dir};
+			} else {
+			    if (defined( $hhh->{dir})) {
+				# the collective directory must be used
+				$reper = $reper. $hhh->{dir};
+			    }
+			}
+		    }
+                    $iimm->{fil} = $reper.$iimm->{fil};
+                }
+                push @$cod,@{&lhattmel::picture1item(ima=>$taimb,
+                                                     dim=>[$hhh->{gnl},$hhh->{gnc}],
+                                                     cca=>[$hhh->{cap}],
+                                                     opt=>$lopt."b",
+                                                     typ=>$typ)};
                 # resetting
                 $taim = [];
                 for my $rt ("nbi","gnl","gnc","cap") {
@@ -2869,7 +2366,7 @@ sub di7f2tex1htm {
 #############################################
 #
 ##<<
-sub analyze8series {
+sub analyze8named7vector {
     #
     # title : get the values of a line similar to technical ones
     #
@@ -2914,72 +2411,6 @@ sub analyze8series {
 #############################################
 #
 ##<<
-sub analyze8kwd {
-    #
-    # title : get the values of a line similar to keywords
-    #
-    # aim : the difficulty is that keywords can comprise
-    #      several words indicated with some framing
-    #
-    # output : an error object if something
-    #         was wrong, if not an array reference giving
-    #         in the same order the different components
-    #
-    # arguments
-    my $hrsub = {lin  =>[              undef, "c","The string to analyze"],
-                 sep  =>[           $sepa{k}, "c","Separator between components"],
-                 fra  =>[[$can{ko},$can{kc}], "a","Framing for multiple word components"]
-                };
-##>>
-    my $nsub = (caller(0))[3];
-    my $argu   = &uie::argu($nsub,$hrsub,@_);
-    if ($argu == 1) { return 1;}
-    my $lin = $argu->{lin};
-    my $sep = $argu->{sep};
-    my $fra = $argu->{fra};
-    # initialization
-    my $res   = [];
-    # getting the components
-    my $ax = &uie::juste(cha=>$lin,jus=>"n",spa=>"s");
-    my @ax = split(/\Q$sep\E/,$ax);
-    my $err = &uie::add8err(err=>"no",nsu=>$nsub,
-                            erm=>[$lin,
-                            "Unaccepted string as a series of keywords!",
-                            "Probably some bad matching with $fra->[0] and $fra->[1]?"]);
-    $ax = 0; my ($cnt,$cas);
-    foreach my $bx (@ax) {
-        # detecting the case
-        if ( $bx =~ /^\Q$fra->[0]\E(.*)\Q$fra->[1]\E$/ ) {
-            # framing both sides
-            if ($ax) { return $err;}
-            $cnt = $1; $cas = 3; $ax = 0;
-        } elsif (  $bx =~ /^\Q$fra->[0]\E(.*)$/ ) {
-            # framing at the beginning
-            if ($ax) { return $err;}
-            $cnt = $1; $cas = 1; $ax = 1;
-        } elsif (  $bx =~ /(.*)\Q$fra->[1]\E$/ ) {
-            # framing at the end
-            unless ($ax) { return $err;}
-            $cnt = $cnt." ".$1; $cas = 2; $ax = 0;
-        } else {
-            # without any framing
-            if ($ax) {
-                $cnt = $cnt." ".$bx; $cas = 0; $ax = 1;
-            } else {
-                $cnt = $bx; $ax = 0;
-            }
-        }
-        # action
-        unless ( $ax ) {
-            push @$res,&uie::juste(cha=>$cnt,jus=>"n",spa=>"s");
-        }
-    }
-    # returning
-    $res;
-}
-#############################################
-#
-##<<
 sub update8st7pi {
     #
     # title : replace shortcuts by their values
@@ -2994,7 +2425,7 @@ sub update8st7pi {
     #
     #
     # arguments
-    my $hrsub = {xpi  =>[undef,  "h","Initial pi's with possible shortcuts"],
+    my $hrsub = {xpi  =>[undef,  "h","Initial pi.s with possible shortcuts"],
                  stc  =>[   {},  "h","Definition of the shortcuts, as provided",
                                      "by 'read8st7f"]
                 };
@@ -3005,18 +2436,26 @@ sub update8st7pi {
     my $xpi = $argu->{xpi};
     my $stc = $argu->{stc};
     my $res = &uie::copy8structure(str=>$xpi);
-    ## checking the type 
-    if (($res->{y} ne "col") and ($res->{y} ne "ind")) {
+    ## checking the validity
+    my $rrr = &check8pi(xpi=>$res);
+    if (&uie::err9(obj=>$rrr)) {
+        $rrr = &uie::add8err(err=>$rrr,nsu=>$nsub,
+                             erm=>["The proposed pi series is not valid!"]);
+        return $rrr;
+    }
+    ## checking the type
+    unless ($res->{y} =~ /^(ind)|(IND)|(col)|(COL)$/) {
         my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
                                 erm=>["pi with type $res->{y} must not be proposed for shortcut replacement"]);
+        return $rrr;
     }
     my $llev;
     my $col = 0;
-    if ($res->{y} eq "col") { $col = 1; $llev = scalar(@{$res->{k}}) - 1;}
+    if ($res->{y} eq "COL") { $col = 1; $llev = scalar(@{$res->{k}}) - 1;}
     ## proceeding
-    my @geke = ("p","q","g","k");
+    my @geke = ("p","q","k","g");
     foreach my $k (@geke) {
-        # for each component of the present pi's
+        # for each component of the present pi.s
         my $kl;
         if ($col) { 
             $kl = scalar(@{$res->{$k}->[$llev]})-1;
@@ -3051,27 +2490,21 @@ sub update8st7pi {
                         if ($kka eq "g") {
                             # category exception
                             if ($col) {
-                                #push $res->{$kka}->[$llev],$res->{$k}->[$llev]->[$kk];
                                 push @{$res->{$kka}->[$llev]},$res->{$k}->[$llev]->[$kk];
                             } else {
-                                #push $res->{$kka},$res->{$k}->[$kk];
                                 push @{$res->{$kka}},$res->{$k}->[$kk];
                             }
                         } else {
                             # other keywords
                             if ($col) {
-                                #push $res->{$kka}->[$llev],$stc->{$kkk}->{$res->{$k}->[$llev]->[$kk]};
                                 push @{$res->{$kka}->[$llev]},$stc->{$kkk}->{$res->{$k}->[$llev]->[$kk]};
                             } else {
-                                #push $res->{$kka},$stc->{$kkk}->{$res->{$k}->[$kk]};
                                 push @{$res->{$kka}},$stc->{$kkk}->{$res->{$k}->[$kk]};
                             }
                         }
                         if ($col) {
-                            #splice $res->{$k}->[$llev],$kk,1;
                             splice @{$res->{$k}->[$llev]},$kk,1;
                         } else {
-                            #splice $res->{$k},$kk,1;
                             splice @{$res->{$k}},$kk,1;
                         }
                     }
@@ -3088,37 +2521,35 @@ sub update8st7pi {
 ##<<
 sub col7pi2ind7pi {
     #
-    # title : prepare a individual pi's
+    # title : prepare an individual pi.s
     #
-    # aim : using the current collective pi's
-    #        adapt an individual pi's according
-    #        to the planned file (dif/icf).
+    # aim : using the current collective pi.s
+    #        adapt an individual pi.s.
     # 
     # output : an error object if something
     #         was wrong, if not a hash with
-    #         different pi's corresponding
-    #         to the individual pi series.
+    #         different pi.s corresponding
+    #         to the individual pi series:
+    #         'ind' or 'IND' according to
+    #         the absence/presence of 'c' in
+    #         argument 'cum'
     #
-    # remarks: only for 'icf' output, the individual pi is
-    #          modified. This is done with the following rules.
-    #         (i) escaped pi's are left are they are
-    #             (escaping commands are looked within the
-    #              categories).
-    #         (ii) collective time is used only when there
-    #              is no individual time. Nevertheless, missing
-    #              year can be taken from the collective time.
-    #         (iii) collective technical parameters are used
-    #               when there are no individual ones.
-    #         (iii) collective directory is integrated if any
-    #         (iv) p-q-k-g-m pi's are integrated
-    #         (v) the stack of circumstances is introduced
+    # remarks:
+    #         (i) escaped pi.s are left are they are
+    #             (escaping commands are looked for within the
+    #              categories). For instance '--kg--' means that
+    #              k-pi and g-pi must not be introduced.
+    #              Beware that when a pi is escaped, it is not
+    #              introduced even if asked with the argument 'cum'
     #
     # arguments
-    my $hrsub = {cpi  =>[undef,  "h","collective pi's"],
-                 ipi  =>[undef,  "h","Individual pi's to adjust"],
-                 lpi  =>[undef,  "h","pi's of the last image in case of 'identical'"],
-                 whi  =>[undef,  "c","'dif' or 'icf' to indicate which type of file",
-                         "will be created"]
+    my $hrsub = {cpi  =>[undef,  "h","collective pi.s"],
+                 ipi  =>[undef,  "h","Individual pi.s to adjust"],
+                 lpi  =>[undef,  "h","pi.s of the last image in case of 'identical'"],
+                 cum  =>[undef,  "c","A string indicating which pi.s must be cumulated.",
+                                     "For instance 'mkgd' indicates that only collective",
+                                     "comments, keywords, categories and directory must",
+                                     "be cumulated"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
@@ -3127,70 +2558,104 @@ sub col7pi2ind7pi {
     my $cpi = $argu->{cpi};
     my $ipi = $argu->{ipi};
     my $lpi = $argu->{lpi};
-    my $whi = $argu->{whi};
-    if ($whi eq "dif") { return $ipi;}
-    my $rrr = "";
-    unless ($whi eq "icf") {
-        $rrr = &uie::add8err(err=>$rrr,nsu=>$nsub,
-                             erm=>["Proposed 'whi' argument ($whi) not accepted",
-                                   "(must be 'dif' or 'icf')."]);
-    }
+    my $cum = $argu->{cum};
+    # initialization
     my $res = &uie::copy8structure(str=>$ipi);
+    if ($cum =~ /c/) {
+	# upper cased individual pi.s
+	$res->{y} = "IND";
+    }
     # getting first the possible commands
     my $ident = 0; my $escap = "";
     my @cate = [];
     if (defined($ipi->{g})) { @cate = @{$ipi->{g}};}
     foreach (@cate) {
-        if (($_ =~ /^${kom}I${kom}$/) and ($ident < 1)) { $ident = 1;}
-        if ($_ =~ /^${kom}c${kom}$/) { $escap = $escap."c";}
-        if ($_ =~ /^${kom}t${kom}$/) { $escap = $escap."t";}
-        if ($_ =~ /^${kom}p${kom}$/) { $escap = $escap."p";}
-        if ($_ =~ /^${kom}q${kom}$/) { $escap = $escap."q";}
-        if ($_ =~ /^${kom}k${kom}$/) { $escap = $escap."k";}
-        if ($_ =~ /^${kom}m${kom}$/) { $escap = $escap."m";}
-        if ($_ =~ /^${kom}h${kom}$/) { $escap = $escap."h";}
-        if ($_ =~ /^${kom}A${kom}$/) { $escap = $escap."ctpqkmh";}
-        if ($_ =~ /^${kom}K${kom}$/) { $escap = $escap."k";}
-        if ($_ =~ /^${kom}C${kom}$/) { $escap = $escap."cm";}
-    }
-    # time period
-    unless (defined($ipi->{t})) {
-        # no individual time
-        if ($ident) {
-            # possibly getting the last time
-            if (defined($lpi->{t})) { $res->{t} = $lpi->{t};}
-        } else {
-            # possibly getting the collective time
-            unless ($escap =~ /t/) {
-                $res->{t}->[0] = &get8date(nam=>$ipi->{n}->[0],tim=>$cpi->{t}->[0]);
+        # is it a command?
+        if ($_ =~ /^${kom}.+${kom}$/) {
+            my $reste = $_;
+            $reste =~ s/^${kom}//;
+            $reste =~ s/${kom}$//;
+            # does identical prevail?
+            if ($reste =~ /I/) {
+                $ident = 1;
+            } else {
+                # looking for other escaping
+                if ($reste =~ /A/) { $escap = $escap."cmpqkgtodh";}
+                if ($reste =~ /K/) { $escap = $escap."kg";}
+                if ($reste =~ /C/) { $escap = $escap."cm";}
+                $escap = $escap.$reste;
             }
         }
     }
-    # hierarchical array pi's
-    my $nbc = scalar(@{$cpi->{c}}) - 1;
-    # cumulating the circumstances
-    @{$res->{c}} = @{$cpi->{c}};
-    foreach my $kpi ("p","q","g","k","m") { unless ($escap =~ /\Q$kpi\E/) {
-        # cumulating the complete hierarchy
-        my @cumu = ();
-        for (0..$nbc) { if ($cpi->{$kpi}->[$_]->[0]) {
-            push @cumu,@{$cpi->{$kpi}->[$_]};
-        }}
-        if ($ipi->{$kpi}->[0]) { push @cumu,@{$ipi->{$kpi}};}
-        @{$res->{$kpi}} = @cumu;
-    }}
-    # directory pi
-    unless ($escap =~ /d/) {
-        my @cumu = ();
-        if ($cpi->{d} ne "") { push @cumu,$cpi->{d};}
-        if ($ipi->{d} ne "") { push @cumu,$ipi->{d};}
-        $res->{d} = join($sepa{d},@cumu);
+    # identical ?
+    if ($ident) {
+        $res = &uie::copy8structure(str=>$lpi);
+        $res->{n} = $ipi->{n};
+        return $res;
     }
+    ## not identical
+    # scalar pi.s
+    foreach my $scal ("t","o","d") {
+        if ($cum =~ /$scal/) { unless ($escap =~ /$scal/) {
+            # cumulation is asked for
+            unless ($res->{$scal}) { ## PEUT-ÊTRE faut-il utiliser 'defined' ???
+                # effective only when the pi isn't already provided
+                if ($scal eq "t") {
+                    # special case of the time
+                    $res->{t} = &get8date(nam=>$ipi->{n},tim=>$cpi->{t});
+                } else {
+                    # standard case
+                    if ($ipi->{$scal} eq "") { $res->{$scal} = $cpi->{$scal};}
+                }
+            }
+        }}
+    }
+    # vectorial pi.s
+    my $nbc = scalar(@{$cpi->{c}}) - 1;
+    foreach my $scal ("c","m","p","q","k","g") {
+        if ($cum =~ /$scal/) { unless ($escap =~ /$scal/) {
+            # getting the part to cumulate
+            my @cumu = ();
+            for (0..$nbc) { if ($cpi->{$scal}->[$_]->[0]) { 
+                push @cumu,@{$cpi->{$scal}->[$_]};
+            }}
+            # adding when it exists, the individual part
+            if ($ipi->{$scal}->[0]) { push @cumu,@{$ipi->{$scal}};}
+            # filling the value
+            @{$res->{$scal}} = @cumu;
+        }}
+    }    
     # technical parameter pi
     unless ($escap =~ /h/) {
+        # non dimension cases
         for my $ke (keys %{$cpi->{h}}) {
-            unless (defined($ipi->{h}->{$ke})) {
-                $res->{h}->{$ke} = $cpi->{h}->{$ke};
+            unless ($ke =~ /(WID)|(wid)|(HEI)|(hei)/) {
+		# not the case of dimension
+                unless (defined($ipi->{h}->{$ke})) {
+		    # the parameter is not defined at the individual level
+		    if (defined($cpi->{h}->{$ke})) {
+			# defined at the collective level
+                        $res->{h}->{$ke} = $cpi->{h}->{$ke};
+		    } elsif (defined($cpi->{h}->{uc($ke)})) {
+			# defined at the COLLECTIVE level
+                        $res->{h}->{$ke} = $cpi->{h}->{uc($ke)};
+		    }
+                }
+            }
+        }
+        # the tricky dimension case
+        unless (defined($ipi->{h}->{wid}) or defined($ipi->{h}->{hei})) {
+            # no dimension was defined as the individual level
+            if (defined($cpi->{h}->{wid}) or defined($cpi->{h}->{hei})) {
+                # dimension was defined as the collective lower case
+                if (defined($cpi->{h}->{wid})) { $res->{h}->{wid} = $cpi->{h}->{wid};}
+                if (defined($cpi->{h}->{hei})) { $res->{h}->{hei} = $cpi->{h}->{hei};}
+            } else {
+                if (defined($cpi->{h}->{WID}) or defined($cpi->{h}->{HEI})) {
+                    # dimension was defined as the collective upper case
+                    if (defined($cpi->{h}->{WID})) { $res->{h}->{wid} = $cpi->{h}->{WID};}
+                    if (defined($cpi->{h}->{HEI})) { $res->{h}->{hei} = $cpi->{h}->{HEI};}
+                }
             }
         }
     }
@@ -3204,7 +2669,6 @@ sub col7pi2ind7pi {
         $res = &uie::conca8err(er1=>$res,er2=>$resu);
     }
     # returning
-    if (&uie::err9(obj=>$rrr)) { return $rrr;}
     $res;
 }
 #############################################
@@ -3217,7 +2681,9 @@ sub ei7f2di7f1ic7f {
     #
     # aim : produces either a decoded index file (dif) 
     #      or a image centered file (icf) from an edited
-    #      index file (eif)
+    #      index file (eif). A central subroutine for
+    #      the pg.album program since all used conventions
+    #      are implemented in it.
     # 
     # output : 1 when the analysis of the edited
     #         file was without trouble, if not an 
@@ -3243,10 +2709,11 @@ sub ei7f2di7f1ic7f {
     #   To the transformation can be added a selection of the retained
     #          images according to some criteria (defined in a slf file).
     #
-    #   BE AWARE THAT SOME COLLECTIVE PI'S CAN BE LOST if not associated to 
+    #   BE AWARE THAT SOME COLLECTIVE PI.S CAN BE LOST if not associated to 
     #          a set of images. The aim is to annotate, not to build a text,
     #          so information not focused to annotation of pictures is 
-    #          not considered.
+    #          not considered. Nevertheless upper case technical parameters
+    #          are not lost except when an empty set is proposed.
     #
     #   Nevertheless, you can write paragraphs (then also lists, see lhattmel::parag
     #          subroutine) with the specific lines starting with (*).
@@ -3258,6 +2725,11 @@ sub ei7f2di7f1ic7f {
     #   As the subroutine is quite long and intricated, possible intermediary
     #          printing can be asked by modifying the local variable $impint.
     #
+    # TO DO: Clarify and improve the management of collective pi, Why not
+    #        allow successive definition for upper case technical parameters?
+    #        Why no repeat them at the beginning of each new circumstance in 
+    #        the produced eif, even if they are not modified?
+    #
     # arguments
     my $hrsub = {eif  =>[undef,  "c","The root of the edited index file to transform",
                                      "('-eif.txt' suffix will be added)."],
@@ -3265,10 +2737,16 @@ sub ei7f2di7f1ic7f {
                                      "('-dif.txt' or '-icf.txt' suffix will be added)."],
                  typ  =>["dif",  "c","Type of the created file if not must be 'icf'"],
                  new  =>[    1,  "n","Must not the 'out' file to already exist?",
-                                     "If so a message error is issued."],
+                                     "If so and 'bsk' is not provided a message error is",
+                                     "returned. Whenissued. When 'bsk' is provided,",
+                                     "it is replaced after being saved into the basket."],
                  slf  =>[   "",  "c","Root of the selection definition file to use",
                                      "when '', no selection is performed",
-                                     "('-slf.txt' suffix will be added)."]
+                                     "('-slf.txt' suffix will be added).",
+			             "Only selected images are left in the output file"],
+		 bsk  =>[   "",  "c","The basket where to save the output file",
+			             "if it exists and 'new' is 1 except to the default",
+			             "value ''."]
                 };
 ##>>
     my $nsub = (caller(0))[3];
@@ -3279,6 +2757,7 @@ sub ei7f2di7f1ic7f {
     my $dif = 1; if ($typ eq "icf") { $dif = 0;} else { $typ = "dif";}
     my $out = $argu->{out}; $out = $out."-$typ.txt";
     my $new = $argu->{new};
+    my $bsk = $argu->{bsk};
     my $slf = $argu->{slf}; unless ($slf eq "") { $slf = $slf."-slf.txt";}
     my $res = 1;
     # to print intermediate results
@@ -3292,7 +2771,10 @@ sub ei7f2di7f1ic7f {
     $impint = "pau.ipi.cpi.sel.pi.ima.cat.kwd.lig";
     $impint = "pau.stf";
     $impint = "sel.pau";
+    $impint = "sel.pau.slf";
     $impint = "pau";
+    # to check duplication of images (now forbidden)
+    my %verdup = ();
     # reading the input file
     my $fifi = &uie::read8line(fil=>$eif);
     if (&uie::err9(obj=>$fifi)) {
@@ -3313,9 +2795,14 @@ sub ei7f2di7f1ic7f {
     # openning the output file
     if ($new) {
         if (-e $out) {
-            $res = &uie::add8err(err=>"",nsu=>$nsub,
-                                 erm=>["File $out already exists and appending isn't accepted!"]);
-            return $res;
+	    unless ($bsk) {
+		$res = &uie::add8err(err=>"",nsu=>$nsub,
+				     erm=>["File $out already exists and appending isn't accepted!"]);
+		return $res;
+            } else {
+		$res = &uie::save8file(fil=>$out,wha=>"p",cor=>$bsk);
+		if (&uie::err9(obj=>$res)) { return $res;}
+	    }
         }
     }
     unless (open(TOUTOU,">>$out")) {
@@ -3347,7 +2834,7 @@ sub ei7f2di7f1ic7f {
     # initializations
     my @cico = (); # to store the circumstance comments when ($dif = 0)
                    # for the second bloc 'CIR'
-    my $colpi  = &new7pi(wha=>"col"); # to store the current collective pi's
+    my $colpi  = &new7pi(wha=>"COL"); # to store the current collective pi.s
     my $laspic = &new7pi(wha=>"ind"); # last picture to refer to it
     my $pkad = {}; # to store the collection of shortcuts
     my $reline; # retired line
@@ -3363,7 +2850,7 @@ sub ei7f2di7f1ic7f {
                                      erm=>["'$idif{stf}' lines must comprise only 2 words",
                                            $line." was found."]);
             } else {
-                $pkad = &read8st7f(fil=>$ax[1],ref=>$pkad);
+                $pkad = &read8st7f(fil=>"$ax[1]-$idif{stf}.txt",ref=>$pkad);
                 if (&uie::err9(obj=>$pkad)) {
                     $res = &uie::conca8err(er1=>$res,er2=>$pkad);
                 }
@@ -3388,10 +2875,12 @@ sub ei7f2di7f1ic7f {
     for (my $ii = $nbli; $ii >= 0; $ii--) {
         my $faite = 0;
         foreach my $indi (values(%idrf)) {
-            if ($fifi->[$ii] =~ /^$indi\s/) {
+#            if ($fifi->[$ii] =~ /^$indi\s/) {
+            if (defined($fifi->[$ii])) {if ($fifi->[$ii] =~ /^$indi\s/) {
                 my $line = splice(@$fifi,$ii,1);
                 $faite = 1;
-            }
+#            }
+	}}
         }
     }
     # looking for the compulsory title line
@@ -3432,85 +2921,98 @@ sub ei7f2di7f1ic7f {
         my $speci = 0;
         foreach my $tag (values %telquel) { if ($li =~ /^$tag/) { $speci = 1;} }
         if ($speci) {
-            # line to copy as it is
-            print TOUTOU $li,"\n";
+            # line to copy as it is when a dif is aimed to
+            # exception raised on 18_12_31
+            if ($typ eq "dif") { print TOUTOU $li,"\n";}
         } else {
             # line to be analyzed
-	    my $lue = &uie::check8err(obj=>&analyze8line(sht=>$pkad,lin=>$li),sig=>"(From $nsub [1])");
-	    # 
-	    unless ($lue->{y} eq "ind") {
-		# it is not a line describing an image
-		if ($lue->{y} eq "ext") {
-		    # it is an external paragraph
-		    if ($dif) { print TOUTOU $li,"\n";}
-		    # forgotten line for ICF
-		} else {
-		    if ($lue->{y} eq "cir") {                 # a new circumstance occurs
-			#($li eq $fifi->[scalar(@$fifi)-1]) ) {  # or it is the last line: doesn't care
-			# must the col pit be written? NEVER: GOAL IS ANNOTATION!
-			# it is a new circumstance
-			my $cirm = &pi2line(xpi=>$lue);
-			if ($dif) { print TOUTOU $cirm,"\n";}
-			else { push @cico,($cirm);}
-		    }
-		    # the current collective pi's must be updated
-		    $colpi = &uie::check8err(obj=>&update8col7pi(cop=>$colpi,sup=>$lue),
-					     sig=>"(From $nsub [1])");
-		    # 
-		    $newpic = 1; # a new sequence of image has to be started
-		}
-	    } else {
-		# the line describes a new image
-		# is this image selected?
-		my $imasel = 1;
-		if ($selec) {
-		    # incoporating the collective pi's in the found image
-		    my $sima = &uie::check8err(obj=>&col7pi2ind7pi(cpi=>$colpi,ipi=>$lue,lpi=>$laspic,whi=>"icf"),
-					      sig=>"(From $nsub [-2])");
-		    # replacing shortcuts with their values
-		    $sima = &update8st7pi(xpi=>$sima,stc=>$pkad);
-		    unless (&uie::check8err(obj=>&select8image(ima=>$sima,cri=>$selec))) {
-			if ($impint =~ /sel/) {
-			    &print8pi(xpi=>$sima); 
-			    if ($impint =~ /pau/) { &uie::pause(mes=>"not selected");}
-			    else { print "  -> not selected\n";}
-			}
-			$imasel = 0;
-		    } else {
-			if ($impint =~ /sel/) {
-			    &print8pi(xpi=>$sima); 
-			    if ($impint =~ /pau/) { &uie::pause(mes=>"SELECTED");}
-			    else { print "  -> SELECTED\n";}
-			}
-		    }
-		}
-		if ($imasel) {
-		    # incoporating the collective pi's in the found image
-		    my $vam = &uie::check8err(obj=>&col7pi2ind7pi(cpi=>$colpi,ipi=>$lue,lpi=>$laspic,whi=>$typ),
-					  sig=>"(From $nsub [2])");
-		    # replacing shortcuts with their values
-		    my $vamt = &update8st7pi(xpi=>$vam,stc=>$pkad);
-		    # the image was selected, some writing to do
-		    if ($newpic and $dif) {
-			# write the additionnal pi after replacing its shortcuts
-			my $colpit = &update8st7pi(xpi=>$colpi,stc=>$pkad);
-			print TOUTOU &pi2line(xpi=>$colpit),"\n";
-		    }
-		    # write the picture itself
-		    print TOUTOU &pi2line(xpi=>$vamt),"\n";
-		    # keeping the future last picture
-		    $laspic = &uie::copy8structure(str=>$vam);
-		    $newpic = 0; # collective pi's already written in case of DIF
+            my $lue = &uie::check8err(obj=>&analyze8line(sht=>$pkad,lin=>$li),sig=>"(From $nsub [1])");
+            # 
+            unless ($lue->{y} eq "ind") {
+                # it is not a line describing an image
+                if ($lue->{y} eq "ext") {
+                    # it is an external paragraph
+                    if ($dif) { print TOUTOU $li,"\n";}
+                    # forgotten line for ICF
+                } else {
+                    if ($lue->{y} eq "cir") {                 # a new circumstance occurs
+                        #($li eq $fifi->[scalar(@$fifi)-1]) ) {  # or it is the last line: doesn't care
+                        # must the col pit be written? NEVER: GOAL IS ANNOTATION!
+                        # it is a new circumstance
+                        my $cirm = &pi2line(xpi=>$lue);
+                        if ($dif) { print TOUTOU $cirm,"\n";}
+                        else { push @cico,($cirm);}
+                    }
+                    # the current collective pi.s must be updated
+                    $colpi = &uie::check8err(obj=>&update8col7pi(cop=>$colpi,sup=>$lue),
+                                             sig=>"(From $nsub [1])");
+                    # 
+                    $newpic = 1; # a new sequence of image has to be started
+                }
+            } else {
+                # the line describes a new image
+                # is this image selected?
+                my $imasel = 1;
+                if ($selec) {
+                    # incoporating the collective pi.s in the found image just to know if it must be selected
+                    my $sima = &uie::check8err(obj=>&col7pi2ind7pi(cpi=>$colpi,ipi=>$lue,lpi=>$laspic,cum=>"cmpqkgtod"),
+                                              sig=>"(From $nsub [-2])");
+                    #&uie::la(str=>$sima,mes=>"sima");
+                    # replacing shortcuts with their values
+                    $sima = &update8st7pi(xpi=>$sima,stc=>$pkad);
+                    unless (&uie::check8err(obj=>&select8image(ima=>$sima,cri=>$selec))) {
+                        if ($impint =~ /sel/) {
+                            &print8pi(xpi=>$sima); 
+                            if ($impint =~ /pau/) { &uie::pause(mes=>"not selected");}
+                            else { print "  -> not selected\n";}
+                        }
+                        $imasel = 0;
+                    } else {
+                        if ($impint =~ /sel/) {
+                            &print8pi(xpi=>$sima); 
+                            if ($impint =~ /pau/) { &uie::pause(mes=>"SELECTED");}
+                            else { print "  -> SELECTED\n";}
+                        }
+                    }
+                }
+                if ($imasel) {
+                    # incoporating the collective pi.s in the found image
+		    my $ymettre = "to";
+		    if ($typ eq "icf") { $ymettre = "cmpqkgtod";}
+                    my $vam = &uie::check8err(obj=>&col7pi2ind7pi(cpi=>$colpi,ipi=>$lue,lpi=>$laspic,cum=>$ymettre),
+                                          sig=>"(From $nsub [2])");
+                    #&uie::la(str=>$vam,mes=>"vam");
+                    # replacing shortcuts with their values
+                    my $vamt = &update8st7pi(xpi=>$vam,stc=>$pkad);
+                    # the image was selected, some writing to do
+                    if ($newpic and $dif) {
+                        # write the additionnal pi after replacing its shortcuts
+                        my $colpit = &update8st7pi(xpi=>$colpi,stc=>$pkad);
+                        print TOUTOU &pi2line(xpi=>$colpit),"\n";
+                    }
+                    # check for possible duplication
+                    my $nono = $vamt->{"n"};
+                    if (defined($verdup{$nono})) {
+                        $verdup{$nono}++;
+                        #&uie::la(str=>$vam,mes=>"vam");
+                    } else {
+                        $verdup{$nono} = 1;
+                    }
+                    # write the picture itself
+                    print TOUTOU &pi2line(xpi=>$vamt),"\n";
+                    # keeping the future last picture
+                    $laspic = &uie::copy8structure(str=>$vam);
+                    $newpic = 0; # collective pi.s already written in case of DIF
                     ## removing non permanent collective pi
                     for my $rt ("nbi","gnl","gnc","cap") {
                         $colpi->{h}->{$rt} = $cdefa->{$rt};
                     }
 
-		}
-	    }
-	}
+                }
+            }
+        }
     }
-    # introducting the categories
+    # introducing the categories
     my $nbcat = scalar(keys %{$pkad->{cat}});
     if ($nbcat) {
         print TOUTOU "# $nbcat categories were introduced\n";
@@ -3532,272 +3034,569 @@ sub ei7f2di7f1ic7f {
     }
     #
     close(TOUTOU);
+    # checking for duplication
+    foreach (keys %verdup) {
+        unless ($verdup{$_} > 1) {delete $verdup{$_};}
+    }
+    my $nbdi = scalar(keys %verdup);
+    if ($nbdi > 0) {
+        &uie::print8structure(str=>\%verdup); print "\n";
+        $res = &uie::add8err(err=>"no",nsu=>$nsub,
+                             erm=>["$nbdi images were found duplicated in the input EIF $eif",
+                                   "Their list was just displayed. This is not valid!",
+                                   "If you want the same images more than once in your output",
+                                   "copy it with different names...",
+                                   "EVEN if they are coming from different directories,",
+                                   "PHOGES forces you to give them a different name"
+                                  ]);
+    }
     # returning
     $res;
 }
 #############################################
 #
 ##<<
-sub update8image4di7f {
+sub fit8image {
     #
-# faire plus général d'extraction de pi
-    # title : updates a set of reduced images
+    # title : transform one image to an exact precision
     #
-    # aim : produces images with convenient sizes
-    #      from an original image base, accordingly
-    #      with the dimensions they will be printed.
-    #      Already prepared images are not rebuilt.
-    #
-    #      Basically three input are used:
-    #         a dif file indicating which images
-    #             are needed and the dimensions
-    #             they will be displayed.
-    #         a directory of original images, supposed
-    #             to contain of the used images
-    #         a directory where the reduced images
-    #             will be stored, not repeated
-    #             when present in the right sizes
-    # 
-    #      To which some specifications about the
-    #             level of reduction to apply:
-    #          (i) must it be computed on the
-    #              /w/idth, the /h/eight, the /l/argest
-    #              dimension of both, the /s/mallest of 
-    #              both or the /a/rea.
-    #              Notice that if the rotation is not 0
-    #              or 180, width and height are shifted.
-    #         (ii) how many pixels are asked for one inch
-    #         
-    #      Also, the desired accuracy to decide if
-    #              a preexisting image must be rebuilt
-    #              or not.
+    # aim : produce images with convenient sizes
+    #         from an original image base, accordingly
+    #         with the dimensions they will be printed.
+    #      When both height and width of the destination
+    #         image are given, the resulting image
+    #         can be not homothetic to the original one,
+    #         this is why usually either only one dimension
+    #         is given, the other is computed
+    #      Already prepared (according to epr and eps 
+    #         criteria) images are not rebuilt.
+    #      The original image cannot be modified.
     #
     # notice that care can be taken from the portrait shots
     #        with the auto-orient option of ImageMagick::convert
     #
-    # output : the number of replaced images
-    #         or an error message when something went wrong
-    #
-    # remarks : x For simplicity, but not for safety original and reduced images 
-    #             have the same name. To prevent the destruction of original
-    #             images, when a replaced image has got more pixels that the
-    #             original one, a precautionary question is raised on the screen.
-    #             Nevertheless, it can be desactivated.
-    #           x ImageMagick facilities are used for the reduction
+    # remarks : x ImageMagick facilities are used
     #           x Perl module Image::Size is used to know image dimensions
+    #           x a temporary original is created, possibly
+    #             auto-oriented, and then deleted.
+    #           x Resulting image can be a magnified image
+    #
+    # TO REMEMBER : in a first step, I gave the same name
+    #               for the temporary file but PERL was to fast
+    #               with respect to the file copy/delete that
+    #               this produced a terrific mess!
+    #
+    # output : [$orient,$transf]
+    #           $orient = 1 if auto-orientation was applied
+    #                     0 if not
+    #           $transf = 1 when the image has been transformed
+    #                     0 a convenient image was already present
+    #
+    #           or an error message when something went wrong
     #
     # arguments
-    my $hrsub = {dif  =>[undef,  "c","Name root of the dif (decoded index file)"],
-                 ori  =>[undef,  "c","Directory where the original images can be found"],
-                 red  =>[undef,  "c","Directory where the reduced images can be found or must be introduced"],
-                 opt  =>[{typ=>"a",ppi=>300}, "h","'typ' indicates the way the scale is computed as explained",
-                                                "in the general comments. 'ppi' is the number of pixels per inch",
-                                                "(Be aware that when changing any default value(s), all components",
-                                                " of the hash must be provided: default is global"]
+    my $hrsub = {orf  =>[undef,  "c","Name of the original picture file"],
+                 def  =>[undef,  "c","Name of the destination picture file"],
+                 auo  =>[    0,  "n","Must auto-orientation transformation be applied",
+                                     "on the original image (will be kept untouched)",
+                                     "before the potential selection for transformation?"],
+                 hei  =>["0mm",  "cu","Height dimension of the printed picture (eg: 5.4cm),", 
+                                     "must be given 'cm' or 'mm' (lower case), can be 'undef'",
+                                     "A value of '0' or 'undef' means that this argument must not be considered",
+                                     "but either 'hei' or 'wid' must be given if not 'wid' will be put to '8cm'"],
+                 wid  =>["0mm",  "cu","Width dimension of the printed picture (same details as 'hei')"],
+                 ppi  =>[  300,  "n","Desired number of pixels per inch for the destination picture.",
+                                      "When zero, the original image will just copied",
+                                      "When negative, the number of pixels for the greater dimension"],
+                 eps  =>[  0.02, "n","Relative tolerance limit to accept an already existing destination file"],
+                 qua  =>[    85, "n","Quality percentage to use with the 'convert' commande"],
+                 imp  =>[    1,  "n","0: no message; 1: found dimensions displayed,",
+                                     "2: convert displayed, 3: 1+2"],
+                 tmp  =>["."  ,  "c","directory where to place the temporary copy of the original image file"]
                 };
 ##>>
     my $nsub = (caller(0))[3];
     my $argu   = &uie::argu($nsub,$hrsub,@_);
     if ($argu == 1) { return 1;}
-    my $dif = $argu->{dif}; $dif = $dif."-dif.txt";
-    my $ori = $argu->{ori};
-    my $red = $argu->{red};
-    my $opt = $argu->{opt};
-    # initialization
-    my $res = 0;
-# à vérifier
-my ($nbeil,$cap,$gilab,$cod,$typ,$ouf);
-    # reading the input file
-    my $fifi = &uie::read8line(fil=>$dif);
-    if (&uie::err9(obj=>$fifi)) {
-        $res = &uie::add8err(err=>"",nsu=>$nsub,
-                             erm=>["Bad reading for $dif as an edited index file"]);
-        $res = &uie::conca8err(er1=>$res,er2=>$fifi);
+    my $orf = $argu->{orf};
+    my $def = $argu->{def};
+    my $auo = $argu->{auo};
+    my $hei = $argu->{hei}; unless (defined($hei)) { $hei = "0mm";}; $hei = &uie::clean8string(str=>$hei); if ($hei eq "") { $hei = "0mm";}
+    my $wid = $argu->{wid}; unless (defined($wid)) { $wid = "0mm";}; $wid = &uie::clean8string(str=>$wid); if ($wid eq "") { $wid = "0mm";}  
+    my $ppi = $argu->{ppi};
+    my $imp = $argu->{imp};
+    my $eps = $argu->{eps};
+    my $qua = $argu->{qua};
+    my $tmp = $argu->{tmp};
+    my $res = "";
+    # further checking and transformation of the arguments
+    unless (-e $orf) {
+        $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["The original image file ($orf) was not found"]);
+    }
+    if (-e $def) { if ($orf eq $def) {
+        $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Original and destination image files ($orf) must not be the same"]);
+    }}
+    unless (defined($hei) or defined($wid)) {
+        $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["At least either height or width of the destination image must be defined"]);
+    } else {
+        if (defined($hei)) {
+            unless ($hei =~ /[c,m]m$/) {
+                $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Height must be defined in 'cm' or 'mm'"]);
+            } else {
+                my $coef = 1;
+                if ($hei =~ /cm$/) { $hei =~ s/cm$//; $coef=10}
+                if ($hei =~ /mm$/) { $hei =~ s/mm$//;}
+                unless (looks_like_number($hei)) {
+                    $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["The value for height is not a number: $hei"]);
+                } else { $hei = abs($coef*$hei);}
+            }
+        }
+        if (defined($wid)) {
+            unless ($wid =~ /[c,m]m$/) {
+                $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Width must be defined in 'cm' or 'mm'"]);
+            } else {
+                my $coef = 1;
+                if ($wid =~ /cm$/) { $wid =~ s/cm$//; $coef=10}
+                if ($wid =~ /mm$/) { $wid =~ s/mm$//;}
+                unless (looks_like_number($wid)) {
+                    $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["The value for width is not a number: $wid"]);
+                } else { $wid = abs($coef*$wid);}
+            }
+        }
+        if (&uie::err9(obj=>$res)) { return $res;}
+        else {
+            if (($hei+$wid == 0) and ($ppi)) {
+		$wid = "80"; 
+                #$res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Both height and width cannot be zero, one of them must be defined"]);
+                #return $res;
+            }
+        }
+    }
+    # duplicating the original image, possibly auto-orientating it
+    # HERE USING THE SAME TEMPORARY FILE GIVE ME SOME HOURS
+    # TO DISCOVER A MESS..
+    my @toto = split(/\//,$orf);
+    my $temporfi = $tmp."/totototototo.".$toto[$#toto];
+    unless (copy($orf,$temporfi)) {
+        $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Not possible to copy $orf as $temporfi"]);
         return $res;
     }
-    # default values for the collective technical parameters
-    my $cdefa = {wid=>"",hei=>"",WID=>"",HEI=>"",                
-                nbi=>1,gnl=>1,gnc=>1,cap=>""}; 
-    # default values for the individual technical parameters
-    my $idefa = {wid=>"",hei=>"",rot=>0}; 
-    my $hhh = &uie::copy8structure(str=>$cdefa);
-    my $taim = [];
-    # dealing the input file line by line
-    foreach my $lig (@$fifi) {
-        print "-(<$lig)>-\n";
-        my $lue = &analyze8line(lin=>$lig);
-        if (&uie::err9(obj=>$lue)) {
-            # the line was not consistent
-            my $rrr = &uie::add8err(err=>"",nsu=>$nsub,
-                                    erm=>["Found a non acceptable line",
-                                          "<$lig>"]);
-            $rrr = &uie::conca8err(er1=>$rrr,er2=>$lue);
-            return $rrr;            
+    # practicing the auto-orientation
+    my $mgf = 0;
+    if ($auo) {
+        my $orientation = &image9(ifi=>$temporfi,out=>"o");
+        if ( $orientation != 1) {
+            $mgf = 1;
+            my $com = "mogrify -auto-orient $temporfi";
+            if (system($com)) {
+                $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["$com line command was unsuccessful!"]);
+                return $res;
+            }
         }
-        if ($lue->{y} eq "cir") {
-            #  a circumstance line is identified
-        } elsif ($lue->{y} eq "add") {
-            # an additional collective line is identified
-            $lue = &uie::check8err(obj=>&new7pi(wha=>$lue));
-            # deal with the possible technical parameters
-            if (defined($lue->{h})) {
-                ## resetting values
-                # is it a void TP?
-                my $vtp = keys %{$lue->{h}};
-                my @sau = ($hhh->{WID},$hhh->{HEI});
-                $hhh = &uie::copy8structure(str=>$cdefa);
-                if ($vtp) {
-                    $hhh->{WID} = $sau[0];
-                    $hhh->{HEI} = $sau[1];
-                } 
-                # introducing the new values
-		foreach my $kk ("wid","hei","WID","HEI","nbi","gnl","gnc","cap") {
-		    if (defined($lue->{h}->{$kk})) {
-			if ($kk !~ /(hei)|(wid)|(HEI)|(WID)|(cap)/) {
-			    if (looks_like_number($lue->{h}->{$kk})) {
-				if ($kk eq "nbi") { $nbeil = $lue->{h}->{$kk};}
-			    } else {
-				&uie::pause(mes=>"WARNING: \$lue->{h}->{$kk} = $lue->{h}->{$kk} must be a number.");
-			    }
+    }
+    # looking for the original image size
+    my $transi =  &image9(ifi=>$temporfi,out=>"S");
+    my ($orw,$orh) = @{$transi}[0,1];
+    unless (defined($orw) and defined($orh)) {
+        $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Not possible to find the dimensions of image: $orf (copied as $temporfi)"]);
+        return $res;
+    }
+    # computing the pixel size of the desired destination file
+    my ($dew,$deh);
+    if ($ppi >= 0) {
+	# according the indicated density (or just a copy)
+	if ($wid == 0) { $wid = $hei / $orh * $orw;}
+	if ($hei == 0) { $hei = $wid / $orw * $orh;}
+	$dew = int($wid / 25.4 * $ppi + 0.5);
+	$deh = int($hei / 25.4 * $ppi + 0.5);
+    } else {
+	# imposing the pixel number
+	$ppi = -$ppi;
+	if ($orw >= $orh) {
+	    $dew = $ppi;
+	    $deh = $orh / $orw * $dew;
+	} else {
+	    $deh = $ppi;
+	    $dew = $orw / $orh * $deh;
+	}
+    }
+    if (($imp == 1) or ($imp == 3)) {
+        my @fifi = fileparse($orf);
+        my $fifi = $fifi[0].$fifi[2];
+        my @fofo = fileparse($def);
+        my $fofo = $fofo[0].$fofo[2];
+        print "<$fifi> \t($orw,$orh) \t=> \t<$fofo> \t(",int($dew),",",int($deh),")  ";
+    }
+    # building or accepting the destination image
+    my $faire = 1;
+    if (-e $def) {
+        # destination file already exists
+        my ($ddw,$ddh) = @{&image9(ifi=>$def,out=>"S")};
+        if (($imp == 1) or ($imp == 3)) {
+            print "[",$ddw,",",$ddh,"]";
+        }
+        # are its dimension compatible?
+        if ($ppi == 0) {
+            my $testgood = `diff $orf $def`;
+            unless ($testgood) {$faire = 0;}
+        } else {
+            unless ((abs(($ddw-$dew)/$dew) > $eps) or (abs(($ddh-$deh)/$deh) > $eps)) { $faire = 0;}
+        }
+    }
+    if (($imp == 1) or ($imp == 3)) {
+        if ( $faire) {
+            if (-e $def) { print "\tRECREATED\n";}
+            else { print "\t  CREATED\n";}
+        } else {
+            print "\tALREADY present and acceptable\n";
+        }
+    }
+    # if finished returning
+    unless ($faire) {
+        unlink($temporfi);
+        return [$mgf,0];
+    }
+    # proceeding to the transformation
+    if ($ppi) {
+        $dew = int($dew+0.5);  $deh = int($deh+0.5);
+        my $com = "convert -quality $qua -geometry ${dew}x${deh}! $temporfi $def";
+        if ($imp > 1) { print ">>>>>   ",$com,"\n";}
+        my $rst = system $com;
+    } else {
+        unless (copy($orf,$def)) {
+            $res = &uie::add8err(err=>$res,nsu=>$nsub,erm=>["Cannot copy <$orf> as <$def>"]);
+        } else {
+            print "|||||  <$orf> copied as <$def>\n";
+        }
+    }
+    unlink($temporfi);
+    # returning
+    unless (&uie::err9(obj=>$res)) { $res = [$mgf,1];}
+    $res;
+}
+#############################################
+#
+#
+##<<
+sub shrink8di7f {
+    #
+    # title : shrink a dif and increase its levels
+    #
+    # aim : from a decoded index file (dif) produce
+    #      a reduced one to its circumstances comprising
+    #      images. And, possibly, increasing by the same
+    #      number all its circumstances.
+    # 
+    # output : 1 when the analysis of the edited
+    #         file was without trouble, if not an 
+    #         error message testable with '&uie::check8err'.
+    #
+    # arguments
+    my $hrsub = {idi  =>[undef,  "c","The root of the input dif file to transform",
+                                     "('-dif.txt' suffix will be added)."],
+                 odi  =>[undef,  "c","The root of the transformed file to create",
+                                     "('-dif.txt' suffix will be added)."],
+                 inc  =>[    0,  "n","The amount of levels to add to each circumstance"],
+                 new  =>[    1,  "n","Must not the 'out' file to already exist?",
+                                     "If so a message error is issued."]
+                };
+##>>
+    my $nsub = (caller(0))[3];
+    my $argu   = &uie::argu($nsub,$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $idi = $argu->{idi}; $idi = $idi."-dif.txt";
+    my $odi = $argu->{odi}; $odi = $odi."-dif.txt";
+    my $inc = $argu->{inc};
+    my $new = $argu->{new};
+    my $err = "";
+    # about the output file
+    if ($new) {
+        if (-e $odi) {
+            $err = &uie::add8err(err=>$err,nsu=>$nsub,
+                                 erm=>["File $odi already exists and appending isn't accepted!"]);
+            return $err;
+        }
+    }
+    # reading the input dif
+    my $idic = &uie::read8line(fil=>$idi);
+    if (&uie::err9(obj=>$idic)) {
+	$err = $idic;
+	$err = &uie::add8err(err=>$err,nsu=>$nsub,
+			     erm=>["called by"]);
+	return $err;
+    }
+    my $res = []; my $cod = [];
+    # analyzing the dif
+    # each line can be a circumstance [coded by its initial level],
+    # an image [coded by -20] or another line [coded by -10]
+    foreach my $lig (@$idic) {
+        if ($lig =~ /\Q$phoges::fram{C}->[0]\E(.*)\Q$phoges::fram{C}->[1]\E\s*(.*)\s*$/) {
+            # a collective circumstance
+            my $nle = $1 + $inc;
+            my $con = $2;
+	    my $nli = "$phoges::fram{C}->[0]$nle$phoges::fram{C}->[1] $con";
+	    push @$res,$nli; push @$cod,$1;
+	} else {
+	    my $voir = &ima7line9(lin=>$lig);
+	    if (&uie::err9(obj=>$voir)) { return $voir;}
+            if ($voir) {
+		# a line not to be reproduced
+		push @$res,$lig; push @$cod,-20;
+	    } else {
+		# an ordinary line to be reproduced
+		push @$res,$lig; push @$cod,-10;
+	    }
+		    }
+    }
+    ## shrinking the dif
+    my $nbt = scalar(@$res) - 1;
+    # keeping every line
+    my @kept = map {1} (0..$nbt);
+    # a priori removing circumstance lines
+    for (my $i = 0; $i <= $nbt; $i++) {
+	if ($cod->[$i] >= 0) {
+	    $kept[$i] = 0;
+	}
+    }
+    # keeping only circumstance lines associated to some image
+    for (my $i = 0; $i <= $nbt; $i++) {
+	if ($cod->[$i] < -15) {
+	    my $vcir = 100; # to follow the hierarchy of the image
+	    # it is an image line
+	    for (my $j = $i-1; $j >= 0; $j--) {
+		if ($cod->[$j] >= 0) {
+		    # it is a circumstance line
+		    if ($vcir == 100) {
+			# nearest level
+			$kept[$j] = 1;
+			$vcir = $cod->[$j];
+		    } else {
+			if ($cod->[$j] == ($vcir - 1)) {
+			    # this one belong to the hierarchy
+			    $kept[$j] = 1;
+			    $vcir--;
 			}
-			$hhh->{$kk} = $lue->{h}->{$kk};
 		    }
 		}
 	    }
-        } elsif ($lue->{y} eq "ext") {
-            # an additional paragraph is to introduce
-        } elsif ($lue->{y} eq "spe") {
-            # a user specific command has to be introduced
-        } else {
-            ## an image line is expected
-            unless ($lue->{y} eq "ind") {
-                $res = &uie::add8err(err=>"no",nsu=>$nsub,erm=>
-                ["A IMAGE LINE WAS EXPECTED ",
-                 "  instead of the following line was found:",
-                 "\n  <$lig>\n",
-                 "Bad syntax?",
-                 "TO BE FIXED\n"]);
-                return $res;
-            }
-            #
-            if ($nbeil > 0) { $nbeil--;}
-            # preparing the caption
-            my @caption = ();
-            #----------------<START of lege>-------------------------------------
-            sub legege {
-                # builds a component of the caption, 
-                # needs an array of references
-                #  [0] the component to possibly deal with (e.g. 'n' or 'q')
-                #  [1] string of the components to be deal with (e.q. 'nmt' or 'nmtpqkg')
-                #  [2] the xpi, from which the component is extracted
-                #  [3] ??? seems not to be used ???
-                my $q = shift @_; my $cap = shift @_; my $lue = shift @_; my $typ = shift @_;
-                my $ax = "";
-                if ($cap =~ /\Q$q\E/) {
-                    # this component must be included
-                    $ax = "";
-                    if ("nt" =~ /\Q$q\E/) {
-                        # it is a scalar component
-                        $ax = $lue->{$q};
-                    } else {
-                        # it is a vectorial component
-                        $ax = join($sepb{$q},@{$lue->{$q}});
-                    }
-                    #
-                    if ($ax eq "") {
-                        # no value was given
-                        if ($cap =~ /X/) {
-                            # but missing values must be indicated
-                            if ($cap =~ /I/) { $ax = $ipi{$q};} # identification of the component is asked for
-                            $ax = $ax."???";
-                        }
-                    } else {
-                        # some information was provided
-                        if ($cap =~ /I/) { $ax = $ipi{$q}.$ax;} # identification of the component is asked for
-                        # adding the frame
-                        $ax = $cfra{$q}[0].$ax.$cfra{$q}[1];
-                        # to avoid '_' not very compatible with latex
-                        $ax =~ s/_/-/g;
-                    }
-                }
-                $ax;
-            }
-            #----------------<END of lege>-------------------------------------
-            # loading the individual technical paramaters
-            my $hhi = &uie::copy8structure(str=>$idefa);
-            foreach my $tk (keys %$hhi) {
-                if (defined($lue->{h}->{$tk})) {
-                    $hhi->{$tk} = $lue->{h}->{$tk};
-	        }
-            }
-            # fitting them with the collective parameters
-            my $didi = (($hhi->{wid} ne "") or ($hhi->{hei} ne ""));
-            unless ($didi) { 
-                # wid/WID hei/HEI are considered
-                for my $dime ("wid","hei") {
-                    if ($hhh->{$dime} eq "") {
-                        $hhi->{$dime} = $hhh->{uc($dime)};
-                    } else {
-                        $hhi->{$dime} = $hhh->{$dime};
-                    }
-                }
+	}
+    }
+    # from the circumstance to remove, detect which collective line must be filtered
+    my @filt = map {0} (0..$nbt);
+    for (my $i = 0; $i <= $nbt; $i++) {
+	if (($cod->[$i] >= 0) and ($kept[$i] == 0)) {
+	    # this circumstance level must be removed
+	    my $oui = 1;
+	    for (my $j = $i+1; $j <= $nbt; $j++) {
+		if ($oui) {
+		    if ($cod->[$j] >= 0) {
+			if ($cod->[$j] <= $cod->[$i]) {
+			    $oui = 0;
+			}
+		    } elsif ($cod->[$j] == -10) {
+			$filt[$j] = 1;
+		    }
+		}
 	    }
-            #
-            for my $quoi ('n','t','p','q','k','g','m') {
-# à vérifier
-my $typ="";my $cap="";
-                my $aj = &legege($quoi,$cap,$lue,$typ);
-                if ($aj) { push @caption,$aj;}
-            }
-            #
-            my $lopt = "H";
-            if ($cap =~ /B/) { $lopt = $lopt."l";}
-            if ($cap eq "") { $lopt = $lopt."X";}
-            my $nima = {fil=>$lue->{n},cap=>\@caption};
-            #----------------<START of redu>-------------------------------------
-            sub redudu { my $cha = $_[0];
-           	       my ($val) = $cha =~ /(\d+)/; $val = $val * $plt{red};
-           	       my ($uni) = $cha =~ /([a-zA-Z]+)/;
-           	       $val.$uni;
-                     }
-            #----------------<END of redu>-------------------------------------
-            if ($hhi->{wid} ne "") { $nima->{wid} = &redu($hhi->{wid});}
-            if ($hhi->{hei} ne "") { $nima->{hei} = &redu($hhi->{hei});}
-            if ($hhi->{rot} != 0 ) { $nima->{rot} = $hhi->{rot};}
-            push @$taim,$nima;
-            if ($nbeil == 0) {
-                unless ($gilab) {$lopt = $lopt."X";} # removing labels to images in grid
-                my $ccp = [];
-                if (defined($hhh->{cap})) { $ccp = [$hhh->{cap}];}
-                push @$cod,@{&lhattmel::picture(ima=>$taim,
-                                                dim=>[$hhh->{gnl},$hhh->{gnc}],
-                                                cca=>$ccp,
-                                                opt=>$lopt."b",
-                                                typ=>$typ)};
-                # resetting
-                $taim = [];
-                for my $rt ("nbi","gnl","gnc") {
-                    $hhh->{$rt} = $cdefa->{$rt};
-                }
-            }
-        }
+	}
     }
-    if (scalar(@$taim)) { 
-        &uie::la(str=>$taim);
-        &uie::pause(mes=>"some final image(s) was not included!");
+    # filtering out the detected lines
+    for (my $i = 0; $i <= $nbt; $i++) {
+	if ($filt[$i]) {
+	    my $pis = &analyze8line(lin=>$res->[$i]);
+            my $dete = analyze8line(lin=>$res->[$i]);
+	    if ($dete->{y} eq "col") { 
+		if (&uie::err9(obj=>$pis)) {
+		    print "\n\n\n";
+		    print "line 'res->[$i] was not a collective line within $nsub\n";
+		    print "\n\n\n";
+		    return $pis;
+		}
+		# removing the non-significant pi.s
+		foreach my $ipis ("m","p","q","k","g") {
+		    if (defined($pis->{$ipis})) { delete($pis->{$ipis});}
+		}
+		my $lpis = &pi2line(xpi=>$pis,xco=>1);
+		if (&uie::err9(obj=>$lpis)) {
+		    print "\n\n\n";
+		    print "line 'res->[$i] was not a collective line within $nsub\n";
+		    print "\n\n\n";
+		    return $lpis;
+		}
+		$res->[$i] = $lpis;
+            } else {
+		# another type of line to remove
+		$kept[$i] = 0;
+	    }
+	}
     }
-    # ending the output file
-    push @$cod,@{&lhattmel::end(typ=>$typ)};
-    # creating the output file
-    unless (open(TOUTOU,">$ouf")) {
-        $res = &uie::add8err(err=>"",nsu=>$nsub,
-                             erm=>["Not possible to open <$ouf> as an output file!"]);
-        return $res;
+    # writing the resulting dif
+    open(TOU,">$odi") or die("Not possible to open $odi to write the resulting 'dif' in it");
+    my $nunu = 0;
+    foreach (@$res) {
+	if ($kept[$nunu]) {
+	    print TOU $res->[$nunu],"\n";
+	}
+	$nunu++;
     }
-    foreach (@$cod) { print TOUTOU $_,"\n";}
-    close TOUTOU;
+    close(TOU);
+    #
+#my $kk = 0;
+#foreach (@$res) {
+#    print $kk," : ",$kept[$kk]," : ",$filt[$kk]," : ",$cod->[$kk]," : ",$res->[$kk],"\n";
+#    $kk++;
+#}
+    # returning
+    1;
+}
+#############################################
+#
+#
+##<<
+sub ima7line9 {
+    #
+    # title : is it an image line?
+    #
+    # aim : test if the line of eif/dif/icf describes
+    #       an image
+    # 
+    # output : 1 if yes, 0 if not
+    #          or possibly an error message
+    #
+    # arguments
+    my $hrsub = {lin  =>[undef,  "c","The line to test"]
+                };
+##>>
+    my $nsub = (caller(0))[3];
+    my $argu   = &uie::argu($nsub,$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $lin = $argu->{lin};
+    #
+    my $res;
+    # testing
+    my $tes = &analyze8line(lin=>$lin);
+    if (&uie::err9(obj=>$tes)) { return $tes;}
+    $res = ($tes->{y} eq "ind");
     # returning
     $res;
+}
+#############################################
+#
+#
+##<<
+sub st4f {
+    #
+    # title : get shortcuts from a 'stf' 
+    #
+    # aim : read the 'stf' file and returns
+    #       the asked shorcuts
+    # 
+    # output : a reference to a hash having
+    #            shortcuts as keys and definitions
+    #            as associated values,
+    #          or possibly an error message.
+    #
+    # arguments
+    my $hrsub = {fil  =>[  undef,  "c","The file to scrutate"],
+		 whi  =>[["cat"],  "a","Reference to the array of the desired",
+			               "type shortcuts. When empty, all types",
+                                       "are considered"]
+                };
+##>>
+    my $nsub = (caller(0))[3];
+    my $argu   = &uie::argu($nsub,$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $fil = $argu->{fil};
+    my $whi = $argu->{whi};
+    if (scalar(@$whi) == 0) { $whi = [values %idrf]; }
+    #
+    #
+    # reading the shortcut files
+    my %khh;
+    foreach (values(%phoges::idrf)) { $khh{$_} = 0;}
+    my $tst = &uie::check8err(obj=>&uie::read8line(fil=>$fil,typ=>2,khh=>\%khh),
+                              sig=>$nsub,wha=>1);
+    if (&uie::err9(obj=>$tst)) { return $tst;}
+    # getting asked shortcuts
+    my $res = {};
+    foreach (@$whi) {
+	if (defined($tst->{$_})) {
+	    foreach my $i (keys %{$tst->{$_}}) {
+		$res->{$i} = $tst->{$_}->{$i};
+	    }
+	}
+    }
+    # returning
+    $res;
+}
+#############################################
+#
+#
+##<<
+sub purge8st7f {
+    #
+    # title : eliminate multiple definition of shortcuts
+    #
+    # aim : read a file possibly containing shortcuts
+    #       and retain only the first one (other
+    #       lines are eliminated.
+    # 
+    # output : 1 if work is well done, if not
+    #            an error message.
+    #
+    # arguments
+    my $hrsub = {fil  =>[  undef,  "c","The file to scrutate"],
+		 imp  =>[      0,  "n","Must multiple occurrence be displayed?"]
+                };
+##>>
+    my $nsub = (caller(0))[3];
+    my $argu   = &uie::argu($nsub,$hrsub,@_);
+    if ($argu == 1) { return 1;}
+    my $fil = $argu->{fil};
+    my $imp = $argu->{imp};
+    #
+    # reading the file to purge
+    my $ifi = &uie::check8err(obj=>&uie::read8line(fil=>$fil),
+                                sig=>$nsub,wha=>1);
+    if (&uie::err9(obj=>$ifi)) { return $ifi;}
+    #
+    # detecting multiple occurrence
+    my $ccc = {};
+    foreach my $i (values %idrf) { $ccc->{$i} = {};}
+    #
+    my @lfi = map {1} @$ifi;
+    for (my $i = 0; $i < scalar @lfi; $i++) {
+	my $line = $ifi->[$i];
+	my @deco = split / /,$line;
+	foreach my $cle (values %idrf) {
+	    if ($deco[0] eq $cle) {
+		shift @deco;
+		my $rac = shift @deco;
+		my $con = join " ",@deco;
+		if (defined($ccc->{$cle}->{$rac})) {
+		    $lfi[$i] = 0;
+		    if ($imp) {
+			print "The following line will be suppressed:\n";
+			print "<$line>\n\n";
+		    }
+		} else {
+		    $ccc->{$cle}->{$rac} = $con;
+		}
+	    }
+	}
+    }
+    #
+    # writing again the file without dectected lines
+    open(TOTO,">$fil") or die("Cannot Open $fil to rewrite it!");
+    for (my $i = 0; $i < scalar @lfi; $i++) {
+	if ($lfi[$i]) {
+	    print TOTO $ifi->[$i],"\n";
+	}
+    }
+    close TOTO;
+    #
+    # returning
+    1;
 }
 #############################################
 #############################################

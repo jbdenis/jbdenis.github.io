@@ -1,0 +1,3 @@
+dir ; ccom ; com2
+~/tt ; pwd ; ls *.txt 
+~ ; ls ; ll *.txt

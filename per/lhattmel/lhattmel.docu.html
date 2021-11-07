@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf8">
-  <meta name="creation" content=" 2018_11_28@19:49 ">
+  <meta name="creation" content=" 2020_04_06@16:47 ">
   <meta http-equiv="charset" content="utf8">
   <title>lhattmel.pm</title>
 </head>
@@ -17,11 +17,35 @@ To get the content of the module <a href="lhattmel.pm">lhattmel.pm</a>
 <p>
 &nbsp;
 &nbsp;
-A total of 9 subroutines was detected:
+A total of 10 subroutines was detected:
 &nbsp;
 </p>
 <table border="3">
   <tbody>
+    <tr>
+    </tr>
+      <td><strong>e</strong></td>
+      <td>
+<a href="#sub l7e {">
+l7e
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>item</strong></td>
+      <td>
+<a href="#sub picture1item {">
+picture1item
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>l</strong></td>
+      <td>
+<a href="#sub l7e {">
+l7e
+</a>
+      </td>
     <tr>
     </tr>
       <td><strong>latex</strong></td>
@@ -36,6 +60,14 @@ latex2pdf
       <td>
 <a href="#sub latex2pdf {">
 latex2pdf
+</a>
+      </td>
+    <tr>
+    </tr>
+      <td><strong>picture</strong></td>
+      <td>
+<a href="#sub picture1item {">
+picture1item
 </a>
       </td>
     <tr>
@@ -59,11 +91,6 @@ list
       <td>
 <a href="#sub parag {">
 parag
-</a>
-      </td>
-      <td>
-<a href="#sub picture {">
-picture
 </a>
       </td>
       <td>
@@ -95,6 +122,11 @@ sub indent {                  (just add some spaces before a string)
 </a>
 </li>
 <li>
+<a href="#sub l7e {">
+sub l7e {                     (escaping special characters for latex)
+</a>
+</li>
+<li>
 <a href="#sub latex2pdf {">
 sub latex2pdf {               (produce a pdf file from a latex file)
 </a>
@@ -110,8 +142,8 @@ sub parag {                   (constitutes a series of paragraphes)
 </a>
 </li>
 <li>
-<a href="#sub picture {">
-sub picture {                 (introduce a table of picture into the document)
+<a href="#sub picture1item {">
+sub picture1item {            (introduce a table of pictures (or items) into the document)
 </a>
 </li>
 <li>
@@ -145,6 +177,9 @@ General Presentation of lhattmel.pm
 # As html and latex files have got similar structures, both
 # developments were undertaken at the same time.
 #
+# TO DO:
+#      * allow the monitoring of the order of the
+#        pi's when building an image caption.
 #
 #
 </pre></p>
@@ -184,28 +219,54 @@ General Presentation of lhattmel.pm
                 };
 </pre></p>
 <h2>
+<a name="sub l7e {"></a>
+3 sub l7e {
+</h2>
+<p><pre>
+    #
+    # title : escaping special characters for latex
+    #
+    # aim : allow the easy use of '_' which I like very much
+    #       Other special Latex characters are also considered
+    #       But some latex command, are preserved:
+    #         \newpage \newline \quad \medskip
+    # 
+    # output : reference to the transformed array of strings
+    #          or the transformed string
+    #
+    # remark: this routine was found on internet, the original
+    #         name was 'latex_escape'
+    #
+    # arguments
+    my $hrsub = {cha  =>[undef,"ac","The string or array of string to transform"]
+                };
+</pre></p>
+<h2>
 <a name="sub latex2pdf {"></a>
-3 sub latex2pdf {
+4 sub latex2pdf {
 </h2>
 <p><pre>
     #
     # title : produce a pdf file from a latex file
     #
-    # aim : compile a latex file with 'pddlatex'
+    # aim : compile a latex file with 'pdflatex -interaction=batchmode'
     # 
     # output : 1 when job was fine, an error if not
     #
-    # remark : - if it exists the pdf file will be replaced
-    #            without saving it.
+    # remarks : - if it exists the pdf file will be replaced
+    #             without saving it.
+    #           - no able for the moment to detect
+    #             errors when running 'pdflatex'
     #
     # arguments
     my $hrsub = {tex =>[undef,"c","File of the latex source"],
-                 nbc =>[    3,"n","Number of compilation to perform"]
+                 nbc =>[    3,"n","Number of compilation to perform"],
+                 slt =>[    0,"n","Must 'pdflatex' run silently?"]
                 };
 </pre></p>
 <h2>
 <a name="sub list {"></a>
-4 sub list {
+5 sub list {
 </h2>
 <p><pre>
     #
@@ -221,17 +282,23 @@ General Presentation of lhattmel.pm
                                     "for bullet and numbered list. Hash of the different",
                                     "items for definition list, however array of successive",
                                     "(key,value) pairs are admitted but the size of the",
-                                    "array must be even; in fact this is the way to keep",
+                                    "array must be even; in fact this is a way to keep",
                                     "the order of the components"],
                  tli  =>["B",  "c","Indication of the list type: 'B' for bullet,",
                                    "'N' for number, 'D' for definition and also",
                                    "'b' for flat bullet list, 'n' for flat numbered list and",
-                                   "'d' for flat definition list."],
+                                   "'d' for flat definition list",
+		                   " (a flat list is a list without carriage return)."],
+		 sel  =>[  0,  "an","The possible selection of items when a definition list.",
+			            "When numeric no selection, when array the set of items",
+			            "to be retained in that order (another way to impose the",
+                                    "order of the item list).",
+                                    "Be aware that this imply that every definition item must be unique!"],
                  typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
 </pre></p>
 <h2>
 <a name="sub parag {"></a>
-5 sub parag {
+6 sub parag {
 </h2>
 <p><pre>
     #
@@ -240,7 +307,7 @@ General Presentation of lhattmel.pm
     # aim : according to the type, necessary
     #      tagging is produced.
     #
-    # remark : When the first work of a paragraph is
+    # remark : When the first word of a paragraph is
     #         'LISTEx' where x =~ /[BNDbnd]/,
     #         the paragraph is interpreted,respectively, as
     #         a itemized/flat bullet, numbered or definition list.
@@ -257,35 +324,46 @@ General Presentation of lhattmel.pm
                  typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
 </pre></p>
 <h2>
-<a name="sub picture {"></a>
-6 sub picture {
+<a name="sub picture1item {"></a>
+7 sub picture1item {
 </h2>
 <p><pre>
     #
-    # title : introduce a table of picture into the document
+    # title : introduce a table of pictures (or items) into the document
     #
     # aim : replace simple tags in appropriate tags
-    #      according to the type
+    #      according to the type. At first, only images
+    #      were considered, then item names (and more) were also
+    #      introduced. In the following explanations,
+    #      'image' must be understood as 'image (or item)'.
     # 
     # output : the array of characters after modification
     #
     # details: Images are always introduced
     #          into a table (1x1 at minimum).
     #          There is no obligation to fill every cell,
-    #          even more empty cells can not be the last
+    #          even more, empty cells can not be the last
     #          one but calls must be made in the order.
     #          Individual captions are gathered into
-    #          a general table caption but a collective
-    #          caption can be also included.
+    #          a general table caption and a collective
+    #          caption is also possible.
     #
     # to do: implement the rotation of images for html outputs
-    #        escaping "\" befor { in caption to be suppress
+    #        escaping "\" before { in caption to be suppressed
     #
     # arguments
-    my $hrsub = {ima  =>[undef,"a","Array of references of hashes describing each image.",
-                                   "hash keys must be: 'fil' (c) for the file, 'wid' (c) for the width,",
-                                   "'hei' (c) for the height,'cap' (a) for the individual captions",
-                                   "'rot' (n) for the rotation to apply in degrees"],
+    my $hrsub = {ima  =>[undef,"a","Array of references of hashes describing each image/item.",
+                                   "hash keys must be: 'fil' (c) for the file; 'wid' (c) for the width;",
+                                   "'hei' (c) for the height;'cap' (a) for the individual captions;",
+                                   "'rot' (n) for the rotation to apply in degrees; 'dur' (c) for the",
+                                   "duration; 'chk' (n) to indicate if the existence of the file must be performed;",
+                                   "'vsp' (n) to indicate the vertical space between the tabular and the caption in mm",
+                                   "(default 4). Different vertical spaces can be provided for each image of the",
+                                   "tabular but only the one of the first one is used ;",
+                                   " 'wha' (c) to indicate what to introduce either the image when '' or undef",
+                                   "or a character string indicating which components",
+                                   "of this hash to introduce and their order: 'n' for 'fil', 'w' for",
+                                   "'wid', 'h' for 'hei', 'd' for 'dur'."],
                  dim  =>[[1,1],"a","Array of size 2 giving the number of lines and the number",
                                    "of columns of the table"],
                  pla  =>[    0,"na","Cells to give to each image in the table. When '0' images",
@@ -304,6 +382,7 @@ General Presentation of lhattmel.pm
                                       " 'i' to break lines between the individual captions,",
                                       " 'l' to break lines between the paragraphs of the individual captions.",
                                       " 'n' to force the numbering of images by latex when the caption is empty",
+                                      " 'B' to place the caption Before the image(s)",
                                     "FOR THE MOMENT BREAKING LINES DOESN'T WORK PROPERLY!!!"
                         ],
                  typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]
@@ -311,7 +390,7 @@ General Presentation of lhattmel.pm
 </pre></p>
 <h2>
 <a name="sub police {"></a>
-7 sub police {
+8 sub police {
 </h2>
 <p><pre>
     #
@@ -343,7 +422,7 @@ General Presentation of lhattmel.pm
 </pre></p>
 <h2>
 <a name="sub start {"></a>
-8 sub start {
+9 sub start {
 </h2>
 <p><pre>
     #
@@ -359,7 +438,7 @@ General Presentation of lhattmel.pm
                  par  =>[{cod=>"utf8",tit=>"",aut=>"",dat=>1,
                           toc=>1,npa=>1,two=>0,lma=>"15mm",
                           rma=>"15mm",tma=>"15mm",bma=>"15mm",
-                          lgu=>"french",par=>[]
+                          lgu=>"french",par=>[],bpa=>'\vspace {25mm}',
                           },
                             "h","The different parameters for the heading:",
                                       "cod: encoding",
@@ -374,12 +453,15 @@ General Presentation of lhattmel.pm
                                       "tma: top margin (only for latex)",
                                       "bma: bottom margin in mm (only for latex)",
                                       "lgu: language (only for latex)",
-                                      "par: some paragraph to add after the title (can comprise lists)"]
+                                      "fig: label for the numeration of items (only for latex)",
+                                      "par: some paragraph to add after the title (can comprise lists)",
+                                      "bpa: the latex tag to add before introducing 'par'",
+                                      "      (it only used when 'par' is not empty)"]
                 };
 </pre></p>
 <h2>
 <a name="sub subtit {"></a>
-9 sub subtit {
+10 sub subtit {
 </h2>
 <p><pre>
     #
@@ -394,14 +476,27 @@ General Presentation of lhattmel.pm
     my $hrsub = {tit  =>[undef,"c","Title for this subtitle"],
                  lev  =>[1,  "n","level of the subtitle, from 1 to 6",
                                  "negative values means not numbering the subtitle in Latex"],
+                 par  =>[{pb=>0}, "h","Further indication on the subtitle presentation.",
+                                      " For the moment only 'pb' indicating if a page break must",
+                                      "  previously added in latex case"],
                  typ  =>["l",  "c","type of the document: 'l' for latex, 'h' for html."]                };
 </pre></p>
 <h2>
-A total of 6 test scripts was detected:
+A total of 8 test scripts was detected:
 </h2>
 <p><pre>
 </pre></p>
 <ol>
+<li>
+<a href="lhattmel_l7e.pl">
+lhattmel_l7e.pl
+</a>
+</li>
+<li>
+<a href="lhattmel_latex2pdf.pl">
+lhattmel_latex2pdf.pl
+</a>
+</li>
 <li>
 <a href="lhattmel_list.pl">
 lhattmel_list.pl
@@ -413,8 +508,8 @@ lhattmel_parag.pl
 </a>
 </li>
 <li>
-<a href="lhattmel_picture.pl">
-lhattmel_picture.pl
+<a href="lhattmel_picture1item.pl">
+lhattmel_picture1item.pl
 </a>
 </li>
 <li>

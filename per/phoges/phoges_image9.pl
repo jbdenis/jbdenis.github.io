@@ -1,22 +1,25 @@
 #!/usr/bin/perl -w
 #
-# 18_03_16
+# 18_03_16 19_02_01
 #
 use strict;
 use warnings;
-use phoges; 
 #
 use lib "/home/jbdenis/o/info/perl/phoges";
+use phoges; 
 #
 my @lignes = (
               "toto.jpg",
               "2018_03_16.boudu.png",
-              "{<"
+              "{<",
+              "phoges-pic03.jpg"
              );
 #
-foreach my $lig (@lignes) {
-    my $res = &uie::check8err(obj=>&phoges::image9(nam=>$lig));
-    print "\n lig = $lig : $res \n";
+foreach my $tou ("","e","s","S","o","tout") {
+    foreach my $lig (@lignes) {
+	my $res = &phoges::image9(ifi=>$lig,out=>$tou);
+	&uie::la(str=>$res,mes=>$lig." avec $tou");
+    }
 }
 #
 #

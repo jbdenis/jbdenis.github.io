@@ -1,7 +1,8 @@
 #!/usr/bin/perl -w
 #
 # 18_02_13 18_02_21 18_03_09 18_04_04 18_04_06
-# 18_10_01 18_10_02 18_10_04 18_10_13
+# 18_10_01 18_10_02 18_10_04 18_10_13 19_03_02
+# 19_06_20
 #
 use strict;
 use warnings;
@@ -10,15 +11,16 @@ use phoges;
 use lib "/home/jbdenis/o/info/perl/lhattmel";
 use lhattmel; 
 #
-my ($fifi,$res,$fofo);
+my ($fifi,$res,$fofo,$ret);
 #
-$fifi = "phoges-fiq";
+$fifi = "phoges-fin";
+#$ret = &uie::check8err(obj=>&phoges::ei7f2di7f1ic7f(eif=>$fifi,out=>$fifi));
 $res = &uie::check8err(obj=>&phoges::di7f2tex1htm(dif=>$fifi,
                                                  cap=>"mtpqkgI"));
 system("pdflatex $fifi-dif.tex");
-my $fresu = $fifi."-dif.pdf";
-print "Have a look to $fifi-dif.pdf\n";
-die("FINI : à retirer à la fin");
+#my $fresu = $fifi."-dif.pdf";
+#print "Have a look to $fifi-dif.pdf\n";
+#die("FINI : à retirer à la fin");
 #
 $fifi = "phoges-fin";
 $fofo = "toto.txt";

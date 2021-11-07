@@ -4,9 +4,10 @@
 #
 use strict;
 use warnings;
-use phoges; 
 #
 use lib "/home/jbdenis/o/info/perl/phoges";
+use phoges; 
+#
 my $fifi;
 #
 $fifi = "phoges-fi2.txt";
@@ -31,7 +32,7 @@ if (&uie::err9(obj=>$resf)) {
 }
 &uie::pause(mes=>"When the selection file doesn't exist!");
 #
-$fifi = "phoges-fid.txt";
+$fifi = "phoges-fid-slf.txt";
 my $res1 = &phoges::read8sl7f(fil=>$fifi);
 if (&uie::err9(obj=>$res1)) {
     print "Error was found when reading the selection file\n";

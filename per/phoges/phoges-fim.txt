@@ -1,4 +1,4 @@
-# some info to test pg.cata
+# some info to test pg.album
 { 
  aut => "Toi",
  two => 1,

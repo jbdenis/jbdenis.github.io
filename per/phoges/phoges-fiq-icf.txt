@@ -1,0 +1,28 @@
+# 
+# file created/completed by '&phoges::ei7f2di7f1ic7f' on Le vendredi 4 janvier 2019 à 18 heures et 10 minutes
+# the input eif file was phoges-tea-eif.txt 
+# no slf file was used 
+# a icf (image centered file) was asked for 
+# 
+# 
+<<<IMA>>>
+phoges-pic01.jpg <[hei=5 cm,wid=5cm]> (|Tout débuta sur la place du marché.//Dans la grande ville du roi tout seul//petite place seule|) ((Pour sûr, c'est une histoire à dormir debout !)) <|Exemple d'eif pour les tests de pg.album//Tout au Début|>
+phoges-pic02.jpg <[wid=5cm,hei=5 cm]> (|Tout débuta sur la place du marché.//Cour de la mairie//place 2//place 3|) <<a b c>> {{boum,place 1,tic-tac}} ((Pour sûr, c'est une histoire à dormir debout !//Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !)) <|Exemple d'eif pour les tests de pg.album//Tout au Début|>
+phoges-pic03.jpg <[rot=-90 ,gnc=1 ,gnl=2 ,nbi=2 ,hei=5cm]> (|Tout débuta sur la place du marché.//Cour de la mairie//images nettes//place cinq//place 2//place 3|) [[Jeanie]] {{place 1}} ((Pour sûr, c'est une histoire à dormir debout !//Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !)) <|Exemple d'eif pour les tests de pg.album//Tout au Début|>
+phoges-pic03.jpg <[cap=,wid=2cm ,nbi=1,hei=2cm,gnc=1,gnl=1]> (|Tout débuta sur la place du marché.//Cour de la mairie|) ((Pour sûr, c'est une histoire à dormir debout !//Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !//Pour faire la deuxième de la grille)) <|Exemple d'eif pour les tests de pg.album//Tout au Début|>
+phoges-pic04.jpg <[gnc=1 ,gnl=1 ,nbi=1 ,wid=6cm ]> (|Tout débuta sur la place du marché.//Cour de la mairie//place cinq|) [[Papou,Personne]] {{palabra clave premera,palabra clave,keyword}} ((Pour sûr, c'est une histoire à dormir debout !//Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !//Toujours personne en vue, et le soleil qui commençait à décliner.//5ème en place)) <|Exemple d'eif pour les tests de pg.album//Tout au Début//Mais c'était loin d'être fini|>
+phoges-pic05.jpg <[nbi=2 ,wid=6cm ,gnl=2 ,gnc=1 ]> (|Tout débuta sur la place du marché.//place cinq|) ((Pour sûr, c'est une histoire à dormir debout !//aussi la 5ème par individuel)) <|Exemple d'eif pour les tests de pg.album//Il fallait aller encore plus loin|>
+phoges-pic05.jpg <[cap=,gnc=1,gnl=1,nbi=1,wid=6cm ]> (|Tout débuta sur la place du marché.|) ((Pour sûr, c'est une histoire à dormir debout !//bissée)) <|Exemple d'eif pour les tests de pg.album//Il fallait aller encore plus loin|>
+phoges-pic06.jpg  (|Tout débuta sur la place du marché.//place 3|) <<b c>> {{palabra clave cuarta}} ((Pour sûr, c'est une histoire à dormir debout !//5 et 3)) <|Exemple d'eif pour les tests de pg.album//Jamais on n'en voyait la fin//Encore un mirage|>
+phoges-pic07.jpg <[gnc=1 ,gnl=1 ,nbi=1 ,wid=8cm,rot=0]> (|Tout débuta sur la place du marché.//de plus//place 3//place 2|) {{palabra clave segunda,palabra clave premera}} ((Pour sûr, c'est une histoire à dormir debout !)) <|Exemple d'eif pour les tests de pg.album//C'est la fin des haricots|>
+phoges-pic03.jpg
+<<</IMA>>>
+<<<CIR>>>
+<(0)> Exemple d'eif pour les tests de pg.album
+<(1)> Tout au Début
+<(2)> Mais c'était loin d'être fini
+<(1)> Il fallait aller encore plus loin
+<(1)> Jamais on n'en voyait la fin
+<(2)> Encore un mirage
+<(1)> C'est la fin des haricots
+<<</CIR>>>

@@ -1,0 +1,4 @@
+\babel@toc {french}{}
+\contentsline {section}{\numberline {1}Deux photos}{2}
+\contentsline {section}{\numberline {2}Encore une photo}{3}
+\contentsline {section}{\numberline {3}Encore une}{4}

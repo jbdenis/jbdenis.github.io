@@ -1,11 +1,14 @@
-\select@language {french}
-\contentsline {section}{\numberline {1}Pour commencer des tests sur la dimension des images par les param\IeC {\`e}tres techniques}{1}
-\contentsline {subsection}{\numberline {1.1}En m\IeC {\^e}lant les deux}{1}
-\contentsline {subsection}{\numberline {1.2}Uniquement en individuel}{2}
-\contentsline {subsection}{\numberline {1.3}Uniquement en collectif}{3}
-\contentsline {section}{\numberline {2}Tout au D\IeC {\'e}but}{3}
-\contentsline {subsection}{\numberline {2.1}Mais c'\IeC {\'e}tait loin d'\IeC {\^e}tre fini}{4}
-\contentsline {section}{\numberline {3}Il fallait aller encore plus loin}{5}
-\contentsline {section}{\numberline {4}Jamais on n'en voyait la fin}{6}
-\contentsline {subsection}{\numberline {4.1}Encore un mirage}{6}
-\contentsline {section}{\numberline {5}C'est la fin des haricots}{6}
+\babel@toc {french}{}
+\contentsline {section}{\numberline {1}Une Section Suppl\IeC {\'e}mentaire}{1}
+\contentsline {section}{\numberline {2}Une seconde section suppl\IeC {\'e}mentaire par un fichier}{1}
+\contentsline {subsection}{\numberline {2.1}Sous section suppl\IeC {\'e}mentaire aussi par le m\IeC {\^e}me fichier}{1}
+\contentsline {section}{\numberline {3}Pour commencer des tests sur la dimension des images par les param\IeC {\`e}tres techniques}{2}
+\contentsline {subsection}{\numberline {3.1}En m\IeC {\^e}lant les deux}{2}
+\contentsline {subsection}{\numberline {3.2}Uniquement en individuel}{3}
+\contentsline {subsection}{\numberline {3.3}Uniquement en collectif}{3}
+\contentsline {section}{\numberline {4}Tout au D\IeC {\'e}but}{4}
+\contentsline {subsection}{\numberline {4.1}Mais c'\IeC {\'e}tait loin d'\IeC {\^e}tre fini}{4}
+\contentsline {section}{\numberline {5}Il fallait aller encore plus loin}{5}
+\contentsline {section}{\numberline {6}Jamais on n'en voyait la fin}{6}
+\contentsline {subsection}{\numberline {6.1}Encore un mirage}{6}
+\contentsline {section}{\numberline {7}C'est la fin des haricots}{7}

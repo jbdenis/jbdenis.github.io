@@ -1,15 +1,20 @@
 #!/usr/bin/perl -w
 #
-# 17_04_11 17_05_08 17_12_08
+# 17_04_11 17_05_08 17_12_08 19_02_19
 #
 use strict;
 use warnings;
+use lib "/home/jbdenis/o/info/perl/uie";
 use uie; 
 #
-my $resu;
+my $resu; my $init;
+#
+my $kwd3 = {"y"=>"Y","e"=>"E",a=>"A",o=>"O",i=>"I"};
+$init = "je n'y crois pas";
+&uie::pause(mes=>"$init -> ".&uie::replace8string(str=>$init,kwd=>$kwd3));
 #
 my $kwd0 = {"À"=>"&Agrave;","Ù"=>"&Ugrave;",a=>"<A>",e=>"<E>",u=>"<Y>"};
-my $init = "À BOÙT : jaune";
+$init = "À BOÙT : jaune";
 &uie::pause(mes=>"$init -> ".&uie::replace8string(str=>$init,kwd=>$kwd0));
 #
 my $arr1 = ["il f_#a#_ut","que je me f_#a#_sse","à cette idée","bien util_#e#_"," ","","s'il en ait"];

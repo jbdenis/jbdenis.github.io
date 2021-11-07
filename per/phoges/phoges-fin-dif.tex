@@ -1,5 +1,5 @@
 %
-%% created with 'latex1html4file' on 2018_10_13@10:23
+%% created with 'latex1html4file' on 2019_04_08@22:48
 %
 \documentclass[12pt,twocolumn,french]{article}
 \usepackage[T1]{fontenc}
@@ -9,6 +9,7 @@
 \geometry{verbose,tmargin=15mm,bmargin=15mm,lmargin=15mm,rmargin=15mm}
 \usepackage{graphicx}
 \usepackage{babel}
+\usepackage{pdflscape}
 \addto\captionsfrench{
 \renewcommand{\figurename}{Ph.}
 }
@@ -16,280 +17,277 @@
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 %
 \begin{document}
-\title{Exemple d'eif pour les tests de pg.cata}
+\title{Exemple d'eif pour les tests de pg.album}
 \author{Madelon}
-\date{Le samedi 13 octobre 2018 à 10 heures et 23 minutes}
+\date{Le lundi 8 avril 2019 à 22 heures et 48 minutes}
 \maketitle
 \tableofcontents
 \newpage
+\vspace {25mm}
 
+ \section{Une Section Supplémentaire}
+\section {Une seconde section supplémentaire par un fichier}
+C'est juste un essai, ne croyez pas qu'il faille apporter
+de l'importance au contenu...
+\subsection {Sous section supplémentaire aussi par le même fichier}
+Je répète, c'est juste un essai...
+\clearpage
 %
 \section{Pour commencer des tests sur la dimension des images par les paramètres techniques}
 %
 %
 \subsection{En mêlant les deux}
 %
-
   \begin{figure}[H]
+    \label{phoges-pic05.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{./phoges-pic05}.jpg}
+        &
+          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{./phoges-pic05}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
       Deux images en grilles : UNE FOIS
-      [1,1]~: 
+      [1,1]\texttt{\~{}}: 
       (((Commentaires: première)))
-      [1,2]~: 
+      [1,2]\texttt{\~{}}: 
       (((Commentaires: seconce)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{./phoges-pic05}.jpg}
         &
-          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
-      [1,1]~: 
+      [1,1]\texttt{\~{}}: 
       (((Commentaires: idem)))
-      [1,2]~: 
+      [1,2]\texttt{\~{}}: 
       (((Commentaires: mais sans légende collective)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{./phoges-pic05}.jpg}
         &
-          \includegraphics[origin=c,angle=0,width=3.2cm,height=1.6cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       Deux images en grilles : UNE FOIS
-      [1,1]~: 
+      [1,1]\texttt{\~{}}: 
       (((Commentaires: première)))
-      [1,2]~: 
+      [1,2]\texttt{\~{}}: 
       (((Commentaires: seconce)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{./phoges-pic05}.jpg}
         &
-          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
-      [1,1]~: 
+      [1,1]\texttt{\~{}}: 
       (((Commentaires: idem)))
-      [1,2]~: 
+      [1,2]\texttt{\~{}}: 
       (((Commentaires: mais sans légende collective)))
     }
-    \vspace{4mm}
-    \label{phoges-pic05.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{phoges-pic05}.jpg}
-        &
-          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{phoges-pic05}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
-
   \begin{figure}[H]
-    \caption{
-      (((Commentaires: Rectangle de 1 par 2 cm par collectifs hei/wei)))
-    }
-    \vspace{4mm}
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=0.8cm,height=1.6cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=0.8cm,height=1.6cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
+    \vspace{2mm}
+    \caption{
+      (((Commentaires: Rectangle de 1 par 2 cm par collectifs hei/wei)))
+    }
   \end{figure}
-
   \begin{figure}[H]
+    \label{phoges-pic05.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{./phoges-pic05}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
       Pour oublier les minuscules
       (((Commentaires: Reprise de HEI=1cm et WID=5cm ?)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=4cm,height=0.8cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Reprise bien oubliée ?)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=0.8cm,height=1.6cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Rectangle de 1 par 2 cm par individuels hei/wei)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=0.8cm,height=1.6cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=2.4cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       Cette image doit être identique à la précédente
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=2.4cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,height=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Largeur imposée à 3cm par WID)))
     }
-    \vspace{4mm}
-    \label{phoges-pic05.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,height=2.4cm]{{phoges-pic05}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
 %
 \subsection{Uniquement en individuel}
 %
   \begin{figure}[H]
+    \label{phoges-pic05.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=2.4cm,height=2.4cm]{{./phoges-pic05}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
       (((Commentaires: Carré de 3 cm de côté)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=2.4cm,height=2.4cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=45,width=2.4cm,height=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Carré de 3 cm de côté sur la pointe)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=45,width=2.4cm,height=2.4cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4.8cm,height=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Rectangle de 6 par 3 cm)))
     }
-    \vspace{4mm}
-    \label{phoges-pic05.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=4.8cm,height=2.4cm]{{phoges-pic05}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
 %
 \subsection{Uniquement en collectif}
 %
-
   \begin{figure}[H]
+    \label{phoges-pic05.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=2.4cm,height=2.4cm]{{./phoges-pic05}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
       (((Commentaires: Carré de 3 cm de côté)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=2.4cm,height=2.4cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=45,width=2.4cm,height=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Carré de 3 cm de côté sur la pointe)))
     }
-    \vspace{4mm}
+  \end{figure}
+  \begin{figure}[H]
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=45,width=2.4cm,height=2.4cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4.8cm,height=2.4cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
-  \end{figure}
-
-  \begin{figure}[H]
+    \vspace{2mm}
     \caption{
       (((Commentaires: Rectangle de 6 par 3 cm)))
     }
-    \vspace{4mm}
-    \label{phoges-pic05.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=4.8cm,height=2.4cm]{{phoges-pic05}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
+\clearpage
 %
 \section{Tout au Début}
 %
@@ -301,43 +299,50 @@ Personne, même pas lui n'aurais pu dire où le conduirait sa quête.
 Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !
 
   \begin{figure}[H]
-    \caption{
-      Une Légende pour l'ensemble 
-      [1,1]~: 
-       [Où: images nettes//place cinq//place 2//place 3...c'était le lieu!
-       [Qui: Jeanie] 
-      [[Clé(s): place 1]] 
-      [2,1]~: 
-      (((Commentaires: Pour faire la deuxième de la grille)))
-    }
-    \vspace{4mm}
     \label{phoges-pic03.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=-90 ,height=4cm]{{phoges-pic03}.jpg}
+          \includegraphics[origin=c,angle=-90 ,height=4cm]{{./phoges-pic03}.jpg}
         \tabularnewline \hline
-          \includegraphics[origin=c,angle=0,width=1.6cm,height=1.6cm]{{phoges-pic03}.jpg}
+          \includegraphics[origin=c,angle=0,width=1.6cm,height=1.6cm]{{./phoges-pic03}.jpg}
         \tabularnewline \hline
     \end{tabular}
+    \vspace{2mm}
+    \caption{
+      Une Légende pour l'ensemble 
+      [1,1]\texttt{\~{}}: 
+       [Où: images nettes//place cinq//place 2//place 3...c'était le lieu!
+       [Qui: Jeanie] 
+      [[Clé(s): place 1]] 
+      [2,1]\texttt{\~{}}: 
+      (((Commentaires: Pour faire la deuxième de la grille)))
+    }
   \end{figure}
-
 
 Où: Dans la grande ville du roi tout seul
 
   \begin{figure}[H]
-    \caption{
-    }
-    \vspace{4mm}
     \label{phoges-pic03.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=4cm,height=4cm]{{phoges-pic03}.jpg}
+          \includegraphics[origin=c,angle=0,width=4cm,height=4cm]{{./phoges-pic03}.jpg}
         \tabularnewline \hline
     \end{tabular}
+    \vspace{2mm}
+    \caption{
+    }
   \end{figure}
   \begin{figure}[H]
+    \label{phoges-pic01.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=2.4cm]{{./phoges-pic01}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
       <Quand: mai 2005> 
        [Où: petite place seule...c'était le lieu!
@@ -346,20 +351,12 @@ Où: Dans la grande ville du roi tout seul
       [[Catégorie(s): categ]] 
       (((Commentaires: on y met tous les types d'annotation)))
     }
-    \vspace{4mm}
-    \label{phoges-pic01.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=2.4cm]{{phoges-pic01}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
 
 Pour sûr, c'est une histoire à dormir debout !
 
 
-Quand: : 2018-04-06
+Quand: : 2018\_04\_06
 
 
 Où: Tout débuta sur la place du marché.
@@ -376,19 +373,19 @@ Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre
 Où: Cour de la mairie
 
   \begin{figure}[H]
+    \label{phoges-pic02.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=4cm,height=4cm]{{./phoges-pic02}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
        [Où: place 2//place 3...c'était le lieu!
       [[Clé(s): boum,place 1,tic-tac]] 
       [[Catégorie(s): a b c]] 
     }
-    \vspace{4mm}
-    \label{phoges-pic02.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=4cm,height=4cm]{{phoges-pic02}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
 %
 \subsection{Mais c'était loin d'être fini}
@@ -400,47 +397,48 @@ Toujours personne en vue, et le soleil qui commençait à décliner.
 Qui: Papou
 
   \begin{figure}[H]
+    \label{phoges-pic04.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=4.8cm]{{./phoges-pic04}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
        [Où: place cinq...c'était le lieu!
        [Qui: Personne] 
       [[Clé(s): palabra clave premera,palabra clave,keyword]] 
       (((Commentaires: 5ème en place)))
     }
-    \vspace{4mm}
-    \label{phoges-pic04.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=4.8cm]{{phoges-pic04}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
  \onecolumn
+\clearpage
 %
 \section{Il fallait aller encore plus loin}
 %
-
  \section*{Et une seconde au milieu}
   \begin{figure}[H]
-    \caption{
-      [1,1]~: 
-       [Où: place cinq...c'était le lieu!
-      (((Commentaires: aussi la 5ème par individuel)))
-      [2,1]~: 
-      (((Commentaires: bissée)))
-    }
-    \vspace{4mm}
     \label{phoges-pic05.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=4.8cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4.8cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
-          \includegraphics[origin=c,angle=0,width=4.8cm]{{phoges-pic05}.jpg}
+          \includegraphics[origin=c,angle=0,width=4.8cm]{{./phoges-pic05}.jpg}
         \tabularnewline \hline
     \end{tabular}
+    \vspace{2mm}
+    \caption{
+      [1,1]\texttt{\~{}}: 
+       [Où: place cinq...c'était le lieu!
+      (((Commentaires: aussi la 5ème par individuel)))
+      [2,1]\texttt{\~{}}: 
+      (((Commentaires: bissée)))
+    }
   \end{figure}
  \twocolumn
+\clearpage
 %
 \section{Jamais on n'en voyait la fin}
 %
@@ -448,38 +446,38 @@ Qui: Papou
 \subsection{Encore un mirage}
 %
   \begin{figure}[H]
+    \label{phoges-pic06.jpg}
+    \noindent \centering{}
+    \begin{tabular}{|c|}
+      \hline
+          \includegraphics[origin=c,angle=0,width=4.8cm]{{./phoges-pic06}.jpg}
+        \tabularnewline \hline
+    \end{tabular}
+    \vspace{2mm}
     \caption{
        [Où: place 3...c'était le lieu!
       [[Clé(s): palabra clave cuarta]] 
       [[Catégorie(s): b c]] 
       (((Commentaires: 5 et 3)))
     }
-    \vspace{4mm}
-    \label{phoges-pic06.jpg}
-    \noindent \centering{}
-    \begin{tabular}{|c|}
-      \hline
-          \includegraphics[origin=c,angle=0,width=4.8cm]{{phoges-pic06}.jpg}
-        \tabularnewline \hline
-    \end{tabular}
   \end{figure}
+\clearpage
 %
 \section{C'est la fin des haricots}
 %
-
   \begin{figure}[H]
-    \caption{
-       [Où: de plus//place 3//place 2...c'était le lieu!
-      [[Clé(s): palabra clave segunda,palabra clave premera]] 
-    }
-    \vspace{4mm}
     \label{phoges-pic07.jpg}
     \noindent \centering{}
     \begin{tabular}{|c|}
       \hline
-          \includegraphics[origin=c,angle=0,width=6.4cm]{{phoges-pic07}.jpg}
+          \includegraphics[origin=c,angle=0,width=6.4cm]{{./phoges-pic07}.jpg}
         \tabularnewline \hline
     \end{tabular}
+    \vspace{2mm}
+    \caption{
+       [Où: de plus//place 3//place 2...c'était le lieu!
+      [[Clé(s): palabra clave segunda,palabra clave premera]] 
+    }
   \end{figure}
 %
 \end{document}

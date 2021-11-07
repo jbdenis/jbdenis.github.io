@@ -1,15 +1,15 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.1.18)  13 OCT 2018 10:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.18)  8 APR 2019 22:48
 entering extended mode
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **phoges-fin-dif.tex
 (./phoges-fin-dif.tex
-LaTeX2e <2009/09/24>
-Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, loaded.
-(/usr/share/texmf-texlive/tex/latex/base/article.cls
-Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texmf-texlive/tex/latex/base/size12.clo
-File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+LaTeX2e <2017-04-15>
+Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -23,14 +23,14 @@ File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
-Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
 
-(/usr/share/texmf-texlive/tex/latex/base/t1enc.def
-File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
-LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.def
+File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 ))
-(/usr/share/texmf-texlive/tex/latex/float/float.sty
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count87
 \float@exts=\toks14
@@ -38,23 +38,25 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@float@everytoks=\toks15
 \@floatcapt=\box27
 )
-(/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
-Package: inputenc 2008/03/30 v1.1d Input encoding file
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2015/03/17 v1.2c Input encoding file
 \inpenc@prehook=\toks16
 \inpenc@posthook=\toks17
 
-(/usr/share/texmf-texlive/tex/latex/base/utf8.def
-File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def
+File: utf8.def 2017/01/28 v1.1t UTF-8 support for inputenc
 Now handling font encoding OML ...
 ... no UTF-8 mapping file for font encoding OML
 Now handling font encoding T1 ...
 ... processing UTF-8 mapping file for font encoding T1
 
-(/usr/share/texmf-texlive/tex/latex/base/t1enc.dfu
-File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.dfu
+File: t1enc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
+   defining Unicode char U+00A0 (decimal 160)
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
    defining Unicode char U+00AB (decimal 171)
+   defining Unicode char U+00AD (decimal 173)
    defining Unicode char U+00BB (decimal 187)
    defining Unicode char U+00BF (decimal 191)
    defining Unicode char U+00C0 (decimal 192)
@@ -119,50 +121,94 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00FD (decimal 253)
    defining Unicode char U+00FE (decimal 254)
    defining Unicode char U+00FF (decimal 255)
+   defining Unicode char U+0100 (decimal 256)
+   defining Unicode char U+0101 (decimal 257)
    defining Unicode char U+0102 (decimal 258)
    defining Unicode char U+0103 (decimal 259)
    defining Unicode char U+0104 (decimal 260)
    defining Unicode char U+0105 (decimal 261)
    defining Unicode char U+0106 (decimal 262)
    defining Unicode char U+0107 (decimal 263)
+   defining Unicode char U+0108 (decimal 264)
+   defining Unicode char U+0109 (decimal 265)
+   defining Unicode char U+010A (decimal 266)
+   defining Unicode char U+010B (decimal 267)
    defining Unicode char U+010C (decimal 268)
    defining Unicode char U+010D (decimal 269)
    defining Unicode char U+010E (decimal 270)
    defining Unicode char U+010F (decimal 271)
    defining Unicode char U+0110 (decimal 272)
    defining Unicode char U+0111 (decimal 273)
+   defining Unicode char U+0112 (decimal 274)
+   defining Unicode char U+0113 (decimal 275)
+   defining Unicode char U+0114 (decimal 276)
+   defining Unicode char U+0115 (decimal 277)
+   defining Unicode char U+0116 (decimal 278)
+   defining Unicode char U+0117 (decimal 279)
    defining Unicode char U+0118 (decimal 280)
    defining Unicode char U+0119 (decimal 281)
    defining Unicode char U+011A (decimal 282)
    defining Unicode char U+011B (decimal 283)
+   defining Unicode char U+011C (decimal 284)
+   defining Unicode char U+011D (decimal 285)
    defining Unicode char U+011E (decimal 286)
    defining Unicode char U+011F (decimal 287)
+   defining Unicode char U+0120 (decimal 288)
+   defining Unicode char U+0121 (decimal 289)
+   defining Unicode char U+0122 (decimal 290)
+   defining Unicode char U+0123 (decimal 291)
+   defining Unicode char U+0124 (decimal 292)
+   defining Unicode char U+0125 (decimal 293)
+   defining Unicode char U+0128 (decimal 296)
+   defining Unicode char U+0129 (decimal 297)
+   defining Unicode char U+012A (decimal 298)
+   defining Unicode char U+012B (decimal 299)
+   defining Unicode char U+012C (decimal 300)
+   defining Unicode char U+012D (decimal 301)
+   defining Unicode char U+012E (decimal 302)
+   defining Unicode char U+012F (decimal 303)
    defining Unicode char U+0130 (decimal 304)
    defining Unicode char U+0131 (decimal 305)
    defining Unicode char U+0132 (decimal 306)
    defining Unicode char U+0133 (decimal 307)
+   defining Unicode char U+0134 (decimal 308)
+   defining Unicode char U+0135 (decimal 309)
+   defining Unicode char U+0136 (decimal 310)
+   defining Unicode char U+0137 (decimal 311)
    defining Unicode char U+0139 (decimal 313)
    defining Unicode char U+013A (decimal 314)
+   defining Unicode char U+013B (decimal 315)
+   defining Unicode char U+013C (decimal 316)
    defining Unicode char U+013D (decimal 317)
    defining Unicode char U+013E (decimal 318)
    defining Unicode char U+0141 (decimal 321)
    defining Unicode char U+0142 (decimal 322)
    defining Unicode char U+0143 (decimal 323)
    defining Unicode char U+0144 (decimal 324)
+   defining Unicode char U+0145 (decimal 325)
+   defining Unicode char U+0146 (decimal 326)
    defining Unicode char U+0147 (decimal 327)
    defining Unicode char U+0148 (decimal 328)
    defining Unicode char U+014A (decimal 330)
    defining Unicode char U+014B (decimal 331)
+   defining Unicode char U+014C (decimal 332)
+   defining Unicode char U+014D (decimal 333)
+   defining Unicode char U+014E (decimal 334)
+   defining Unicode char U+014F (decimal 335)
    defining Unicode char U+0150 (decimal 336)
    defining Unicode char U+0151 (decimal 337)
    defining Unicode char U+0152 (decimal 338)
    defining Unicode char U+0153 (decimal 339)
    defining Unicode char U+0154 (decimal 340)
    defining Unicode char U+0155 (decimal 341)
+   defining Unicode char U+0156 (decimal 342)
+   defining Unicode char U+0157 (decimal 343)
    defining Unicode char U+0158 (decimal 344)
    defining Unicode char U+0159 (decimal 345)
    defining Unicode char U+015A (decimal 346)
    defining Unicode char U+015B (decimal 347)
+   defining Unicode char U+015C (decimal 348)
+   defining Unicode char U+015D (decimal 349)
    defining Unicode char U+015E (decimal 350)
    defining Unicode char U+015F (decimal 351)
    defining Unicode char U+0160 (decimal 352)
@@ -171,10 +217,22 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+0163 (decimal 355)
    defining Unicode char U+0164 (decimal 356)
    defining Unicode char U+0165 (decimal 357)
+   defining Unicode char U+0168 (decimal 360)
+   defining Unicode char U+0169 (decimal 361)
+   defining Unicode char U+016A (decimal 362)
+   defining Unicode char U+016B (decimal 363)
+   defining Unicode char U+016C (decimal 364)
+   defining Unicode char U+016D (decimal 365)
    defining Unicode char U+016E (decimal 366)
    defining Unicode char U+016F (decimal 367)
    defining Unicode char U+0170 (decimal 368)
    defining Unicode char U+0171 (decimal 369)
+   defining Unicode char U+0172 (decimal 370)
+   defining Unicode char U+0173 (decimal 371)
+   defining Unicode char U+0174 (decimal 372)
+   defining Unicode char U+0175 (decimal 373)
+   defining Unicode char U+0176 (decimal 374)
+   defining Unicode char U+0177 (decimal 375)
    defining Unicode char U+0178 (decimal 376)
    defining Unicode char U+0179 (decimal 377)
    defining Unicode char U+017A (decimal 378)
@@ -182,9 +240,40 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+017C (decimal 380)
    defining Unicode char U+017D (decimal 381)
    defining Unicode char U+017E (decimal 382)
+   defining Unicode char U+01CD (decimal 461)
+   defining Unicode char U+01CE (decimal 462)
+   defining Unicode char U+01CF (decimal 463)
+   defining Unicode char U+01D0 (decimal 464)
+   defining Unicode char U+01D1 (decimal 465)
+   defining Unicode char U+01D2 (decimal 466)
+   defining Unicode char U+01D3 (decimal 467)
+   defining Unicode char U+01D4 (decimal 468)
+   defining Unicode char U+01E2 (decimal 482)
+   defining Unicode char U+01E3 (decimal 483)
+   defining Unicode char U+01E6 (decimal 486)
+   defining Unicode char U+01E7 (decimal 487)
+   defining Unicode char U+01E8 (decimal 488)
+   defining Unicode char U+01E9 (decimal 489)
+   defining Unicode char U+01EA (decimal 490)
+   defining Unicode char U+01EB (decimal 491)
+   defining Unicode char U+01F0 (decimal 496)
+   defining Unicode char U+01F4 (decimal 500)
+   defining Unicode char U+01F5 (decimal 501)
+   defining Unicode char U+0218 (decimal 536)
+   defining Unicode char U+0219 (decimal 537)
+   defining Unicode char U+021A (decimal 538)
+   defining Unicode char U+021B (decimal 539)
+   defining Unicode char U+0232 (decimal 562)
+   defining Unicode char U+0233 (decimal 563)
+   defining Unicode char U+1E02 (decimal 7682)
+   defining Unicode char U+1E03 (decimal 7683)
    defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2010 (decimal 8208)
+   defining Unicode char U+2011 (decimal 8209)
+   defining Unicode char U+2012 (decimal 8210)
    defining Unicode char U+2013 (decimal 8211)
    defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2015 (decimal 8213)
    defining Unicode char U+2018 (decimal 8216)
    defining Unicode char U+2019 (decimal 8217)
    defining Unicode char U+201A (decimal 8218)
@@ -196,14 +285,18 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+2039 (decimal 8249)
    defining Unicode char U+203A (decimal 8250)
    defining Unicode char U+2423 (decimal 9251)
+   defining Unicode char U+1E20 (decimal 7712)
+   defining Unicode char U+1E21 (decimal 7713)
 )
 Now handling font encoding OT1 ...
 ... processing UTF-8 mapping file for font encoding OT1
 
-(/usr/share/texmf-texlive/tex/latex/base/ot1enc.dfu
-File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+(/usr/share/texlive/texmf-dist/tex/latex/base/ot1enc.dfu
+File: ot1enc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
+   defining Unicode char U+00A0 (decimal 160)
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00AD (decimal 173)
    defining Unicode char U+00B8 (decimal 184)
    defining Unicode char U+00BF (decimal 191)
    defining Unicode char U+00C5 (decimal 197)
@@ -221,6 +314,14 @@ File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+0142 (decimal 322)
    defining Unicode char U+0152 (decimal 338)
    defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+0174 (decimal 372)
+   defining Unicode char U+0175 (decimal 373)
+   defining Unicode char U+0176 (decimal 374)
+   defining Unicode char U+0177 (decimal 375)
+   defining Unicode char U+0218 (decimal 536)
+   defining Unicode char U+0219 (decimal 537)
+   defining Unicode char U+021A (decimal 538)
+   defining Unicode char U+021B (decimal 539)
    defining Unicode char U+2013 (decimal 8211)
    defining Unicode char U+2014 (decimal 8212)
    defining Unicode char U+2018 (decimal 8216)
@@ -231,8 +332,8 @@ File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OMS ...
 ... processing UTF-8 mapping file for font encoding OMS
 
-(/usr/share/texmf-texlive/tex/latex/base/omsenc.dfu
-File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+(/usr/share/texlive/texmf-dist/tex/latex/base/omsenc.dfu
+File: omsenc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
    defining Unicode char U+00A7 (decimal 167)
    defining Unicode char U+00B6 (decimal 182)
    defining Unicode char U+00B7 (decimal 183)
@@ -255,20 +356,22 @@ Now handling font encoding U ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-(/usr/share/texmf-texlive/tex/latex/geometry/geometry.sty
-Package: geometry 2008/12/21 v4.2 Page Geometry
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
-Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks18
 )
-(/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in pdf mode detected.
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
-(/usr/share/texmf-texlive/tex/generic/oberdiek/ifvtex.sty
-Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count88
 \Gm@cntv=\count89
@@ -277,99 +380,124 @@ Package ifvtex Info: VTeX not detected.
 \Gm@wd@mp=\dimen104
 \Gm@odd@mp=\dimen105
 \Gm@even@mp=\dimen106
+\Gm@layoutwidth=\dimen107
+\Gm@layoutheight=\dimen108
+\Gm@layouthoffset=\dimen109
+\Gm@layoutvoffset=\dimen110
 \Gm@dimlist=\toks19
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
-Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
-Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/etc/texmf/tex/latex/config/graphics.cfg
-File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 91.
+Package graphics Info: Driver file: pdftex.def on input line 99.
 
-(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
-\Gread@gobject=\count91
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen107
-\Gin@req@width=\dimen108
+\Gin@req@height=\dimen111
+\Gin@req@width=\dimen112
 )
-(/usr/share/texmf-texlive/tex/generic/babel/babel.sty
-Package: babel 2008/07/06 v3.8l The Babel package
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2018/02/14 3.18 The Babel package
 
-(/usr/share/texmf-texlive/tex/generic/babel/frenchb.ldf
-Language: frenchb 2009/03/16 v2.3d French support from the babel system
-
-(/usr/share/texmf-texlive/tex/generic/babel/babel.def
-File: babel.def 2008/07/06 v3.8l Babel common definitions
-\babel@savecnt=\count92
-\U@D=\dimen109
+(/usr/share/texlive/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2018/02/14 3.18 Babel switching mechanism
 )
+(/usr/share/texlive/texmf-dist/tex/generic/babel-french/french.ldf
+Language: french 2018/02/04 v3.4b French support from the babel system
 
-Package babel Warning: No hyphenation patterns were loaded for
-(babel)                the language `French'
-(babel)                I will use the patterns loaded for \language=0 instead.
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2018/02/14 3.18 Babel common definitions
+\babel@savecnt=\count91
+\U@D=\dimen113
 
-\l@french = a dialect from \language0
-Package babel Info: Making : an active character on input line 120.
-Package babel Info: Making ; an active character on input line 121.
-Package babel Info: Making ! an active character on input line 122.
-Package babel Info: Making ? an active character on input line 123.
-\FB@Mht=\dimen110
-\std@mcc=\count93
-\dec@mcc=\count94
-\parindentFFN=\dimen111
-*************************************
-* Local config file frenchb.cfg used
-*
-(/usr/share/texmf-texlive/tex/generic/babel/frenchb.cfg)))
-(/usr/share/texmf-texlive/tex/latex/carlisle/scalefnt.sty)
-(/usr/share/texmf-texlive/tex/latex/tocloft/tocloft.sty
-Package: tocloft 2009/09/04 v2.3d parameterised ToC, etc., typesetting
+(/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@dirlevel=\count92
+)
+\l@acadian = a dialect from \language\l@french 
+\FB@nonchar=\count93
+Package babel Info: Making : an active character on input line 411.
+Package babel Info: Making ; an active character on input line 412.
+Package babel Info: Making ! an active character on input line 413.
+Package babel Info: Making ? an active character on input line 414.
+\FBguill@level=\count94
+\FB@everypar=\toks20
+\FB@Mht=\dimen114
+\mc@charclass=\count95
+\mc@charfam=\count96
+\mc@charslot=\count97
+\std@mcc=\count98
+\dec@mcc=\count99
+\c@FBcaption@count=\count100
+\listindentFB=\skip43
+\descindentFB=\skip44
+\labelwidthFB=\skip45
+\leftmarginFB=\skip46
+\parindentFFN=\dimen115
+\FBfnindent=\skip47
+))
+(/usr/share/texlive/texmf-dist/tex/latex/carlisle/scalefnt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/pdflscape.sty
+Package: pdflscape 2016/05/14 v0.11 Display of landscape pages in PDF (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tocloft/tocloft.sty
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has section divisions on input line 51.
+\cftparskip=\skip48
+\cftbeforetoctitleskip=\skip49
+\cftaftertoctitleskip=\skip50
+\cftbeforepartskip=\skip51
+\cftpartnumwidth=\skip52
+\cftpartindent=\skip53
+\cftbeforesecskip=\skip54
+\cftsecindent=\skip55
+\cftsecnumwidth=\skip56
+\cftbeforesubsecskip=\skip57
+\cftsubsecindent=\skip58
+\cftsubsecnumwidth=\skip59
+\cftbeforesubsubsecskip=\skip60
+\cftsubsubsecindent=\skip61
+\cftsubsubsecnumwidth=\skip62
+\cftbeforeparaskip=\skip63
+\cftparaindent=\skip64
+\cftparanumwidth=\skip65
+\cftbeforesubparaskip=\skip66
+\cftsubparaindent=\skip67
+\cftsubparanumwidth=\skip68
+\cftbeforeloftitleskip=\skip69
+\cftafterloftitleskip=\skip70
+\cftbeforefigskip=\skip71
+\cftfigindent=\skip72
+\cftfignumwidth=\skip73
+\c@lofdepth=\count101
+\c@lotdepth=\count102
+\cftbeforelottitleskip=\skip74
+\cftafterlottitleskip=\skip75
+\cftbeforetabskip=\skip76
+\cfttabindent=\skip77
+\cfttabnumwidth=\skip78
+)
+(./phoges-fin-dif.aux
+
+LaTeX Warning: Label `phoges-pic05.jpg' multiply defined.
 
 
-Package tocloft Note: The document has section divisions.
+LaTeX Warning: Label `phoges-pic05.jpg' multiply defined.
 
-\cftparskip=\skip43
-\cftbeforetoctitleskip=\skip44
-\cftaftertoctitleskip=\skip45
-\cftbeforepartskip=\skip46
-\cftpartnumwidth=\skip47
-\cftpartindent=\skip48
-\cftbeforesecskip=\skip49
-\cftsecindent=\skip50
-\cftsecnumwidth=\skip51
-\cftbeforesubsecskip=\skip52
-\cftsubsecindent=\skip53
-\cftsubsecnumwidth=\skip54
-\cftbeforesubsubsecskip=\skip55
-\cftsubsubsecindent=\skip56
-\cftsubsubsecnumwidth=\skip57
-\cftbeforeparaskip=\skip58
-\cftparaindent=\skip59
-\cftparanumwidth=\skip60
-\cftbeforesubparaskip=\skip61
-\cftsubparaindent=\skip62
-\cftsubparanumwidth=\skip63
-\cftbeforeloftitleskip=\skip64
-\cftafterloftitleskip=\skip65
-\cftbeforefigskip=\skip66
-\cftfigindent=\skip67
-\cftfignumwidth=\skip68
-\c@lofdepth=\count95
-\c@lotdepth=\count96
-\cftbeforelottitleskip=\skip69
-\cftafterlottitleskip=\skip70
-\cftbeforetabskip=\skip71
-\cfttabindent=\skip72
-\cfttabnumwidth=\skip73
-) (./phoges-fin-dif.aux
 
 LaTeX Warning: Label `phoges-pic05.jpg' multiply defined.
 
@@ -421,241 +549,354 @@ LaTeX Warning: Label `phoges-pic05.jpg' multiply defined.
 )
 \openout1 = `phoges-fin-dif.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
 
-*geometry auto-detecting driver*
-*geometry detected driver: pdftex*
--------------------- Geometry parameters
-paper: a4paper
-landscape: --
-twocolumn: true
-twoside: --
-asymmetric: --
-h-parts: 42.67912pt, 512.14963pt, 42.67912pt
-v-parts: 42.67912pt, 759.6886pt, 42.67912pt
-hmarginratio: --
-vmarginratio: --
-lines: --
-heightrounded: --
-bindingoffset: 0.0pt
-truedimen: --
-includehead: --
-includefoot: --
-includemp: --
-driver: pdftex
--------------------- Page layout dimensions and switches
-\paperwidth  597.50787pt
-\paperheight 845.04684pt
-\textwidth  512.14963pt
-\textheight 759.6886pt
-\oddsidemargin  -29.59087pt
-\evensidemargin -29.59087pt
-\topmargin  -66.59087pt
-\headheight 12.0pt
-\headsep    25.0pt
-\footskip   30.0pt
-\marginparwidth 4.0pt
-\marginparsep   10.0pt
-\columnsep  10.0pt
-\skip\footins  10.8pt plus 4.0pt minus 2.0pt
-\hoffset 0.0pt
-\voffset 0.0pt
-\mag 1000
-\@twocolumntrue 
-(1in=72.27pt, 1cm=28.45pt)
------------------------
-(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(42.67912pt, 512.14963pt, 42.67912pt)
+* v-part:(T,H,B)=(42.67912pt, 759.6886pt, 42.67912pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=512.14963pt
+* \textheight=759.6886pt
+* \oddsidemargin=-29.59087pt
+* \evensidemargin=-29.59087pt
+* \topmargin=-66.59087pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=4.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumntrue
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count97
-\scratchdimen=\dimen112
+\scratchcounter=\count103
+\scratchdimen=\dimen116
 \scratchbox=\box28
-\nofMPsegments=\count98
-\nofMParguments=\count99
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count100
-\MPscratchDim=\dimen113
-\MPnumerator=\count101
-\everyMPtoPDFconversion=\toks21
+\nofMPsegments=\count104
+\nofMParguments=\count105
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count106
+\MPscratchDim=\dimen117
+\MPnumerator=\count107
+\makeMPintoPDFobject=\count108
+\everyMPtoPDFconversion=\toks22
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
-LaTeX Info: Redefining \degres on input line 18.
-LaTeX Info: Redefining \dots on input line 18.
-LaTeX Info: Redefining \up on input line 18.
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2018/01/21 v0.26 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Info: Redefining \degres on input line 19.
+LaTeX Info: Redefining \dots on input line 19.
+LaTeX Info: Redefining \up on input line 19.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 22.
+(Font)              <14.4> on input line 23.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 22.
- (./phoges-fin-dif.toc
+(Font)              <7> on input line 23.
+
+(./phoges-fin-dif.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <12> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 2.
-
-Underfull \hbox (badness 2326) in paragraph at lines 2--2
- [][] []\T1/cmr/bx/n/12 Pour com-mencer des tests sur 
- []
-
 )
 \tf@toc=\write3
 \openout3 = `phoges-fin-dif.toc'.
 
 
-Underfull \hbox (badness 1960) in paragraph at lines 27--27
-\T1/cmr/bx/n/17.28 par les paramètres tech-
- []
-
-<phoges-pic05.jpg, id=1, 41.29715pt x 27.4626pt>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-Overfull \hbox (3.15839pt too wide) in paragraph at lines 82--90
-  [] 
- []
-
-File: phoges-pic05.jpg Graphic file (type jpg)
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-Overfull \hbox (3.15839pt too wide) in paragraph at lines 101--109
-  [] 
- []
-
-File: phoges-pic05.jpg Graphic file (type jpg)
-<use phoges-pic05.jpg> [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
-
-
- <./phoges-pic05.jpg>]
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [2]
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-<phoges-pic03.jpg, id=15, 41.29715pt x 27.4626pt>
-File: phoges-pic03.jpg Graphic file (type jpg)
- <use phoges-pic03.jpg>
-File: phoges-pic03.jpg Graphic file (type jpg)
-
-<use phoges-pic03.jpg>
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-File: phoges-pic03.jpg Graphic file (type jpg)
-
-<use phoges-pic03.jpg> <phoges-pic01.jpg, id=16, 41.29715pt x 27.4626pt>
-File: phoges-pic01.jpg Graphic file (type jpg)
-
-<use phoges-pic01.jpg>
-Underfull \hbox (badness 1430) in paragraph at lines 367--367
-[]\T1/cmr/bx/n/17.28 je ra-jouter une sec-tion non
+Underfull \hbox (badness 4886) in paragraph at lines 28--28
+[]\T1/cmr/bx/n/17.28 Une Sec-tion Sup-plé-men-
  []
 
 
-Underfull \vbox (badness 2384) has occurred while \output is active []
-
- [3 <./phoges-pic03.jpg> <./phoges-pic01.jpg>]
-<phoges-pic02.jpg, id=20, 41.29715pt x 27.4626pt>
-File: phoges-pic02.jpg Graphic file (type jpg)
- <use phoges-pic02.jpg>
-Underfull \hbox (badness 1803) in paragraph at lines 408--408
-[]\T1/cmr/m/n/12 Ph. 22 ^^U [Où : place cinq...c'était le lieu!
+Underfull \hbox (badness 5288) in paragraph at lines 32--32
+[]\T1/cmr/bx/n/14.4 Sous sec-tion sup-plé-men-taire
  []
 
-<phoges-pic04.jpg, id=21, 41.29715pt x 27.4626pt>
-File: phoges-pic04.jpg Graphic file (type jpg)
- <use phoges-pic04.jpg>
-[4
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
- <./phoges-pic02.jpg> <./phoges-pic04.jpg>]
-File: phoges-pic05.jpg Graphic file (type jpg)
- <use phoges-pic05.jpg>
-File: phoges-pic05.jpg Graphic file (type jpg)
-
-<use phoges-pic05.jpg> [5
 
 ]
-Underfull \hbox (badness 2418) in paragraph at lines 456--456
-\T1/cmr/m/n/12 pal-abra clave cuarta]] [[Caté-gorie(s) : b c]]
+Underfull \hbox (badness 1960) in paragraph at lines 36--36
+\T1/cmr/bx/n/17.28 par les pa-ra-mètres tech-
  []
 
-<phoges-pic06.jpg, id=28, 41.29715pt x 27.4626pt>
-File: phoges-pic06.jpg Graphic file (type jpg)
- <use phoges-pic06.jpg>
-<phoges-pic07.jpg, id=29, 41.29715pt x 27.4626pt>
-File: phoges-pic07.jpg Graphic file (type jpg)
- <use phoges-pic07.jpg>
-[6
+<./phoges-pic05.jpg, id=12, 41.29715pt x 27.4626pt>
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 46.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 48.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 58.
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 65.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 67.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 83.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 85.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+
+Overfull \hbox (3.15839pt too wide) in paragraph at lines 80--95
+  [] 
+ []
+
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 102.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 104.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+
+Overfull \hbox (3.15839pt too wide) in paragraph at lines 99--113
+  [] 
+ []
+
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 120.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 133.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 147.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 160.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 173.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 185.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 198.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 214.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 227.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+
+Underfull \vbox (badness 1205) has occurred while \output is active []
+
+ [2
+
+ <./phoges-pic05.jpg>]
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 240.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 256.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 269.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 282.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+ [3]
+<./phoges-pic03.jpg, id=20, 41.29715pt x 27.4626pt>
+File: ./phoges-pic03.jpg Graphic file (type jpg)
+<use ./phoges-pic03.jpg>
+Package pdftex.def Info: ./phoges-pic03.jpg  used on input line 306.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic03.jpg Graphic file (type jpg)
+<use ./phoges-pic03.jpg>
+Package pdftex.def Info: ./phoges-pic03.jpg  used on input line 308.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic03.jpg Graphic file (type jpg)
+<use ./phoges-pic03.jpg>
+Package pdftex.def Info: ./phoges-pic03.jpg  used on input line 330.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+<./phoges-pic01.jpg, id=21, 41.29715pt x 27.4626pt>
+File: ./phoges-pic01.jpg Graphic file (type jpg)
+<use ./phoges-pic01.jpg>
+Package pdftex.def Info: ./phoges-pic01.jpg  used on input line 342.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+<./phoges-pic02.jpg, id=22, 41.29715pt x 27.4626pt>
+File: ./phoges-pic02.jpg Graphic file (type jpg)
+<use ./phoges-pic02.jpg>
+Package pdftex.def Info: ./phoges-pic02.jpg  used on input line 380.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+<./phoges-pic04.jpg, id=23, 41.29715pt x 27.4626pt>
+File: ./phoges-pic04.jpg Graphic file (type jpg)
+<use ./phoges-pic04.jpg>
+Package pdftex.def Info: ./phoges-pic04.jpg  used on input line 404.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+
+Underfull \hbox (badness 1803) in paragraph at lines 413--413
+[]\T1/cmr/m/n/12 Ph. 22 ^^U [Où : place cinq...c'était le lieu !
+ []
+
+[4
+
+ <./phoges-pic03.jpg> <./phoges-pic01.jpg> <./phoges-pic02.jpg> <./phoges-pic04
+.jpg>]
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 426.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+File: ./phoges-pic05.jpg Graphic file (type jpg)
+<use ./phoges-pic05.jpg>
+Package pdftex.def Info: ./phoges-pic05.jpg  used on input line 428.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+ [5
 
 
- <./phoges-pic06.jpg> <./phoges-pic07.jpg>] (./phoges-fin-dif.aux)
+]
+<./phoges-pic06.jpg, id=30, 41.29715pt x 27.4626pt>
+File: ./phoges-pic06.jpg Graphic file (type jpg)
+<use ./phoges-pic06.jpg>
+Package pdftex.def Info: ./phoges-pic06.jpg  used on input line 453.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+ [6
+
+
+
+ <./phoges-pic06.jpg>]
+<./phoges-pic07.jpg, id=34, 41.29715pt x 27.4626pt>
+File: ./phoges-pic07.jpg Graphic file (type jpg)
+<use ./phoges-pic07.jpg>
+Package pdftex.def Info: ./phoges-pic07.jpg  used on input line 473.
+(pdftex.def)             Requested size: 41.29704pt x 27.46251pt.
+ [7
+
+
+ <./phoges-pic07.jpg>]
+(./phoges-fin-dif.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2758 strings out of 495061
- 35116 string characters out of 1182621
- 99731 words of memory out of 3000000
- 5915 multiletter control sequences out of 15000+50000
- 12689 words of font info for 33 fonts, out of 3000000 for 9000
- 28 hyphenation exceptions out of 8191
- 26i,13n,28p,368b,312s stack positions out of 5000i,500n,10000p,200000b,50000s
- </home/jbdenis/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home
-/jbdenis/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/jbdenis/
-.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/jbdenis/.texmf-va
-r/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/jbdenis/.texmf-var/fonts/p
-k/ljfour/jknappen/ec/ecrm1440.600pk> </home/jbdenis/.texmf-var/fonts/pk/ljfour/
-jknappen/ec/ecrm2074.600pk>
-Output written on phoges-fin-dif.pdf (6 pages, 470054 bytes).
+ 4081 strings out of 492982
+ 56241 string characters out of 6134895
+ 135187 words of memory out of 5000000
+ 7573 multiletter control sequences out of 15000+600000
+ 13002 words of font info for 34 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 41i,13n,34p,396b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.6
+00pk> </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx144
+0.600pk> </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm
+1200.600pk> </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/e
+cbx1200.600pk> </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/e
+c/ecbx1728.600pk> </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jknappe
+n/ec/ecrm1440.600pk> </home/jbdenis/.texlive2017/texmf-var/fonts/pk/ljfour/jkna
+ppen/ec/ecrm2074.600pk>
+Output written on phoges-fin-dif.pdf (7 pages, 463371 bytes).
 PDF statistics:
- 280 PDF objects out of 1000 (max. 8388607)
+ 310 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

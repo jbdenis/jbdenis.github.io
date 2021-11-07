@@ -1,12 +1,12 @@
 #!/usr/bin/perl -w
 #
-# 17_09_23 17_10_01
+# 17_09_23 17_10_01 19_04_03
 #
 use strict;
 use warnings;
-use phoges; 
 #
 use lib "/home/jbdenis/o/info/perl/phoges";
+use phoges; 
 #
 my @noms = ("2013_12_11.oui.jpg","pc11123.jpg","tutu.jpg");
 my @dates = ("2000","NON","");

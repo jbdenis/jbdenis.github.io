@@ -5,7 +5,9 @@
 # a dif (decoded index file) was asked for 
 # 
 # 
-<(0)> Exemple d'eif pour les tests de pg.cata
+<(0)> Exemple d'eif pour les tests de pg.album
+<LATEX> \section{Une Section Supplémentaire}
+<LATEX> <FILE> phoges-fin-ajo.txt
 <(1)> Pour commencer des tests sur la dimension des images par les paramètres techniques
 <(2)> En mêlant les deux
 <[nbi=2,gnc=2,cap=Deux images en grilles : UNE FOIS,wid=4cm,hei=2cm]>

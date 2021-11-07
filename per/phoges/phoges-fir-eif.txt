@@ -1,0 +1,22 @@
+# 
+# a toy example to test the directories options
+# 19_03_07 19_03_08
+#
+stf cate
+<(0)>   répertoires avec  pg.album
+#
+<(1)> Deux photos
+<[WID=4cm]>
+#{|../orj|}
+p0200.jpg {{c}} 
+<STOP>
+<[hei=18cm]>
+{||}
+p0200b.jpg ((Belle Tablée)) <[hei=2cm]>
+<[wid=8cm]> 
+{|.|}
+p2000.jpg ((Belle Tablée))
+<(1)> Encore une photo
+p0500.jpg ##{|../orj|}
+<(1)> Encore une
+(*) Alors ?

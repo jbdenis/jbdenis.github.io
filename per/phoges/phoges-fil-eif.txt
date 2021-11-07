@@ -1,8 +1,8 @@
 # 
-# an extended EIF example for a complete test of pg.cata.pl
+# an extended EIF example for a complete test of pg.album.pl
 # 
 # 
-<(0)>  Exemple  d'eif pour les tests de pg.cata
+<(0)>  Exemple  d'eif pour les tests de pg.album
 ((en haut !))
 #<[ wid = 5cm, hei = 5 cm]>
 #
@@ -12,11 +12,12 @@ phoges-pic01.jpg  (| petite place seule |)
 phoges-pic02.jpg  (| place 2//place 3 |)  {{ boum ,place 1, tic-tac }} << a b c >>
 <[ wid=6cm , nbi = 2 , gnl=2 , gnc = 1 ]>
 phoges-pic03.jpg  (| images nettes//place cinq//place 2//place 3 |)  {{ place 1 }} <[ rot = -90 , hei = 5cm]> [[Jeanie]]
+#phoges-pic02.jpg  
 #
 <(2)> Mais c'était loin d'être fini
 [[ Papou ]]
 (( Toujours personne en vue, et le soleil qui commençait à décliner. ))
-phoges-pic04.jpg  [[ Personne ]] <| 2018 |> (| place cinq |)  {{ palabra clave premera,palabra clave, keyword }}  (( 5ème en place )) 
+phoges-pic04.jpg  [[ Personne ]] [| 2018 |] (| place cinq |)  {{ palabra clave premera,palabra clave, keyword }}  (( 5ème en place )) 
 #
 <(1)> Il fallait aller encore plus loin
 phoges-pic05.jpg  (| place cinq |)  (( aussi la 5ème par individuel )) 

@@ -11,9 +11,13 @@ my ($para,$sou,@res);
 my $test = "toto";
 $para = {tit=>"Pour COMMENCER"};
 my $li1 = ["VOIRE","L'avantage principal d'être le premier est que les autres sont derrière vous, ils ne peuvent donc pas vous bloquer ! Maintenant, il y a aussi quelques inconvénients. Par exemple, vous ne pouvez pas les surveiller et vous rendre compte s'ils complotent ou pas quelque chose contre vous...","second","troisième"];
+my $hli3 = {1=>"un",2=>"deux",3=>"trois",4=>"quatre",5=>"cinq",6=>"six",7=>"sept"};
+my $ali3 = [%$hli3];
+my $sel3 = ["7","5","3","1"];
 #$li1 = {@$li1};
 my $li2 = ["tree","good morning","singe hurleur"];
-foreach my $typ ("l","h") {
+#foreach my $typ ("l","h") {
+foreach my $typ ("l") {
     $sou = [];
     push @$sou, @{&lhattmel::start(par=>$para,typ=>$typ)};
     push @$sou, @{&lhattmel::subtit(tit=>"Première Partie",typ=>$typ)};
@@ -25,9 +29,17 @@ foreach my $typ ("l","h") {
                                          "Celui-si est réservé au développement !"],
                                    typ=>$typ)};
     push @$sou, @{&lhattmel::subtit(tit=>"développement",lev=>2,typ=>$typ)};
+    #
     for my $tyl ("d","b","n","D","B","N") {
         push @$sou, @{&lhattmel::parag(prg=>["<<<<$tyl>>>>"],typ=>$typ)};
         push @$sou, @{&lhattmel::list(lst=>$li1,tli=>$tyl,typ=>$typ)};
+    }
+    # testing the selection
+    for my $tyl ("d","D") {
+        push @$sou, @{&lhattmel::parag(prg=>["Selecting odd items in hash <<<<$tyl>>>>"],typ=>$typ)};
+        push @$sou, @{&lhattmel::list(lst=>$hli3,sel=>$sel3,tli=>$tyl,typ=>$typ)};
+        push @$sou, @{&lhattmel::parag(prg=>["Selecting odd items in array <<<<$tyl>>>>"],typ=>$typ)};
+        push @$sou, @{&lhattmel::list(lst=>$ali3,sel=>$sel3,tli=>$tyl,typ=>$typ)};
     }
     push @$sou, @{&lhattmel::subtit(tit=>"conclusion",lev=>2,typ=>$typ)};
     push @$sou, @{&lhattmel::list(lst=>$li1,tli=>"n",typ=>$typ)};

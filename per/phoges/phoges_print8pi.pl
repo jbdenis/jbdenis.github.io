@@ -4,23 +4,24 @@
 #
 use strict;
 use warnings;
+use lib "/home/jbdenis/o/info/perl/phoges";
 use phoges; 
 #
-use lib "/home/jbdenis/o/info/perl/phoges";
 #
 my $kol;
-for my $type ("ind","col","cir","add") {
-    $kol = &phoges::new7pi(wha=>$type);
+for my $type ("ind","IND","col","COL","cir","bof") {
+for my $fil (0,1) {    
+    $kol = &phoges::new7pi(wha=>$type,fil=>$fil);
     if (not(&uie::err9(obj=>$kol))) {
         for (0,1) {
             my $ver = &phoges::print8pi(xpi=>$kol,eve=>$_);
-            unless ($ver) { &uie::la(str=>$ver,mes=>"pas bon");}
+            &uie::la(str=>$ver,mes=>"avec type = $type, eve = $_ et fil = $fil");
         }
     } else {
         &uie::print8err(err=>$kol);
     }
     &uie::la(str=>"",mes=>"type = $type"); 
-}
+}}
 #
 #
 #

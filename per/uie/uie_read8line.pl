@@ -2,11 +2,19 @@
 #
 # 16_08_05 16_09_01 16_09_08 16_09_09 16_09_11
 # 17_04_05 17_04_06 17_09_24 17_09_25 18_09_30
+# 19_01_24
 #
 use File::Copy;
 use strict;
+use lib '.';
 use uie; 
 #
+#
+my $fipoc = "uie-fie.txt";
+$fipoc = "../phoges/phoges-tea-eif.txt";
+my $repoc = &uie::read8line(fil=>$fipoc);
+&uie::print8structure(str=>$repoc);
+&uie::pause(mes=>"Checking $fipoc");
 #
 my $fipeb = "uie-fi5b.txt";
 my $res0b = &uie::read8line(fil=>$fipeb);

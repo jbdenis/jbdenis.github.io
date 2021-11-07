@@ -1,12 +1,23 @@
 #!/usr/bin/perl -w
 #
-# 16_09_06 17_04_04
+# 16_09_06 17_04_04 20_04_26
 #
 use strict;
 use warnings;
+use lib "/home/jbdenis/o/info/perl/uie";
 use uie; 
 #
 my $resu;
+#
+my $arr5 = " Juste une chaîne de caractères   ... ";
+$resu = &uie::clean8string(str=>$arr5);
+print " INPUT: <$arr5>\n";
+print "OUTPUT: <$resu>\n";
+&uie::pause(mes=>"simple chaîne");
+$resu = &uie::clean8string(str=>[$arr5]);
+print " INPUT: <$arr5>\n";
+print "OUTPUT: <$resu->[0]>\n";
+&uie::pause(mes=>"la même en array");
 #
 my $arr4 = [" # un fichier simple pour le nouveau type 2",
             " a 1 il était une fois;; a 2 un petit ## chaperon ",
@@ -49,6 +60,8 @@ $resu = &uie::clean8string(str=>$str1);
 &uie::print8structure(str=>$resu);
 &uie::pause;
 #
+#
+print "(((",&uie::clean8string(str=>""),")))\n";
 #
 print "-"x4,"Fin du test de clean8string","-"x25,"\n";
 #

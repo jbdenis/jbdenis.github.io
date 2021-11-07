@@ -1,0 +1,42 @@
+# 
+# 
+<(0)> Exemple d'eif pour les tests de shrink8di7f
+####
+<(1)> Section inutile
+(*) Un paragraphe qui va rester...
+<(1)> Première Section
+<<un mot clef général>>
+(*) Un petit paragraphe introductif
+###
+<(2)> Première sous-section
+<[nbi=2,gnc=2,cap=Deux images en grilles : UNE FOIS,wid=4cm,hei=2cm]>
+phoges-pic05.jpg   ((première))
+phoges-pic05.jpg   ((seconce))
+<[nbi=2,gnc=2,wid=4cm,hei=2cm]>
+phoges-pic05.jpg   ((idem))
+phoges-pic05.jpg   ((mais sans légende collective))
+<[nbi=2,gnc=2,cap=Deux images en grilles : UNE FOIS,WID=5cm,HEI=1cm]>
+phoges-pic05.jpg   ((première))
+phoges-pic05.jpg   ((seconce))
+<[nbi=2,gnc=2,WID=5cm,HEI=1cm]>
+phoges-pic05.jpg   ((idem))
+###
+<(2)> Sous-section sans image mais avec commentaire
+((Un commentaire bien inutile))
+###
+<(2)> Image à l'échelle inférieure
+#
+[[une personne indispensable]]
+<(3)> Rien de ce côté
+<[hei=3cm,wid=3cm]>
+#
+<(3)> Tout au Début
+<[wid=6cm ,nbi=2 ,gnl=2 ,gnc=1,cap=Une Légende pour l'ensemble ]> ((Il était parti, seul avec son cheval sans provision.//Personne, même pas lui n'aurais pu dire où le conduirait sa quête.//Ce qui est clair, c'est qu'il y mettait toute son énergie et bientôt le pauvre canasson, harrassé, assoiffé demanda grâce !))
+phoges-pic03.jpg <[rot=-90 ,hei=5cm]> (|images nettes//place cinq//place 2//place 3|) [[Jeanie]] {{place 1}}
+####
+<(1)> C'est la fin des haricots
+<[wid=6cm ,nbi=1 ,gnl=1 ,gnc=1 ]>
+phoges-pic07.jpg <[rot=0,wid=8cm]> (|de plus//place 3//place 2|) {{palabra clave segunda,palabra clave premera}}
+<(2)> un dernier coup pour rien
+<(3)> répété à un niveau inférieur
+#toto.png

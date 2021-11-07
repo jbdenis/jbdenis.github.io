@@ -1,17 +1,22 @@
 #!/usr/bin/perl -w
 #
 # 16_08_13 16_08_14 16_09_10 16_09_12 17_09_24
-# 17_10_02 17_10_06 18_04_09
+# 17_10_02 17_10_06 18_04_09 19_04_03 19_09_25
+# 19_10_04
 #
 use strict;
 use warnings;
+#
+use lib "/home/jbdenis/o/info/perl/phoges.pl";
 use phoges; 
 #
-use lib "/home/jbdenis/o/info/perl/phoges";
 my $fifi;
 #
 $fifi = "phoges-fi1.txt";
-my $res1 = &phoges::read8st7f(fil=>$fifi);
+#$fifi = "cate-stf.txt";
+my $pkad = {};
+my $res1 = {};
+$res1 = &phoges::read8st7f(fil=>$fifi,ref=>$res1);
 if (&uie::err9(obj=>$res1)) {
     print "Error was found when reading the reference file\n";
     &uie::print8err(err=>$res1);
